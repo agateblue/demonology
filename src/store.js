@@ -1,16 +1,17 @@
 import { createStore } from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
+import sortBy from 'lodash/sortBy'
 
 
-function additiveUpgrade (initialValue, upgradeValue) {
+function additiveUpgrade (initialValue, upgradeValue, state) {
   return initialValue + upgradeValue
 }
 
 function applyUpgrades (initialValue, state, upgrades) {
   let v = initialValue
   upgrades.forEach(upgrade => {
-    v = upgrade.modifier(v, upgrade.value)
+    v = upgrade.modifier(v, upgrade.value, state)
   })
   return v
 }
@@ -22,6 +23,7 @@ function filterUpgrades (upgrades, match) {
 }
 
 export const DEFAULT_VALUES = {
+  clicks: 0,
   souls: 0,
   minions: 0,
   upgrades: [],
@@ -33,7 +35,7 @@ export const CONSTANTS = {
   'tick.duration': 1000,  // in milliseconds
 }
 
-const UPGRADES = [
+const UPGRADES = sortBy([
   {
     id: "minions.power.1",
     name: "Fangs",
@@ -68,10 +70,27 @@ const UPGRADES = [
     value: 0.2,
     valueFormatter: (v) => {return v * 100}
   },
-]
+  {
+    id: "clicks.lifetime.1",
+    name: "Disturbing presence",
+    description: "Increase souls extraction based on manual soul extractions during this lifetime",
+    modifier: (initialValue, upgradeValue, state) => {
+      if (state.lifetime.clicks > 0) {
+        return initialValue + Math.log(state.lifetime.clicks)
+      }
+      return initialValue
+    },
+    cost: 250,
+    value: null,
+  },
+], ['cost'])
 
 function getSoulsPerClick(state, activeUpgrades) {
-  return 1 + (state.current.minions * applyUpgrades(
+  return 1 + applyUpgrades(
+    0,
+    state,
+    filterUpgrades(activeUpgrades, 'clicks.lifetime.'),
+  ) + (state.current.minions * applyUpgrades(
     CONSTANTS['minions.basePower'],
     state,
     filterUpgrades(activeUpgrades, 'minions.power.'),

@@ -5,7 +5,7 @@
       <p>
         You have {{ formatNumber(parseInt($store.state.current.souls), $store.state.settings.notation) }} souls. You want more.
       </p>
-      <button @click.prevent="$store.commit('increment', {name: 'souls', value: $store.getters['values']['souls.perClick']})">
+      <button @click.prevent="$store.commit('increment', {name: 'clicks', value: 1}); $store.commit('increment', {name: 'souls', value: $store.getters['values']['souls.perClick']})">
         Extract {{ formatNumber($store.getters['values']['souls.perClick'], $store.state.settings.notation) }} souls from living creatures
       </button>
       <p v-if="$store.getters['values']['souls.perTick'] > 0">

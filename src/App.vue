@@ -3,7 +3,6 @@
     <router-link to="/">Home</router-link>
   </nav>
   <router-view/>
-  {{ $store.state.time }}
 </template>
 <script>
 
