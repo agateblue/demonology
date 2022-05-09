@@ -6,7 +6,7 @@
         You have {{ formatNumber(parseInt($store.state.current.souls), $store.state.settings.notation) }} souls. You want more.
       </p>
       <button @click.prevent="$store.commit('increment', {name: 'souls', value: $store.getters['values']['souls.perClick']})">
-        Gather {{ formatNumber($store.getters['values']['souls.perClick'], $store.state.settings.notation) }} souls
+        Extract {{ formatNumber($store.getters['values']['souls.perClick'], $store.state.settings.notation) }} souls from living creatures
       </button>
       <p v-if="$store.getters['values']['souls.perTick'] > 0">
         Your minions hunt {{ formatNumber($store.getters['values']['souls.perTick'], $store.state.settings.notation) }} souls each second.
@@ -23,7 +23,7 @@
         :disabled="$store.state.current.souls < $store.getters.values['minions.cost']"
         @click.prevent="$store.commit('purchase', {name: 'minions', value: 1, cost: $store.getters.values['minions.cost'] })"
       >
-        Buy 1 minion for {{ formatNumber($store.getters.values['minions.cost'], $store.state.settings.notation) }} souls.
+        Subjugate 1 minion for {{ formatNumber($store.getters.values['minions.cost'], $store.state.settings.notation) }} souls.
       </button>
     </div>
     <div v-if="$store.getters['values']['upgrades.enabled']">
