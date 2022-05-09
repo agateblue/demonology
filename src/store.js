@@ -10,7 +10,7 @@ function additiveUpgrade (initialValue, upgradeValue) {
 function applyUpgrades (initialValue, state, upgrades) {
   let v = initialValue
   upgrades.forEach(upgrade => {
-    v = upgrade.modifier(initialValue, upgrade.value)
+    v = upgrade.modifier(v, upgrade.value)
   })
   return v
 }
@@ -21,15 +21,16 @@ function filterUpgrades (upgrades, match) {
   })
 }
 
-const DEFAULT_VALUES = {
+export const DEFAULT_VALUES = {
   souls: 0,
   minions: 0,
   upgrades: [],
 }
 
-const CONSTANTS = {
+export const CONSTANTS = {
   'minions.baseCost': 15,
   'minions.basePower': 1,
+  'tick.duration': 1000,  // in milliseconds
 }
 
 const UPGRADES = [
@@ -46,16 +47,26 @@ const UPGRADES = [
     name: "Minion Power II",
     description: "Increase minion bonus to souls per click by ${value}",
     modifier: additiveUpgrade,
-    cost: 150,
+    cost: 75,
     value: 2,
   },
   {
     id: "minions.hunt.1",
     name: "Hunt I",
-    description: "Unlock hunt mode for minions, granting you passively 10% of your souls per click each tick",
+    description: "Unlock hunt mode for minions, granting you passively ${value}% of your souls per click each second",
     modifier: additiveUpgrade,
-    cost: 250,
-    value: 0.1,
+    cost: 100,
+    value: 0.3,
+    valueFormatter: (v) => {return v * 100}
+  },
+  {
+    id: "minions.hunt.2",
+    name: "Hunt II",
+    description: "Minions hunt improved by ${value}% (additive)",
+    modifier: additiveUpgrade,
+    cost: 150,
+    value: 0.2,
+    valueFormatter: (v) => {return v * 100}
   },
 ]
 
@@ -72,11 +83,12 @@ const VALUES_COMPUTER = {
     return getSoulsPerClick(state, activeUpgrades)
   },
   'souls.perTick': (state, activeUpgrades) => {
-    return getSoulsPerClick(state, activeUpgrades) * (0 + applyUpgrades(
+    let buff = applyUpgrades(
       0,
       state,
       filterUpgrades(activeUpgrades, 'minions.hunt.'),
-    ))
+    )
+    return getSoulsPerClick(state, activeUpgrades) * (0 + buff)
   },
   'minions.enabled': (state) => {
     return state.total.souls >= CONSTANTS['minions.baseCost']
@@ -101,6 +113,11 @@ function inc (state, {name, value}) {
 }
 export default createStore({
   state: {
+    time: {
+      gameStart: (new Date()).getTime(),
+      lifetimeStart: (new Date()).getTime(),
+      lastTick: (new Date()).getTime(),
+    },
     current: {
       ...DEFAULT_VALUES
     },
@@ -117,6 +134,9 @@ export default createStore({
   mutations: {
     increment (state, {name, value}) {
       inc(state, {name, value})
+    },
+    lastTick (state, time) {
+      state.time.lastTick = time
     },
     reset (state) {
       state.current = {...DEFAULT_VALUES}
@@ -158,8 +178,18 @@ export default createStore({
     },
   },
   actions: {
-  },
-  modules: {
+    tick ({state, commit, getters}) {
+      let now = (new Date()).getTime()
+      let elapsed = now - state.time.lastTick
+      let ticks = elapsed / CONSTANTS['tick.duration']
+      if (ticks > 0) {
+        if (getters.values['souls.perTick'] > 0) {
+          let soulsIncome = getters.values['souls.perTick'] * ticks
+          commit('increment', {name: 'souls', value: soulsIncome})
+        }
+      }
+      commit('lastTick', now)
+    }
   },
   plugins: [
     new VuexPersistence({
