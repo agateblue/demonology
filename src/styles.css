@@ -1,0 +1,26 @@
+:root {
+  --spacing-0: 0;
+  --spacing-1: 0.25em;
+  --spacing-2: 0.5em;
+  --spacing-3: 1em;
+  --spacing-4: 1.5em;
+
+  --body-width: 800px;
+
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: sans-serif;
+}
+
+body > * {
+  margin: 0 auto;
+}
+main {
+  max-width: var(--body-width);
+}

@@ -1,18 +1,15 @@
 <template>
-  <div class="home">
+  <section>
     <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    You have {{ $store.state.current.souls }} souls
+
+    <button @click.prevent="$store.commit('increment', {name: 'souls', value: 1})">
+      Gather {{ $store.getters["soulsPerClick"] }} souls
+    </button>
+  </section>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 
-export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
-}
+export default {}
 </script>
