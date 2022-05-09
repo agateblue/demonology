@@ -3,6 +3,7 @@
     <router-link to="/">Home</router-link>
   </nav>
   <router-view/>
+  {{ $store.state.time }}
 </template>
 <script>
 
@@ -15,7 +16,7 @@ export default {
   mounted () {
     let interval = 300
     this.loop = window.setInterval(() => {
-      this.$store.dispatch('tick', interval)
+      this.$store.dispatch('tick')
     }, interval)
   },
   unmounted () {

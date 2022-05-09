@@ -198,6 +198,7 @@ export default createStore({
         lifetime: state.lifetime,
         total: state.total,
         settings: state.total,
+        time: state.time,
       }),
     }).plugin
   ]
