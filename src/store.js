@@ -36,7 +36,7 @@ const UPGRADES = [
   {
     id: "minions.power.1",
     name: "Minion Power I",
-    description: "Increase minion bonus to soul per click by ${value}",
+    description: "Increase minion bonus to souls per click by ${value}",
     modifier: additiveUpgrade,
     cost: 50,
     value: 1,
@@ -44,20 +44,38 @@ const UPGRADES = [
   {
     id: "minions.power.2",
     name: "Minion Power II",
-    description: "Increase minion bonus to soul per click by ${value}",
+    description: "Increase minion bonus to souls per click by ${value}",
     modifier: additiveUpgrade,
     cost: 150,
     value: 2,
   },
+  {
+    id: "minions.hunt.1",
+    name: "Hunt I",
+    description: "Unlock hunt mode for minions, granting you passively 10% of your souls per click each tick",
+    modifier: additiveUpgrade,
+    cost: 250,
+    value: 0.1,
+  },
 ]
 
+function getSoulsPerClick(state, activeUpgrades) {
+  return 1 + (state.current.minions * applyUpgrades(
+    CONSTANTS['minions.basePower'],
+    state,
+    filterUpgrades(activeUpgrades, 'minions.power.'),
+  ))
+}
 
 const VALUES_COMPUTER = {
   'souls.perClick': (state, activeUpgrades) => {
-    return 1 + (state.current.minions * applyUpgrades(
-      CONSTANTS['minions.basePower'],
+    return getSoulsPerClick(state, activeUpgrades)
+  },
+  'souls.perTick': (state, activeUpgrades) => {
+    return getSoulsPerClick(state, activeUpgrades) * (0 + applyUpgrades(
+      0,
       state,
-      filterUpgrades(activeUpgrades, 'minions.power.'),
+      filterUpgrades(activeUpgrades, 'minions.hunt.'),
     ))
   },
   'minions.enabled': (state) => {
@@ -91,6 +109,9 @@ export default createStore({
     },
     total: {
       ...DEFAULT_VALUES
+    },
+    settings: {
+      notation: "standard",
     }
   },
   mutations: {
@@ -134,7 +155,7 @@ export default createStore({
         v[key] = value(state, getters.activeUpgrades)
       }
       return v
-    }
+    },
   },
   actions: {
   },
@@ -146,6 +167,7 @@ export default createStore({
         current: state.current,
         lifetime: state.lifetime,
         total: state.total,
+        settings: state.total,
       }),
     }).plugin
   ]
