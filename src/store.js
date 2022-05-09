@@ -1,23 +1,78 @@
 import { createStore } from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
+
+
+function additiveUpgrade (initialValue, upgradeValue) {
+  return initialValue + upgradeValue
+}
+
+function applyUpgrades (initialValue, state, upgrades) {
+  let v = initialValue
+  upgrades.forEach(upgrade => {
+    v = upgrade.modifier(initialValue, upgrade.value)
+  })
+  return v
+}
+
+function filterUpgrades (upgrades, match) {
+  return upgrades.filter(u => {
+    return u.id.startsWith(match)
+  })
+}
+
 const DEFAULT_VALUES = {
   souls: 0,
   minions: 0,
+  upgrades: [],
 }
 
 const CONSTANTS = {
-  'minions.baseCost': 25
+  'minions.baseCost': 15,
+  'minions.basePower': 1,
 }
+
+const UPGRADES = [
+  {
+    id: "minions.power.1",
+    name: "Minion Power I",
+    description: "Increase minion bonus to soul per click by ${value}",
+    modifier: additiveUpgrade,
+    cost: 50,
+    value: 1,
+  },
+  {
+    id: "minions.power.2",
+    name: "Minion Power II",
+    description: "Increase minion bonus to soul per click by ${value}",
+    modifier: additiveUpgrade,
+    cost: 150,
+    value: 2,
+  },
+]
+
+
 const VALUES_COMPUTER = {
-  'souls.perClick': (state) => {
-    return 1 + state.current.minions
+  'souls.perClick': (state, activeUpgrades) => {
+    return 1 + (state.current.minions * applyUpgrades(
+      CONSTANTS['minions.basePower'],
+      state,
+      filterUpgrades(activeUpgrades, 'minions.power.'),
+    ))
   },
   'minions.enabled': (state) => {
     return state.total.souls >= CONSTANTS['minions.baseCost']
   },
   'minions.cost': (state) => {
     return (state.lifetime.minions + 1) * CONSTANTS['minions.baseCost']
+  },
+  'upgrades.enabled': (state) => {
+    return state.total.souls >= UPGRADES[0].cost
+  },
+  'upgrades.available': (state) => {
+    return UPGRADES.filter((u) => {
+      return state.current.upgrades.indexOf(u.id) < 0 && state.total.souls >= u.cost
+    })
   },
 }
 
@@ -56,13 +111,27 @@ export default createStore({
       state.current.souls -= value * cost 
       inc(state, {name, value})
     },
+    purchaseUpgrade (state, {id, cost}) {
+      let available = state.current.souls
+      if (available < cost) {
+        console.warn(`Cannot purchase upgrade ${id} for ${cost}: only ${available} available`);
+        return
+      }
+      state.current.souls -= cost 
+      state.current.upgrades.push(id)
+    },
 
   },
   getters: {
-    values (state) {
+    activeUpgrades (state, {id, cost}) {
+      return UPGRADES.filter((u) => {
+        return state.current.upgrades.indexOf(u.id) > -1
+      })
+    },
+    values (state, getters) {
       let v = {}
       for (const [key, value] of Object.entries(VALUES_COMPUTER)) {
-        v[key] = value(state)
+        v[key] = value(state, getters.activeUpgrades)
       }
       return v
     }

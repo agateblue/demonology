@@ -12,6 +12,7 @@
 
     <div class="text--center" v-if="$store.getters['values']['minions.enabled']">
       <hr>
+      <strong>Minions</strong>
       <p>
         You have {{ $store.state.current.minions }} minions
       </p>
@@ -21,6 +22,28 @@
       >
         Buy 1 minion for {{ $store.getters.values['minions.cost'] }} souls.
       </button>
+    </div>
+    <div class="text--center" v-if="$store.getters['values']['upgrades.enabled']">
+      <hr>
+      <strong>Upgrades</strong>
+      <table>
+        <tbody>
+          <tr v-for="upgrade in $store.getters['values']['upgrades.available']" :key="upgrade.key">
+            <td>{{ upgrade.name }}</td>
+            <td>{{ upgrade.description.replace('${value}', upgrade.value) }}</td>
+            <td>{{ upgrade.cost }} souls</td>
+            <td>
+              <button
+                :disabled="$store.state.current.souls < upgrade.cost"
+                @click.prevent="$store.commit('purchaseUpgrade', {id: upgrade.id, cost: upgrade.cost })"
+              >
+                Purchase
+              </button>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="text--center">
       <hr>
