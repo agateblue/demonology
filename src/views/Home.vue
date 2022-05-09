@@ -1,24 +1,23 @@
 <template>
   <section class="py-3">
-    <div class="text--center">
-      <strong>🔥 You woke up, and you're hungry</strong>
+    <div>
+      <h1>🔥 You woke up, and you're hungry 🔥</h1>
       <p>
-        You have {{ formatNumber(parseInt($store.state.current.souls), $store.state.settings.notation) }} souls
+        You have {{ formatNumber(parseInt($store.state.current.souls), $store.state.settings.notation) }} souls. You want more.
       </p>
       <button @click.prevent="$store.commit('increment', {name: 'souls', value: $store.getters['values']['souls.perClick']})">
         Gather {{ formatNumber($store.getters['values']['souls.perClick'], $store.state.settings.notation) }} souls
       </button>
-      <template v-if="$store.getters['values']['souls.perTick'] > 0">
-        <br>
-        Your minions hunt {{ formatNumber($store.getters['values']['souls.perTick'], $store.state.settings.notation) }} souls each second
-      </template>
+      <p v-if="$store.getters['values']['souls.perTick'] > 0">
+        Your minions hunt {{ formatNumber($store.getters['values']['souls.perTick'], $store.state.settings.notation) }} souls each second.
+      </p>
     </div>
 
-    <div class="text--center" v-if="$store.getters['values']['minions.enabled']">
+    <div v-if="$store.getters['values']['minions.enabled']">
       <hr>
-      <strong>Minions</strong>
+      <h2>Minions</h2>
       <p>
-        You have {{ formatNumber($store.state.current.minions, $store.state.settings.notation) }} minions
+        You have {{ formatNumber($store.state.current.minions, $store.state.settings.notation) }} minions.
       </p>
       <button
         :disabled="$store.state.current.souls < $store.getters.values['minions.cost']"
@@ -27,9 +26,9 @@
         Buy 1 minion for {{ formatNumber($store.getters.values['minions.cost'], $store.state.settings.notation) }} souls.
       </button>
     </div>
-    <div class="text--center" v-if="$store.getters['values']['upgrades.enabled']">
+    <div v-if="$store.getters['values']['upgrades.enabled']">
       <hr>
-      <strong>Upgrades</strong>
+      <h2>Upgrades</h2>
       <table>
         <tbody>
           <tr v-for="upgrade in $store.getters['values']['upgrades.available']" :key="upgrade.key">
@@ -55,7 +54,7 @@
         </tbody>
       </table>
     </div>
-    <div class="text--center">
+    <div>
       <hr>
       <button @click.prevent="$store.commit('reset')">
         Reset
