@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav v-if="false">
     <router-link to="/">Home</router-link>
   </nav>
   <router-view/>
