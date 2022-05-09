@@ -41,6 +41,20 @@ main {
   min-height: 100vh;
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 90%;
+}
+td, th {
+  padding: var(--spacing-2);
+  border: 1px solid var(--border-color);
+}
+
+th {
+  text-align: left;
+}
+
 
 img {
   display: block;

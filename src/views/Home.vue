@@ -54,8 +54,7 @@
         </tbody>
       </table>
     </div>
-    <div>
-      <hr>
+    <div style="position: fixed; bottom: 1em; right: 1em">
       <button @click.prevent="$store.commit('reset')">
         Reset
       </button>
