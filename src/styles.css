@@ -5,7 +5,7 @@
   --spacing-3: 1em;
   --spacing-4: 1.5em;
 
-  --body-width: 600px;
+  --body-width: 750px;
 
   --border-color: #EEEEEE;
 }
@@ -60,6 +60,34 @@ img {
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+
+.row {
+  display: inline-flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.row > * {
+  margin: 0;
+  margin-bottom: 0 !important;
+  width: 0;
+  flex: 1 1 0;
+}
+.row > *:not(:first-child) {
+  margin-left: 1em;
+}
+  
+
+@media screen and (max-width: 600px) {
+  .row.stackable {
+    display: block;
+  }
+  .row.stackable > * {
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: var(--spacing-2);
+  }
 }
 
 .mx-0 {

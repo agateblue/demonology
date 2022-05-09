@@ -26,12 +26,15 @@ export const DEFAULT_VALUES = {
   clicks: 0,
   souls: 0,
   minions: 0,
+  occultists: 0,
   upgrades: [],
 }
 
 export const CONSTANTS = {
   'minions.baseCost': 15,
   'minions.basePower': 1,
+  'occultists.baseCost': 10,
+  'occultists.basePower': 1,
   'tick.duration': 1000,  // in milliseconds
 }
 
@@ -53,24 +56,6 @@ const UPGRADES = sortBy([
     value: 2,
   },
   {
-    id: "minions.hunt.1",
-    name: "Hounds",
-    description: "Send your minions hunting, giving you ${value}% of your souls extraction value every second",
-    modifier: additiveUpgrade,
-    cost: 100,
-    value: 0.3,
-    valueFormatter: (v) => {return v * 100}
-  },
-  {
-    id: "minions.hunt.2",
-    name: "Nets",
-    description: "Hunting improved by ${value}% (additive)",
-    modifier: additiveUpgrade,
-    cost: 150,
-    value: 0.2,
-    valueFormatter: (v) => {return v * 100}
-  },
-  {
     id: "clicks.lifetime.1",
     name: "Disturbing presence",
     description: "Increase souls extraction based on manual soul extractions during this lifetime",
@@ -90,11 +75,15 @@ function getSoulsPerClick(state, activeUpgrades) {
     0,
     state,
     filterUpgrades(activeUpgrades, 'clicks.lifetime.'),
-  ) + (state.current.minions * applyUpgrades(
+  ) + (state.current.minions * getMinionPower(state, activeUpgrades))
+}
+
+function getMinionPower(state, activeUpgrades) {
+  return applyUpgrades(
     CONSTANTS['minions.basePower'],
     state,
     filterUpgrades(activeUpgrades, 'minions.power.'),
-  ))
+  )
 }
 
 const VALUES_COMPUTER = {
@@ -103,17 +92,26 @@ const VALUES_COMPUTER = {
   },
   'souls.perTick': (state, activeUpgrades) => {
     let buff = applyUpgrades(
-      0,
+      state.current.occultists,
       state,
-      filterUpgrades(activeUpgrades, 'minions.hunt.'),
+      filterUpgrades(activeUpgrades, 'noop.'),
     )
-    return getSoulsPerClick(state, activeUpgrades) * (0 + buff)
+    return getSoulsPerClick(state, activeUpgrades) * buff
   },
   'minions.enabled': (state) => {
     return state.total.souls >= CONSTANTS['minions.baseCost']
   },
+  'minions.power': (state, activeUpgrades) => {
+    return getMinionPower(state, activeUpgrades)
+  },
   'minions.cost': (state) => {
     return (state.lifetime.minions + 1) * CONSTANTS['minions.baseCost']
+  },
+  'occultists.enabled': (state) => {
+    return state.total.minions >= CONSTANTS['occultists.baseCost']
+  },
+  'occultists.cost': (state) => {
+    return (state.lifetime.occultists + 1) * CONSTANTS['occultists.baseCost']
   },
   'upgrades.enabled': (state) => {
     return state.total.souls >= UPGRADES[0].cost
@@ -179,6 +177,15 @@ export default createStore({
       }
       state.current.souls -= cost 
       state.current.upgrades.push(id)
+    },
+    recruitOccultist (state, {value, cost}) {
+      let available = state.current.minions
+      if (available < cost) {
+        console.warn(`Cannot recruit occultists for ${cost}: only ${available} available`);
+        return
+      }
+      state.current.minions -= cost 
+      inc(state, {name: 'occultists', value})
     },
 
   },
