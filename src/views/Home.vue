@@ -1,11 +1,11 @@
 <template>
-  <section class="py-3">
+  <div class="py-3">
     <div class="text--center">
       <h1>You just woke up</h1>
       <fire></fire>
     </div>
     <div class="stackable row my-4">
-      <div class="text--center">
+      <section class="text--center">
         <h2>
           Souls · {{ formatNumber(parseInt($store.state.current.souls), $store.state.settings.notation) }}
         </h2>
@@ -18,9 +18,9 @@
         <p>
           You <i>need</i> more.
         </p>
-      </div>
+      </section>
 
-      <div class="text--center" v-if="$store.getters['values']['minions.enabled']">
+      <section class="text--center" v-if="$store.getters['values']['minions.enabled']">
         <h2>
           Minions ·
           {{ formatNumber($store.state.current.minions, $store.state.settings.notation) }}
@@ -34,8 +34,8 @@
         <p>
           They improve souls extraction by {{ formatNumber(parseInt($store.getters['values']['minions.power'] * $store.state.current.minions), $store.state.settings.notation) }}.
         </p>
-      </div>
-      <div class="text--center" v-if="$store.getters['values']['occultists.enabled']">
+      </section>
+      <section class="text--center" v-if="$store.getters['values']['occultists.enabled']">
         <h2>
           Occultists
           ·
@@ -50,10 +50,10 @@
         <p v-if="$store.getters['values']['souls.perTick'] > 0">
           They harvest {{ formatNumber(parseInt($store.getters['values']['souls.perTick']), $store.state.settings.notation) }} souls/second.
         </p>
-      </div>
+      </section>
     </div>
     <div class="stackable row">
-      <div v-if="$store.getters['values']['upgrades.enabled']">
+      <section v-if="$store.getters['values']['upgrades.enabled']">
         <h2>Upgrades</h2>
         <table>
           <tbody>
@@ -79,14 +79,14 @@
             </tr>
           </tbody>
         </table>
-      </div>
+      </section>
     </div>
     <div style="position: fixed; bottom: 1em; right: 1em">
       <button @click.prevent="$store.commit('reset')">
         Reset
       </button>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
