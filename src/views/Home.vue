@@ -17,7 +17,7 @@
           </h2>
           <button
             title="They may not survive, but do you care?"
-            @click.prevent="$store.commit('increment', {name: 'clicks', value: 1}); $store.commit('increment', {name: 'souls', value: $store.getters['values']['souls.perClick']})">
+            @click.prevent="extract">
             Extract 
             
             <number-badge
@@ -155,6 +155,18 @@ export default {
   data () {
     return {
       formatNumber
+    }
+  },
+  methods: {
+    extract () {
+      this.$store.commit(
+        'increment',
+        {name: 'clicks', value: 1}
+      )
+      this.$store.commit(
+        'increment',
+        {name: 'souls', value: this.$store.getters['values']['souls.perClick']}
+      )
     }
   }
 }

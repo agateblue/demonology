@@ -380,6 +380,7 @@ hr {
   animation-duration: 2.5s;
   animation-delay: 5s;
 }
+
 @keyframes flameWobble {
   50% {
     transform: scale(1,1.2) translate(0, -30px) rotate(-2deg);
