@@ -49,6 +49,7 @@ body {
   margin: 0;
   color: var(--body-color);
   background-color: var(--body-background);
+  padding: var(--spacing-2);
 }
 section {
   padding: var(--spacing-4);
@@ -60,7 +61,6 @@ body > * {
 }
 main {
   max-width: var(--body-width);
-  min-height: 100vh;
 }
 
 h1, h2, h3, h4 {
@@ -147,7 +147,6 @@ img {
 }
 .row > * {
   margin: 0;
-  margin-bottom: 0 !important;
   width: 0;
   flex: 1 1 0;
 }
