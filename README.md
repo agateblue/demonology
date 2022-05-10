@@ -1,4 +1,8 @@
-# demonology
+# Demonology
+
+An incremental game about harvesting souls and growing in power.
+
+Play it at https://demonology.agate.blue/
 
 ## Project setup
 ```
