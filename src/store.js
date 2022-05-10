@@ -128,8 +128,9 @@ function inc (state, {name, value}) {
   state.lifetime[name] += value
   state.total[name] += value
 }
-export default createStore({
-  state: {
+
+function getDefaultState () {
+  return {
     time: {
       gameStart: (new Date()).getTime(),
       lifetimeStart: (new Date()).getTime(),
@@ -148,6 +149,12 @@ export default createStore({
       notation: "standard",
       debug: process.env.NODE_ENV === 'development',
     }
+  }
+}
+
+export default createStore({
+  state: {
+    ...getDefaultState()
   },
   mutations: {
     increment (state, {name, value}) {
@@ -160,6 +167,12 @@ export default createStore({
       state.current = {...DEFAULT_VALUES}
       state.lifetime = {...DEFAULT_VALUES}
       state.total = {...DEFAULT_VALUES}
+    },
+    hardReset (state) {
+      Object.assign(state, getDefaultState())
+    },
+    setting (state, {name, value}) {
+      state.settings[name] = value
     },
     purchase (state, {name, value, cost}) {
       let available = state.current.souls
@@ -224,7 +237,7 @@ export default createStore({
         current: state.current,
         lifetime: state.lifetime,
         total: state.total,
-        settings: state.total,
+        settings: state.settings,
         time: state.time,
       }),
     }).plugin

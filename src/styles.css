@@ -6,6 +6,7 @@
   --spacing-4: 1.5em;
 
   --body-width: 950px;
+  --narrow-width: 650px;
   --body-background: #400000;
   --body-color: gainsboro;
   --body-font-family: Roboto Slab, serif;
@@ -15,7 +16,11 @@
 
   --border-color: rgba(255, 255, 255, 0.1);
   --border-radius: 3px;
+
   --button-background: #900000;
+
+  --link-color: indigo;
+  --link-discrete-color: var(--body-color);
 
   --fire-main-color: darkorange;
   --fire-main-filter: hue-rotate(-35deg);
@@ -55,6 +60,8 @@ section {
   padding: var(--spacing-4);
   border-radius: var(--border-radius);
   background-color: rgba(255, 255, 255, 0.1);
+  margin-left: auto;
+  margin-right: auto;
 }
 body > * {
   margin: 0 auto;
@@ -86,6 +93,19 @@ h4:first-child {
 section > *:last-child {
   margin-bottom: 0
 }
+.narrow {
+  max-width: var(--narrow-width);
+}
+a {
+  color: var(--link-color);
+}
+a.discrete {
+  color: var(--link-discrete-color);
+}
+a.router-link-active {
+  text-decoration: none;
+}
+
 .button, button {
   background: var(--button-background);
   color: var(--button-color);

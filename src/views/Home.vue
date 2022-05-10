@@ -1,10 +1,7 @@
 <template>
-  <div class="py-3">
-    <div class="text--center mb-4">
-      <h1>Who am I?</h1>
-      <fire></fire>
-    </div>
-    <div class="stackable row my-4">
+  <div>
+    
+    <div class="stackable row">
       <div>
         <section>
           <h2 title="Let me sleep all night in your soul kitchen">
@@ -133,23 +130,16 @@
         <p v-else>No available upgrades. Try getting more souls.</p>
       </section>
     </div>
-    <div style="position: fixed; bottom: 1em; right: 1em" v-if="$store.state.settings.debug">
-      <button @click.prevent="$store.commit('reset')">
-        Reset
-      </button>
-    </div>
   </div>
 </template>
 
 <script>
 import {formatNumber} from '@/utils'
 
-import Fire from '@/components/Fire'
 import NumberBadge from '@/components/NumberBadge'
 
 export default {
   components: {
-    Fire,
     NumberBadge,
   },
   data () {
