@@ -74,18 +74,39 @@ export const UPGRADES = sortBy([
     cost: 250,
     value: null,
   },
-  // {
-  //   id: "occultists.power.2",
-  //   name: "Gathering",
-  //   description: "Increase minion bonus to souls extraction by ${value}",
-  //   modifier: additiveUpgrade,
-  //   affects: {
-  //     'occultists.basePower': multiplyUpgrade
-  //   },
-  //   cost: 500,
-  //   value: 1.25,
-  //   valueFormat: '%'
-  // },
+  {
+    id: "occultists.power.1",
+    name: "Hidden signs",
+    description: "Increase occultists power by ${value}",
+    affects: {
+      'occultists.basePower': multiplier
+    },
+    cost: 500,
+    value: 1.25,
+    valueFormat: '%'
+  },
+  {
+    id: "occultists.power.2",
+    name: "Dark rituals",
+    description: "Increase occultists power by ${value}",
+    affects: {
+      'occultists.basePower': multiplier
+    },
+    cost: 1000,
+    value: 1.25,
+    valueFormat: '%'
+  },
+  {
+    id: "occultists.power.3",
+    name: "Secret gathering",
+    description: "Increase occultists power by ${value}",
+    affects: {
+      'occultists.basePower': multiplier
+    },
+    cost: 2000,
+    value: 2,
+    valueFormat: '%'
+  },
 ], ['cost'])
 
 
