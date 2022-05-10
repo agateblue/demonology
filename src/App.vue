@@ -3,7 +3,10 @@
     <h1>Who am I?</h1>
     <fire></fire>
   </div>
-  <nav class="text--center mb-4">
+  <nav
+    class="text--center mb-4"
+    v-if="$store.getters['values']['upgrades.enabled']"
+  >
     <router-link class="discrete" to="/">Lair</router-link> ·
     <!-- <router-link class="discrete" to="/">Lore</router-link> · -->
     <!-- <router-link class="discrete" to="/">Lord</router-link> · -->

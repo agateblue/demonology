@@ -1,9 +1,8 @@
 <template>
   <div>
-    
     <div class="stackable row">
       <div>
-        <section>
+        <section class="tiny">
           <h2 title="Let me sleep all night in your soul kitchen">
             <number-badge
               class="ml-4 float--right"
@@ -29,7 +28,7 @@
           </p>
         </section>
 
-        <section class="mt-3" v-if="$store.getters['values']['minions.enabled']">
+        <section class="tiny mt-3" v-if="$store.getters['values']['minions.enabled']">
           <h2>
             <number-badge
               class="ml-4 float--right"
@@ -63,7 +62,7 @@
             </number-badge>
           </p>
         </section>
-        <section class="mt-3" v-if="$store.getters['values']['occultists.enabled']">
+        <section class="tiny mt-3" v-if="$store.getters['values']['occultists.enabled']">
           <h2>
             <number-badge
               class="ml-4 float--right"
