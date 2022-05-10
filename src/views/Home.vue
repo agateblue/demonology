@@ -1,13 +1,13 @@
 <template>
   <div class="py-3">
     <div class="text--center mb-4">
-      <h1>You just woke up</h1>
+      <h1>Who am I?</h1>
       <fire></fire>
     </div>
     <div class="stackable row my-4">
       <section class="text--center">
         <header class="align-items--center justify-content--center">
-          <h2>Souls</h2>
+          <h2 title="Let me sleep all night in your soul kitchen">Souls</h2>
           <number-badge
             class="ml-4"
             unit="soul"
@@ -24,7 +24,7 @@
             :value="parseInt($store.getters['values']['souls.perClick'])"
           >
           </number-badge>
-           from living creatures
+          from living creatures
         </button>
         <p>
           You <i>need</i> more.
@@ -41,6 +41,7 @@
           ></number-badge>
         </header>
         <button
+          title="Useful. And disposable."
           :disabled="$store.state.current.souls < $store.getters.values['minions.cost']"
           @click.prevent="$store.commit('purchase', {name: 'minions', value: 1, cost: $store.getters.values['minions.cost'] })"
         >
