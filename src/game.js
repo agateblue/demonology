@@ -37,12 +37,19 @@ export const CONSTANTS = {
   'occultists.basePower': 1,
   'tick.duration': 1000,  // in milliseconds
 }
+function hasMinions ({state}) {
+  return state.current.minions > 0
+}
+function hasOccultists ({state}) {
+  return state.current.occultists > 0
+}
 
 export const UPGRADES = sortBy([
   {
     id: "minions.power.1",
     name: "Fangs",
     description: "Increase minion bonus to souls extraction by ${value}",
+    available: hasMinions,
     affects: {
       'minions.basePower': additive,
     },
@@ -53,6 +60,7 @@ export const UPGRADES = sortBy([
     id: "minions.power.2",
     name: "Horns",
     description: "Increase minion bonus to souls extraction by ${value}",
+    available: hasMinions,
     affects: {
       'minions.basePower': additive,
     },
@@ -78,6 +86,7 @@ export const UPGRADES = sortBy([
     id: "occultists.power.1",
     name: "Hidden signs",
     description: "Increase occultists power by ${value}",
+    available: hasOccultists,
     affects: {
       'occultists.basePower': multiplier
     },
@@ -89,6 +98,7 @@ export const UPGRADES = sortBy([
     id: "occultists.power.2",
     name: "Dark rituals",
     description: "Increase occultists power by ${value}",
+    available: hasOccultists,
     affects: {
       'occultists.basePower': multiplier
     },
@@ -100,6 +110,7 @@ export const UPGRADES = sortBy([
     id: "occultists.power.3",
     name: "Secret gathering",
     description: "Increase occultists power by ${value}",
+    available: hasOccultists,
     affects: {
       'occultists.basePower': multiplier
     },
@@ -192,11 +203,24 @@ export function computedValues({state}) {
       return activeUpgrades
     },
     'upgrades.enabled': () => {
-      return state.total.souls >= UPGRADES[0].cost
+      if (state.current.upgrades.length > 0) {
+        return true
+      }
+      let available = get('upgrades.available')
+      if (available.length === 0) {
+        return false
+      }
+      return state.total.souls >= available[0].cost
     },
     'upgrades.available': () => {
-      return UPGRADES.filter((u) => {
+      let upgrades = UPGRADES.filter((u) => {
         return state.current.upgrades.indexOf(u.id) < 0 && state.total.souls >= u.cost
+      })
+      return upgrades.filter((u) => {
+        if (!u.available) {
+          return u
+        }
+        return u.available({state, get})
       })
     },
   }
