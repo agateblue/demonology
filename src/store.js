@@ -70,7 +70,7 @@ export default createStore({
         return
       }
       state.current.souls -= cost 
-      state.current.upgrades.push(id)
+      state.current.upgrades = [...state.current.upgrades, id]
     },
     recruitOccultist (state, {value, cost}) {
       let available = state.current.minions
