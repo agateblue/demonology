@@ -57,7 +57,7 @@
             They improve souls extraction by
             <number-badge
               unit="soul"
-              :value="parseInt($store.getters['values']['minions.power'] * $store.state.current.minions)"
+              :value="parseInt($store.getters['values']['minions.power.total'])"
             >
             </number-badge>
           </p>
@@ -107,7 +107,7 @@
                 {{ 
                   upgrade.description.replace(
                     '${value}',
-                    formatNumber(upgrade.valueFormatter ? upgrade.valueFormatter(upgrade.value) : upgrade.value, $store.state.settings.notation))
+                    formatNumber(upgrade.value, $store.state.settings.notation, upgrade.valueFormat))
                 }}
               </td>
               <td style="min-width: 100px">

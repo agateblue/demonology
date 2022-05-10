@@ -4,23 +4,22 @@ import sortBy from 'lodash/sortBy'
 
 
 
-
-export function additiveUpgrade (initialValue, upgradeValue) {
-  return initialValue + upgradeValue
+export function additive ({value, modifierValue}) {
+  return value + modifierValue
 }
 
-export function applyUpgrades (initialValue, state, upgrades) {
-  let v = initialValue
-  upgrades.forEach(upgrade => {
-    v = upgrade.modifier(v, upgrade.value, state)
-  })
-  return v
+export function multiplier ({value, modifierValue}) {
+  return value * modifierValue
 }
 
 export function filterUpgrades (upgrades, match) {
   return upgrades.filter(u => {
     return u.id.startsWith(match)
   })
+}
+
+export function multiplierFormat (value) {
+  return (value - 1) * 100
 }
 
 export const DEFAULT_VALUES = {
@@ -44,7 +43,9 @@ export const UPGRADES = sortBy([
     id: "minions.power.1",
     name: "Fangs",
     description: "Increase minion bonus to souls extraction by ${value}",
-    modifier: additiveUpgrade,
+    affects: {
+      'minions.basePower': additive,
+    },
     cost: 50,
     value: 1,
   },
@@ -52,7 +53,9 @@ export const UPGRADES = sortBy([
     id: "minions.power.2",
     name: "Horns",
     description: "Increase minion bonus to souls extraction by ${value}",
-    modifier: additiveUpgrade,
+    affects: {
+      'minions.basePower': additive,
+    },
     cost: 75,
     value: 2,
   },
@@ -60,34 +63,72 @@ export const UPGRADES = sortBy([
     id: "clicks.lifetime.1",
     name: "Disturbing presence",
     description: "Increase souls extraction based on manual soul extractions during this lifetime",
-    modifier: (initialValue, upgradeValue, state) => {
-      if (state.lifetime.clicks > 0) {
-        return initialValue + Math.log(state.lifetime.clicks)
-      }
-      return initialValue
+    affects: {
+      'souls.perClick': ({value, state}) => {
+        if (state.lifetime.clicks > 0) {
+          return value + Math.log(state.lifetime.clicks)
+        }
+        return value
+      },
     },
     cost: 250,
     value: null,
   },
+  // {
+  //   id: "occultists.power.2",
+  //   name: "Gathering",
+  //   description: "Increase minion bonus to souls extraction by ${value}",
+  //   modifier: additiveUpgrade,
+  //   affects: {
+  //     'occultists.basePower': multiplyUpgrade
+  //   },
+  //   cost: 500,
+  //   value: 1.25,
+  //   valueFormat: '%'
+  // },
 ], ['cost'])
 
 
 export function getValues (state) {
-  let values = {}
-  let computed = computedValues({
+  let finalValues = {}
+  let {values, get} = computedValues({
     state: reactive(state)
   })
-  for (const [key, value] of Object.entries(computed)) {
-    values[key] = value.value
+  for (const [key] of Object.entries(values)) {
+    finalValues[key] = get(key)
   }
-  return values
+  return finalValues
 }
 
+function groupByAffectedValue (el) {
+  let u = {}
+  el.forEach(e => {
+    for (const [key, value] of Object.entries(e.affects || {})) {
+      let existing = u[key] || []
+      existing.push({modifier: value, modifierValue: e.value})
+      u[key] = existing
+    }
+  })
+  return u
+}
 export function computedValues({state}) {
+  let activeUpgrades = UPGRADES.filter((u) => {
+    return state.current.upgrades.indexOf(u.id) > -1
+  }) 
+
+  let affectedValues = groupByAffectedValue(activeUpgrades)
+
   let values = {}
 
-  function get(key) {
-    return values[key].value
+  function get(key, applyModifiers = true) {
+    let v = values[key].value
+    if (!applyModifiers) {
+      return v
+    }
+    for (const {modifier, modifierValue} of affectedValues[key] || []) {
+      v = modifier({value: v, modifierValue, state})
+    }
+    return v
   }
 
   let config = {
@@ -95,20 +136,16 @@ export function computedValues({state}) {
     'minions.baseCost': () => {return 15},
     'minions.basePower': () => {return 1},
     'minions.enabled': () => {
-      return state.total.souls >= CONSTANTS['minions.baseCost']
-    },
-    'minions.power.total': () => {
-      return get('minions.basePower') * state.current.minions
+      return state.total.souls >= get('minions.baseCost')
     },
     'minions.cost': () => {
       return (state.lifetime.minions + 1) * get('minions.baseCost')
     },
     'minions.power': () => {
-      return applyUpgrades(
-        get('minions.basePower'),
-        state,
-        filterUpgrades(get('upgrades.active'), 'minions.power.'),
-      )
+      return get('minions.basePower')
+    },
+    'minions.power.total': () => {
+      return get('minions.power') * state.current.minions
     },
 
     'occultists.baseCost': () => {return 10},
@@ -121,28 +158,17 @@ export function computedValues({state}) {
     },
   
     'souls.perClick': () => {
-      return 1 + applyUpgrades(
-        0,
-        state,
-        filterUpgrades(get('upgrades.active'), 'clicks.lifetime.'),
-      ) + (state.current.minions * get('minions.power'))
+      return 1 + get('minions.power.total')
     },
     'souls.perTick': () => {
-      let buff = applyUpgrades(
-        state.current.occultists,
-        state,
-        filterUpgrades(get('upgrades.active'), 'noop.'),
-      )
-      return get('souls.perClick') * buff
+      return get('souls.perClick') * state.current.occultists * get('occultists.basePower')
     },
   
     // in milliseconds
     'tick.duration': () => {return 1000}, 
   
     'upgrades.active': () => {
-      return UPGRADES.filter((u) => {
-        return state.current.upgrades.indexOf(u.id) > -1
-      }) 
+      return activeUpgrades
     },
     'upgrades.enabled': () => {
       return state.total.souls >= UPGRADES[0].cost
@@ -158,5 +184,5 @@ export function computedValues({state}) {
     values[key] = computed(value)
   }
 
-  return values
+  return {values, get}
 }
