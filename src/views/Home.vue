@@ -1,8 +1,11 @@
 <template>
   <section class="py-3">
-    <h1>🔥 You woke up, and you're hungry 🔥</h1>
-    <div class="stackable row">
-      <div>
+    <div class="text--center">
+      <h1>You just woke up</h1>
+      <fire></fire>
+    </div>
+    <div class="stackable row my-4">
+      <div class="text--center">
         <h2>
           Souls · {{ formatNumber(parseInt($store.state.current.souls), $store.state.settings.notation) }}
         </h2>
@@ -17,7 +20,7 @@
         </p>
       </div>
 
-      <div v-if="$store.getters['values']['minions.enabled']">
+      <div class="text--center" v-if="$store.getters['values']['minions.enabled']">
         <h2>
           Minions ·
           {{ formatNumber($store.state.current.minions, $store.state.settings.notation) }}
@@ -32,7 +35,7 @@
           They improve souls extraction by {{ formatNumber(parseInt($store.getters['values']['minions.power'] * $store.state.current.minions), $store.state.settings.notation) }}.
         </p>
       </div>
-      <div v-if="$store.getters['values']['occultists.enabled']">
+      <div class="text--center" v-if="$store.getters['values']['occultists.enabled']">
         <h2>
           Occultists
           ·
@@ -89,7 +92,12 @@
 <script>
 import {formatNumber} from '@/utils'
 
+import Fire from '@/components/Fire'
+
 export default {
+  components: {
+    Fire
+  },
   data () {
     return {
       formatNumber

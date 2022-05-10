@@ -8,6 +8,14 @@
   --body-width: 750px;
 
   --border-color: #EEEEEE;
+
+  --fire-main-color: darkorange;
+  --fire-main-filter: hue-rotate(-35deg);
+  --fire-one-filter: brightness(100%) hue-rotate(-30deg);
+  --fire-two-filter: brightness(110%) hue-rotate(-25deg);
+  --fire-three-filter: brightness(115%) hue-rotate(-15deg);
+  --fire-four-filter: brightness(120%) hue-rotate(-10deg);
+  --fire-five-filter: brightness(125%) hue-rotate(-5deg);
 }
 
 * {
@@ -30,15 +38,21 @@ main {
   min-height: 100vh;
 }
 
+h1, h2, h3, h4 {
+  font-weight: normal;
+}
 .text--center {
   text-align: center;
 }
 
-.vertical--center {
+.align-items--center {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+}
+
+.justify-content--center {
+  display: flex;
   justify-content: center;
-  min-height: 100vh;
 }
 
 table {
@@ -181,3 +195,78 @@ hr {
   border-top: 1px solid var(--border-color);
   margin-top: var(--spacing-3);
 }
+
+/* fire animation */
+#fire {
+  height: 75px;
+}
+
+#fire .flame {
+  fill: var(--fire-main-color);
+  animation-name: flamefly;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  opacity: 0;
+  transform-origin: 50% 50% 0;
+}
+#fire .flame.one {
+  animation-delay: 1s;
+  animation-duration: 3s;
+}
+#fire .flame3.two{
+  animation-duration: 5s;
+  animation-delay: 1s;
+}
+
+#fire .flame-main {
+  fill: var(--fire-main-color);
+  filter: var(--fire-main-filter);
+  animation-name: flameWobble;
+  animation-duration: 3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+#fire .flame-main.one {
+  filter: var(--fire-one-filter);
+  animation-duration: 4s;
+  animation-delay: 1s;
+}
+#fire .flame-main.two {
+  filter: var(--fire-two-filter);
+  animation-duration: 3s;
+  animation-delay: 2s;
+}
+#fire .flame-main.three {
+  filter: var(--fire-three-filter);
+  animation-duration: 2.1s;
+  animation-delay: 3s;
+}
+#fire .flame-main.four {
+  filter: var(--fire-four-filter);
+  animation-duration: 3.2s;
+  animation-delay: 4s;
+}
+#fire .flame-main.five {
+  filter: var(--fire-five-filter);
+  animation-duration: 2.5s;
+  animation-delay: 5s;
+}
+@keyframes flameWobble {
+  50% {
+    transform: scale(1,1.2) translate(0, -30px) rotate(-2deg);
+  }
+}
+@keyframes flamefly {
+  0%{
+    transform: translate(0) rotate(180deg);
+  }
+   50% {
+     opacity: 1;
+  }
+  100% {
+    transform: translate(-20px, -100px) rotate(180deg);
+    opacity: 0;
+  }
+}
+/* end fire animation */
