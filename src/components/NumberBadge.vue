@@ -1,21 +1,29 @@
 <template>
-  <span :class="['number-badge', type]">
-    {{ formatNumber(value || 0, $store.state.settings.notation) }}<slot></slot>
+  <span class="number-badge">
+    <span v-if="unit" class="unit">
+      {{ unitToIcon[unit]}}
+    </span>
+    <span class="value">
+      {{ formatNumber(value || 0, $store.state.settings.notation) }}<slot></slot>
+    </span>
   </span>
 </template>
 
 <script>
 import {formatNumber} from '@/utils'
 
-import Fire from '@/components/Fire'
-
 export default {
   props: {
     value: {},
-    type: {default: 'value'},
+    unit: {},
   },
   data () {
     return {
+      unitToIcon: {
+        soul: '⚱️',
+        minion: '😈',
+        occultist: '🕯️',
+      },
       formatNumber
     }
   }

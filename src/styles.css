@@ -5,16 +5,13 @@
   --spacing-3: 1em;
   --spacing-4: 1.5em;
 
-  --body-width: 750px;
+  --body-width: 950px;
   --body-background: #400000;
   --body-color: gainsboro;
   --body-font-family: Roboto Slab, serif;
   --header-font-family: IfFellEnglishSC-Regular, serif;
   --monospace-font-family: monospace;
   --accent-color: crimson;
-  --number-value-background: DarkSlateBlue;
-  --number-cost-background: DarkSlateBlue;
-  --number-bonus-background: DarkSlateBlue;
 
   --border-color: rgba(255, 255, 255, 0.1);
   --border-radius: 3px;
@@ -73,6 +70,7 @@ h1, h2, h3, h4 {
 
 header > * {
   margin-bottom: 0;
+  margin-top: 0;
 }
 header {
   margin-bottom: var(--spacing-3);
@@ -402,14 +400,8 @@ hr {
 
 .number-badge {
   font-family: monospace;
-  padding: var(--spacing-1) var(--spacing-2);
 }
-.number-badge.cost {
-  background: var(--number-cost-background);
-}
-.number-badge.value {
-  background: var(--number-value-background);
-}
-.number-badge.bonus {
-  background: var(--number-bonus-background);
+
+.number-badge .unit {
+  margin-right: var(--spacing-1);
 }
