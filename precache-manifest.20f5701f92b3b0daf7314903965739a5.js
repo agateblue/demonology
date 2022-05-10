@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "b8980631c810bac2bd15",
+    "revision": "65dee36fc4a1532eaf67",
     "url": "/css/app.81207f2d.css"
   },
   {
@@ -12,16 +12,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/fonts/RobotoSlab-VariableFont_wght.d5bc4637.ttf"
   },
   {
-    "revision": "e7340a74134445ebe6257b43b2575805",
+    "revision": "97cd6e51fddb6c3896278de761a7dbee",
     "url": "/index.html"
   },
   {
-    "revision": "b8980631c810bac2bd15",
-    "url": "/js/app.a8aa17b3.js"
+    "revision": "65dee36fc4a1532eaf67",
+    "url": "/js/app.c68e4e9e.js"
   },
   {
-    "revision": "78f75d5ded23658b0dd8",
-    "url": "/js/chunk-vendors.b6860f01.js"
+    "revision": "b51377a05d00b99451d1",
+    "url": "/js/chunk-vendors.00c8adf5.js"
   },
   {
     "revision": "b0a544c243059010347f7dfc5492932b",
