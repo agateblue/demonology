@@ -132,7 +132,7 @@
         <p v-else>No available upgrades. Try getting more souls.</p>
       </section>
     </div>
-    <div style="position: fixed; bottom: 1em; right: 1em">
+    <div style="position: fixed; bottom: 1em; right: 1em" v-if="$store.state.settings.debug">
       <button @click.prevent="$store.commit('reset')">
         Reset
       </button>

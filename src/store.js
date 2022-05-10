@@ -146,6 +146,7 @@ export default createStore({
     },
     settings: {
       notation: "standard",
+      debug: process.env.NODE_ENV === 'development',
     }
   },
   mutations: {
