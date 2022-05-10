@@ -8,8 +8,13 @@
   --body-width: 750px;
   --body-background: #400000;
   --body-color: gainsboro;
-
+  --body-font-family: Roboto Slab, serif;
+  --header-font-family: IfFellEnglishSC-Regular, serif;
+  --monospace-font-family: monospace;
   --accent-color: crimson;
+  --number-value-background: DarkSlateBlue;
+  --number-cost-background: DarkSlateBlue;
+  --number-bonus-background: DarkSlateBlue;
 
   --border-color: rgba(255, 255, 255, 0.1);
   --border-radius: 3px;
@@ -28,9 +33,19 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: "IfFellEnglishSC-Regular";
+  src: url("./assets/fonts/IM_Fell_English_SC/IMFellEnglishSC-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Roboto Slab";
+  src: url("./assets/fonts/RobotoSlab-VariableFont_wght.ttf") format("truetype");
+}
+
 html {
   scroll-behavior: smooth;
-  font-family: sans-serif;
+  font-family: var(--body-font-family);
 }
 
 body {
@@ -39,7 +54,7 @@ body {
   background-color: var(--body-background);
 }
 section {
-  padding: var(--spacing-2);
+  padding: var(--spacing-4);
   border-radius: var(--border-radius);
   background-color: rgba(255, 255, 255, 0.1);
 }
@@ -53,8 +68,24 @@ main {
 
 h1, h2, h3, h4 {
   font-weight: normal;
+  font-family: var(--header-font-family);
 }
 
+header > * {
+  margin-bottom: 0;
+}
+header {
+  margin-bottom: var(--spacing-3);
+}
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child {
+  margin-top: 0;
+}
+section > *:last-child {
+  margin-bottom: 0
+}
 .button, button {
   background: var(--button-background);
   color: var(--button-color);
@@ -92,6 +123,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   font-size: 90%;
+  border-spacing: 0;
 }
 td, th {
   padding: var(--spacing-2);
@@ -176,6 +208,70 @@ img {
 }
 .my-4 {
   margin-top: var(--spacing-4);
+  margin-bottom: var(--spacing-4);
+}
+
+.ml-0 {
+  margin-left: 0;
+}
+.ml-1 {
+  margin-left: var(--spacing-1);
+}
+.ml-2 {
+  margin-left: var(--spacing-2);
+}
+.ml-3 {
+  margin-left: var(--spacing-3);
+}
+.ml-4 {
+  margin-left: var(--spacing-4);
+}
+
+.mr-0 {
+  margin-right: 0;
+}
+.mr-1 {
+  margin-right: var(--spacing-1);
+}
+.mr-2 {
+  margin-right: var(--spacing-2);
+}
+.mr-3 {
+  margin-right: var(--spacing-3);
+}
+.mr-4 {
+  margin-right: var(--spacing-4);
+}
+
+.mt-0 {
+  margin-top: 0;
+}
+.mt-1 {
+  margin-top: var(--spacing-1);
+}
+.mt-2 {
+  margin-top: var(--spacing-2);
+}
+.mt-3 {
+  margin-top: var(--spacing-3);
+}
+.mt-4 {
+  margin-top: var(--spacing-4);
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+.mb-1 {
+  margin-bottom: var(--spacing-1);
+}
+.mb-2 {
+  margin-bottom: var(--spacing-2);
+}
+.mb-3 {
+  margin-bottom: var(--spacing-3);
+}
+.mb-4 {
   margin-bottom: var(--spacing-4);
 }
 
@@ -303,3 +399,17 @@ hr {
   }
 }
 /* end fire animation */
+
+.number-badge {
+  font-family: monospace;
+  padding: var(--spacing-1) var(--spacing-2);
+}
+.number-badge.cost {
+  background: var(--number-cost-background);
+}
+.number-badge.value {
+  background: var(--number-value-background);
+}
+.number-badge.bonus {
+  background: var(--number-bonus-background);
+}
