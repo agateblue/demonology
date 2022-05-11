@@ -22,6 +22,46 @@ export function multiplierFormat (value) {
   return (value - 1) * 100
 }
 
+export function getLinearIncreaseCost ({quantity, base, increaseFactor}) {
+  // original implementation by Emy
+  // >>> def cost(n):
+  // ...     return n * (10  + n * 5) - 5 * (n * (n + 1))//2
+  // ... 
+  // console.assert(getLinearIncreaseCost({quantity: 1, base: 10, increaseFactor: 5}) === 10)
+  // console.assert(getLinearIncreaseCost({quantity: 2, base: 10, increaseFactor: 5}) === 25)
+  // console.assert(getLinearIncreaseCost({quantity: 3, base: 10, increaseFactor: 5}) === 45)
+  if (quantity < 0) {
+    return 0
+  }
+  return (
+    quantity * (base + quantity * increaseFactor)
+    - (
+      increaseFactor * (
+        Math.floor(quantity * (quantity + 1) / 2)
+      )
+    )
+  )
+}
+
+// >>> def getExponentialIncreaseCost(n):
+// ...     return 10 * ((1.5 ** (n-1) - 1) // (1.5 - 1))
+// ... 
+// >>> 
+// >>> cost(3)
+// 20.0
+// >>> cost(4)
+// 40.0
+// >>> cost(5)
+// 80.0
+// >>> cost(6)
+// 130.0
+// >>> cost(1)
+// 0.0
+// >>> cost(2)
+// 10.0
+// avec un rate de 1.5
+// et une base à 10
+
 export const DEFAULT_VALUES = {
   clicks: 0,
   souls: 0,
@@ -292,12 +332,29 @@ export function computedValues({state}) {
     },
 
     'minions.baseCost': () => {return 10},
+    'minions.costIncreaseFactor': () => {return 5},
     'minions.basePower': () => {return 1},
     'minions.enabled': () => {
       return state.total.souls >= get('minions.baseCost')
     },
     'minions.cost': () => {
       return (state.lifetime.minions + 1) * get('minions.baseCost')
+    },
+    'minions.costGetter': () => {
+      return (quantity) => {
+        let originalCost = getLinearIncreaseCost({
+          quantity: state.lifetime.minions,
+          base: get('minions.baseCost'),
+          increaseFactor: get('minions.costIncreaseFactor'),
+        })
+
+        let cost = getLinearIncreaseCost({
+          quantity: quantity + state.lifetime.minions,
+          base: get('minions.baseCost'),
+          increaseFactor: get('minions.costIncreaseFactor'),
+        })
+        return {value: cost - originalCost, unit: 'souls'}
+      }
     },
     'minions.power': () => {
       return get('minions.basePower')
@@ -306,13 +363,30 @@ export function computedValues({state}) {
       return get('minions.power') * state.current.minions
     },
 
-    'occultists.baseCost': () => {return 5},
+    'occultists.baseCost': () => {return 10},
+    'occultists.costIncreaseFactor': () => {return 5},
     'occultists.basePower': () => {return 1},
     'occultists.enabled': () => {
       return state.total.minions >= get('occultists.baseCost')
     },
     'occultists.cost': () => {
       return (state.lifetime.occultists + 1) * get('occultists.baseCost')
+    },
+    'occultists.costGetter': () => {
+      return (quantity) => {
+        let originalCost = getLinearIncreaseCost({
+          quantity: state.lifetime.occultists,
+          base: get('occultists.baseCost'),
+          increaseFactor: get('occultists.costIncreaseFactor'),
+        })
+
+        let cost = getLinearIncreaseCost({
+          quantity: quantity + state.lifetime.occultists,
+          base: get('occultists.baseCost'),
+          increaseFactor: get('occultists.costIncreaseFactor'),
+        })
+        return {value: cost - originalCost, unit: 'minions'}
+      }
     },
     'occultists.perTick': () => {
       return get('minions.power.total') * state.current.occultists * get('occultists.basePower')

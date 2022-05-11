@@ -24,22 +24,10 @@
   <div class="align-items--center justify-content--center mb-4 text--2">
     <number-badge
       class="ml-4 float--right"
-      unit="soul"
+      unit="souls"
       :value="parseInt($store.state.current.souls)"
       v-if="$store.state.lifetime.souls > 0"
     > Souls</number-badge>
-    <number-badge
-      class="ml-4 float--right"
-      unit="minion"
-      :value="parseInt($store.state.current.minions)"
-      v-if="$store.state.current.minions > 0"
-    > Minions</number-badge>
-    <number-badge
-      class="ml-4 float--right"
-      unit="occultist"
-      :value="parseInt($store.state.current.occultists)"
-      v-if="$store.state.current.occultists > 0"
-    > Occultists</number-badge>
   </div>
   <router-view/>
   <div style="position: fixed; bottom: 1em; right: 1em" v-if="$store.state.settings.debug">

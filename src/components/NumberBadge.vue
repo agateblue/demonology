@@ -20,10 +20,10 @@ export default {
   data () {
     return {
       unitToIcon: {
-        soul: '⚱️',
-        minion: '😈',
-        occultist: '🕯️',
-        prey: '🐇',
+        souls: '⚱️',
+        minions: '😈',
+        occultists: '🕯️',
+        preys: '🐇',
         power: '💪',
       },
       formatNumber

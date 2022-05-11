@@ -54,14 +54,14 @@ export default createStore({
     setting (state, {name, value}) {
       state.settings[name] = value
     },
-    purchase (state, {name, value, cost}) {
-      let available = state.current.souls
-      if (available < value * cost) {
-        console.warn(`Cannot purchase ${value} ${name} for ${cost}: only ${available} available`);
+    purchase (state, {name, quantity, cost}) {
+      let available = state.current[cost.unit]
+      if (available < cost.value) {
+        console.warn(`Cannot purchase ${quantity} ${name} for ${cost}: only ${available} available`);
         return
       }
-      state.current.souls -= value * cost 
-      inc(state, {name, value})
+      state.current[cost.unit] -= cost.value
+      inc(state, {name, value: quantity})
     },
     purchaseUpgrade (state, {id, cost}) {
       let available = state.current.souls
@@ -72,16 +72,6 @@ export default createStore({
       state.current.souls -= cost 
       state.current.upgrades = [...state.current.upgrades, id]
     },
-    recruitOccultist (state, {value, cost}) {
-      let available = state.current.minions
-      if (available < cost) {
-        console.warn(`Cannot recruit occultists for ${cost}: only ${available} available`);
-        return
-      }
-      state.current.minions -= cost 
-      inc(state, {name: 'occultists', value})
-    },
-
   },
   getters: {
     activeUpgrades (state) {
