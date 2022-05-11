@@ -9,7 +9,8 @@
             Hunt some preys
           </button>
         </section>  
-        <section class="tiny">
+        <section class="tiny" v-if="$store.state.lifetime.souls > 0">
+          <h2>Legion</h2>
           <div class="stackable row">
             <number-badge
               unit="power"
@@ -26,7 +27,7 @@
               v-if="$store.state.current.occultists > 0"
             > Occultists</number-badge>
           </div>
-          <table class="my-4">
+          <table class="my-4" v-if="$store.getters['values']['minions.enabled'] || $store.getters['values']['occultists.enabled']">
             <thead>
               <th>Action</th>
               <th class="text--center text--monospace">1</th>
