@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import About from './views/About.vue'
 import Home from './views/Home.vue'
 import Settings from './views/Settings.vue'
 
@@ -12,6 +13,11 @@ const routes = [
     path: '/settings',
     name: 'Settings',
     component: Settings
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About
   },
 ]
 

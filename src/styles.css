@@ -20,7 +20,7 @@
 
   --button-background: #900000;
 
-  --link-color: indigo;
+  --link-color: crimson;
   --link-discrete-color: var(--body-color);
 
   --fire-main-color: darkorange;
@@ -100,6 +100,7 @@ section > *:last-child {
 .tiny {
   max-width: var(--tiny-width);
 }
+
 a {
   color: var(--link-color);
 }

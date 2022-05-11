@@ -1,3 +1,9 @@
+import { marked } from 'marked'
+
+export function renderMarkdown (source) {
+  return marked.parse(source)
+}
+
 export function formatNumber (n, notation = "standard", valueFormat = null) {
   let suffix = ''
   if (valueFormat === '%') {

@@ -31,7 +31,3 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
-
-### Credits
-
-- [Deepak K Vijayan](https://codepen.io/2xsamurai/pen/EKpYMg) for the flame animation

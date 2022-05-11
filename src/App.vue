@@ -10,7 +10,8 @@
     <router-link class="discrete" to="/">Lair</router-link> ·
     <!-- <router-link class="discrete" to="/">Lore</router-link> · -->
     <!-- <router-link class="discrete" to="/">Lord</router-link> · -->
-    <router-link class="discrete" to="/settings">Settings</router-link>
+    <router-link class="discrete" to="/settings">Settings</router-link> ·
+    <router-link class="discrete" to="/about">About</router-link>
   </nav>
   <router-view/>
   <div style="position: fixed; bottom: 1em; right: 1em" v-if="$store.state.settings.debug">
