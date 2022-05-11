@@ -99,8 +99,8 @@ export default createStore({
       let elapsed = now - state.time.lastTick
       let ticks = elapsed / getters.values['tick.duration']
       if (ticks > 0) {
-        if (getters.values['souls.perTick'] > 0) {
-          let soulsIncome = getters.values['souls.perTick'] * ticks
+        if (getters.values['occultists.perTick'] > 0) {
+          let soulsIncome = getters.values['occultists.perTick'] * ticks
           commit('increment', {name: 'souls', value: soulsIncome})
         }
       }

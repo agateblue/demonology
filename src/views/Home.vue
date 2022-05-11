@@ -3,94 +3,64 @@
     <div class="stackable row">
       <div>
         <section class="tiny">
-          <h2 title="Let me sleep all night in your soul kitchen">
+          <h2 v-if="$store.state.total.souls > 0">
+            Hunt ·
             <number-badge
-              class="ml-4 float--right"
-              unit="soul"
-              :value="parseInt($store.state.current.souls)"
+              unit="power"
+              :value="parseInt($store.getters['values']['hunt.power'])"
             ></number-badge>
-            Souls
           </h2>
           <button
-            title="They may not survive, but do you care?"
-            @click.prevent="extract">
-            Extract 
-            
-            <number-badge
-              unit="soul"
-              :value="parseInt($store.getters['values']['souls.perClick'])"
-            >
-            </number-badge>
-            from living creatures
-          </button>
-          <p>
-            You <i>need</i> more.
-          </p>
+            class="fluid"
+            @click.prevent="hunt">
+            Hunt some preys
+          </button>      
         </section>
 
         <section class="tiny mt-3" v-if="$store.getters['values']['minions.enabled']">
           <h2>
-            <number-badge
-              class="ml-4 float--right"
-              unit="minion"
-              :value="$store.state.current.minions"
-            ></number-badge>
-            Minions
+            Legion
           </h2>
           <button
-            title="Useful. And disposable."
+            class="fluid"
             :disabled="$store.state.current.souls < $store.getters.values['minions.cost']"
             @click.prevent="$store.commit('purchase', {name: 'minions', value: 1, cost: $store.getters.values['minions.cost'] })"
           >
-            Subjugate
-            <number-badge
-              unit="minion"
-              :value="1"
-            ></number-badge>
-            for
+            Turn a prey into a minion for
             <number-badge
               unit="soul"
               :value="$store.getters.values['minions.cost']"
             ></number-badge>          
           </button>
-          <p>
-            They improve souls extraction by
+          <p v-if="$store.state.current.minions > 0">
+            Your legion improves your power by
             <number-badge
-              unit="soul"
+              unit="power"
               :value="parseInt($store.getters['values']['minions.power.total'])"
             >
-            </number-badge>
+            </number-badge>.
           </p>
         </section>
         <section class="tiny mt-3" v-if="$store.getters['values']['occultists.enabled']">
           <h2>
-            <number-badge
-              class="ml-4 float--right"
-              unit="occultist"
-              :value="$store.state.current.occultists"
-            ></number-badge>
             Occultists
           </h2>
           <button
+            class="fluid"
             :disabled="$store.state.current.minions < $store.getters.values['occultists.cost']"
             @click.prevent="$store.commit('recruitOccultist', {value: 1, cost: $store.getters.values['occultists.cost'] })"
           >
-            Sacrifice
+            Turn a prey into an occultist for
             <number-badge
               unit="minion"
               :value="$store.getters.values['occultists.cost']"
             ></number-badge>
-            to recruit
-            <number-badge
-              unit="occultist"
-              :value="1"
-            ></number-badge>
           </button>
-          <p v-if="$store.getters['values']['souls.perTick'] > 0">
-            They harvest
+          <p v-if="$store.state.current.occultists > 0">
+            Your occultist channel your legion into the mortal realm, granting you
             <number-badge
               unit="soul"
-              :value="parseInt($store.getters['values']['souls.perTick'])"
+              :value="parseInt($store.getters['values']['occultists.perTick'])"
             ></number-badge> every second.
           </p>
         </section>
@@ -143,14 +113,14 @@ export default {
     }
   },
   methods: {
-    extract () {
+    hunt () {
       this.$store.commit(
         'increment',
         {name: 'clicks', value: 1}
       )
       this.$store.commit(
         'increment',
-        {name: 'souls', value: this.$store.getters['values']['souls.perClick']}
+        {name: 'souls', value: this.$store.getters['values']['hunt.power']}
       )
     }
   }

@@ -23,6 +23,8 @@ export default {
         soul: '⚱️',
         minion: '😈',
         occultist: '🕯️',
+        prey: '🐇',
+        power: '💪',
       },
       formatNumber
     }

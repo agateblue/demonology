@@ -48,7 +48,7 @@ export const UPGRADES = sortBy([
   {
     id: "minions.power.1",
     name: "Fangs",
-    description: "Increase minion bonus to souls extraction by ${value}",
+    description: "Increase minion power by ${value}",
     available: hasMinions,
     affects: {
       'minions.basePower': additive,
@@ -59,7 +59,7 @@ export const UPGRADES = sortBy([
   {
     id: "minions.power.2",
     name: "Horns",
-    description: "Increase minion bonus to souls extraction by ${value}",
+    description: "Increase minion power by ${value}",
     available: hasMinions,
     affects: {
       'minions.basePower': additive,
@@ -70,9 +70,9 @@ export const UPGRADES = sortBy([
   {
     id: "clicks.lifetime.1",
     name: "Disturbing presence",
-    description: "Increase souls extraction based on manual soul extractions during this lifetime",
+    description: "Improve power based on the number hunts during this lifetime",
     affects: {
-      'souls.perClick': ({value, state}) => {
+      'hunt.power': ({value, state}) => {
         if (state.lifetime.clicks > 0) {
           return value + Math.log(state.lifetime.clicks)
         }
@@ -164,6 +164,10 @@ export function computedValues({state}) {
   }
 
   let config = {
+    'hunt.basePower': () => {return 1},
+    'hunt.power': () => {
+      return get("hunt.basePower") + get('minions.power.total')
+    },
 
     'minions.baseCost': () => {return 15},
     'minions.basePower': () => {return 1},
@@ -188,14 +192,9 @@ export function computedValues({state}) {
     'occultists.cost': () => {
       return (state.lifetime.occultists + 1) * get('occultists.baseCost')
     },
-  
-    'souls.perClick': () => {
-      return 1 + get('minions.power.total')
+    'occultists.perTick': () => {
+      return get('minions.power.total') * state.current.occultists * get('occultists.basePower')
     },
-    'souls.perTick': () => {
-      return get('souls.perClick') * state.current.occultists * get('occultists.basePower')
-    },
-  
     // in milliseconds
     'tick.duration': () => {return 1000}, 
   
