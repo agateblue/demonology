@@ -13,7 +13,7 @@
     <h1 class="mt-4">Who am I?</h1>
     <fire></fire>
   </div>
-  <div class="align-items--center justify-content--center my-4 text--2">
+  <div class="align-items--center justify-content--center mb-4 text--2">
     <number-badge
       class="ml-4 float--right"
       unit="soul"
