@@ -1,9 +1,8 @@
 <template>
   <nav
     class="text--center my-4"
-    v-if="$store.getters['values']['upgrades.enabled']"
   >
-    <router-link class="discrete" to="/">Lair</router-link> ·
+    <router-link class="discrete" to="/">Netherworld</router-link> ·
     <!-- <router-link class="discrete" to="/">Lore</router-link> · -->
     <!-- <router-link class="discrete" to="/">Lord</router-link> · -->
     <router-link class="discrete" to="/settings">Settings</router-link> ·
