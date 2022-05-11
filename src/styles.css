@@ -431,6 +431,7 @@ hr {
 /* fire animation */
 #fire {
   height: 75px;
+  width: auto;
 }
 
 #fire .flame {
