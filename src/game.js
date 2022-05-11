@@ -107,6 +107,17 @@ export const PROMPTS = [
       return get('hunt.power') >= 1e3 || get('occultists.perTick') >= 1e6
     }
   },
+
+  // placeholder for endgame
+  {
+    text: [
+      "The meaning fades, Subjugator",
+      "Maybe you should come back later",
+    ],
+    condition ({state}) {
+      return state.lifetime.souls >= 1e8
+    }
+  },
 ]
 
 
