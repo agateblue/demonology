@@ -97,35 +97,31 @@
       </div>
       <section v-if="$store.getters['values']['upgrades.enabled']">
         <h2>Upgrades</h2>
-        <table v-if="$store.getters['values']['upgrades.available'].length > 0">
-          <tbody>
-            <tr v-for="upgrade in $store.getters['values']['upgrades.available']" :key="upgrade.key">
-              <td>
-                <strong>{{ upgrade.name }}</strong>
-              </td>
-              <td>
-                {{ 
-                  upgrade.description.replace(
-                    '${value}',
-                    formatNumber(upgrade.value, $store.state.settings.notation, upgrade.valueFormat))
-                }}
-              </td>
-              <td style="min-width: 100px">
-                <button
-                  :disabled="$store.state.current.souls < upgrade.cost"
-                  @click.prevent="$store.commit('purchaseUpgrade', {id: upgrade.id, cost: upgrade.cost })"
-                >
-                  Purchase for
-                  <number-badge
-                    :value="upgrade.cost"
-                    unit="soul"
-                  ></number-badge>
-                </button>
-
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <template v-if="$store.getters['values']['upgrades.available'].length > 0">
+          <div v-for="upgrade in $store.getters['values']['upgrades.available']" :key="upgrade.key">
+            <hr>
+            <div class="align-items--center justify-content--space-between">
+              <strong>{{ upgrade.name }}</strong>
+              <button
+                :disabled="$store.state.current.souls < upgrade.cost"
+                @click.prevent="$store.commit('purchaseUpgrade', {id: upgrade.id, cost: upgrade.cost })"
+              >
+                Purchase for
+                <number-badge
+                  :value="upgrade.cost"
+                  unit="soul"
+                ></number-badge>
+              </button>
+            </div>
+            <p>
+              {{ 
+                upgrade.description.replace(
+                  '${value}',
+                  formatNumber(upgrade.value, $store.state.settings.notation, upgrade.valueFormat))
+              }}
+            </p>
+          </div>
+        </template>
         <p v-else>No available upgrades. Try getting more souls.</p>
       </section>
     </div>

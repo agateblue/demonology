@@ -143,6 +143,10 @@ a.router-link-active {
   display: flex;
   justify-content: center;
 }
+.justify-content--space-between {
+  display: flex;
+  justify-content: space-between;
+}
 
 table {
   width: 100%;
