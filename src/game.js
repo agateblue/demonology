@@ -117,9 +117,20 @@ export const UPGRADES = sortBy([
     value: 2,
   },
   {
+    id: "minions.power.3",
+    name: "Claws",
+    description: "Increase minion power by ${value}",
+    available: hasMinions,
+    affects: {
+      'minions.basePower': additive,
+    },
+    cost: 150,
+    value: 3,
+  },
+  {
     id: "clicks.lifetime.1",
     name: "Disturbing presence",
-    description: "Improve power based on the number hunts during this lifetime",
+    description: "Improve power based on the number of hunts during this lifetime",
     affects: {
       'hunt.power': ({value, state}) => {
         if (state.lifetime.clicks > 0) {
