@@ -91,7 +91,8 @@ h3:first-child,
 h4:first-child {
   margin-top: 0;
 }
-section > *:last-child {
+section > *:last-child, p:last-child
+{
   margin-bottom: 0
 }
 .narrow {

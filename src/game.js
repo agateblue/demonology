@@ -44,6 +44,55 @@ function hasOccultists ({state}) {
   return state.current.occultists > 0
 }
 
+export const PROMPTS = [
+  {
+    text: [
+      'The sky is void, the earth is grey',
+      'You crave the body of a prey',
+    ],
+    condition ({state}) {
+      return state.total.souls === 0
+    }
+  },
+  {
+    text: [
+      'In a motion, you kill your first',
+      'A soul remains, so does your thirst',
+    ],
+    condition ({state}) {
+      return state.total.souls === 1
+    }
+  },
+  {
+    text: [
+      'You move around, spreading your doom',
+      'You find a whole world to consume',
+    ],
+    condition ({state}) {
+      return state.total.souls > 1
+    }
+  },
+  {
+    text: [
+      'A prey stays still, soon a minion',
+      'Witness the birth of your legion',
+    ],
+    condition ({get, state}) {
+      return state.lifetime.minions === 0 && state.current.souls >= get("minions.cost")
+    }
+  },
+  {
+    text: [
+      "Your armies advance, relentless",
+      "Gathering souls in the process",
+    ],
+    condition ({state}) {
+      return state.lifetime.minions > 0
+    }
+  },
+]
+
+
 export const UPGRADES = sortBy([
   {
     id: "minions.power.1",
@@ -194,6 +243,15 @@ export function computedValues({state}) {
     },
     'occultists.perTick': () => {
       return get('minions.power.total') * state.current.occultists * get('occultists.basePower')
+    },
+    'prompts.available': () => {
+      return PROMPTS.filter(p => {
+        return p.condition({state, get})
+      })
+    },
+    'prompts.current': () => {
+      let a = get('prompts.available')
+      return a[a.length - 1]
     },
     // in milliseconds
     'tick.duration': () => {return 1000}, 

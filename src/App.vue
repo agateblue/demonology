@@ -12,6 +12,13 @@
   <div class="text--center py-4">
     <h1 class="mt-4">Who am I?</h1>
     <fire></fire>
+    <div class="py-2" v-if="$store.getters['values']['prompts.current']">
+      <p v-for="(row, idx) in $store.getters['values']['prompts.current'].text" :key="idx">
+        <i>
+          {{ row }}
+        </i>
+      </p>
+    </div>
   </div>
   <div class="align-items--center justify-content--center mb-4 text--2">
     <number-badge
