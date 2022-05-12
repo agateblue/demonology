@@ -22,45 +22,30 @@ export function multiplierFormat (value) {
   return (value - 1) * 100
 }
 
-export function getLinearIncreaseCost ({quantity, base, increaseFactor}) {
-  // original implementation by Emy
-  // >>> def cost(n):
-  // ...     return n * (10  + n * 5) - 5 * (n * (n + 1))//2
-  // ... 
-  // console.assert(getLinearIncreaseCost({quantity: 1, base: 10, increaseFactor: 5}) === 10)
-  // console.assert(getLinearIncreaseCost({quantity: 2, base: 10, increaseFactor: 5}) === 25)
-  // console.assert(getLinearIncreaseCost({quantity: 3, base: 10, increaseFactor: 5}) === 45)
-  if (quantity < 0) {
-    return 0
+export function getArithmeticNCost ({n, base, increaseFactor}) {
+  return base + ((n - 1) * increaseFactor)
+}
+export function getArithmeticCumulativeCost ({start, quantity, base, increaseFactor}) {
+  let maxCost = getArithmeticNCost({n: start + quantity, base, increaseFactor})
+  if (start === 0) {
+    return (quantity * (base + getArithmeticNCost({n: quantity, base, increaseFactor}))) / 2
   }
-  return (
-    quantity * (base + quantity * increaseFactor)
-    - (
-      increaseFactor * (
-        Math.floor(quantity * (quantity + 1) / 2)
-      )
-    )
-  )
+  let previousCost = getArithmeticNCost({
+    n: start + 1,
+    base,
+    increaseFactor
+  }) 
+  return ((quantity) * (previousCost + maxCost)) / 2
 }
 
-// >>> def getExponentialIncreaseCost(n):
-// ...     return 10 * ((1.5 ** (n-1) - 1) // (1.5 - 1))
-// ... 
-// >>> 
-// >>> cost(3)
-// 20.0
-// >>> cost(4)
-// 40.0
-// >>> cost(5)
-// 80.0
-// >>> cost(6)
-// 130.0
-// >>> cost(1)
-// 0.0
-// >>> cost(2)
-// 10.0
-// avec un rate de 1.5
-// et une base à 10
+//     S(nx) -> (ny) = ( ( (n_y + 1) - n_x) * (a_x + a_y) ) / 2
+//     S(n51) -> (n200) = ( ( (200 + 1) - 51) * (358 + 1401) ) / 2
+//     S(n51) -> (n_200) = ( (201 - 51) * 1759 ) / 2
+//     S(n51) -> (n200) = (150 * 1759 ) / 2
+//     S(n51) -> (n200) = 263850 / 2
+//     S(n51) -> (n200) = 131925
+
+// Note ^12: This is inclusive as it includes the cost of the 51st term/upgrade and the 200th term/upgrade.
 
 export const DEFAULT_VALUES = {
   clicks: 0,
@@ -342,18 +327,13 @@ export function computedValues({state}) {
     },
     'minions.costGetter': () => {
       return (quantity) => {
-        let originalCost = getLinearIncreaseCost({
-          quantity: state.lifetime.minions,
+        let cost = getArithmeticCumulativeCost({
+          start: state.lifetime.minions,
           base: get('minions.baseCost'),
           increaseFactor: get('minions.costIncreaseFactor'),
+          quantity,
         })
-
-        let cost = getLinearIncreaseCost({
-          quantity: quantity + state.lifetime.minions,
-          base: get('minions.baseCost'),
-          increaseFactor: get('minions.costIncreaseFactor'),
-        })
-        return {value: cost - originalCost, unit: 'souls'}
+        return {value: cost, unit: 'souls'}
       }
     },
     'minions.power': () => {
@@ -374,18 +354,13 @@ export function computedValues({state}) {
     },
     'occultists.costGetter': () => {
       return (quantity) => {
-        let originalCost = getLinearIncreaseCost({
-          quantity: state.lifetime.occultists,
+        let cost = getArithmeticCumulativeCost({
+          start: state.lifetime.occultists,
           base: get('occultists.baseCost'),
           increaseFactor: get('occultists.costIncreaseFactor'),
+          quantity,
         })
-
-        let cost = getLinearIncreaseCost({
-          quantity: quantity + state.lifetime.occultists,
-          base: get('occultists.baseCost'),
-          increaseFactor: get('occultists.costIncreaseFactor'),
-        })
-        return {value: cost - originalCost, unit: 'minions'}
+        return {value: cost, unit: 'minions'}
       }
     },
     'occultists.perTick': () => {
