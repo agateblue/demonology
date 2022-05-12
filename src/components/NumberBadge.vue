@@ -4,7 +4,7 @@
       {{ unitToIcon[unit]}}
     </span>
     <span class="value">
-      {{ formatNumber(value || 0, $store.state.settings.notation) }}<slot></slot>
+      {{ formatNumber(value || 0) }}<slot></slot>
     </span>
   </span>
 </template>

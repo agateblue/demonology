@@ -26,7 +26,7 @@ function getDefaultState () {
       ...DEFAULT_VALUES
     },
     settings: {
-      notation: "standard",
+      notation: "compact",
       debug: process.env.NODE_ENV === 'development',
     }
   }
