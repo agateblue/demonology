@@ -28,7 +28,7 @@ export function getArithmeticNCost ({n, base, increaseFactor}) {
 export function getArithmeticCumulativeCost ({start, quantity, base, increaseFactor}) {
   let maxCost = getArithmeticNCost({n: start + quantity, base, increaseFactor})
   if (start === 0) {
-    return (quantity * (base + getArithmeticNCost({n: quantity, base, increaseFactor}))) / 2
+    return (quantity * (base + maxCost)) / 2
   }
   let previousCost = getArithmeticNCost({
     n: start + 1,
@@ -38,14 +38,22 @@ export function getArithmeticCumulativeCost ({start, quantity, base, increaseFac
   return ((quantity) * (previousCost + maxCost)) / 2
 }
 
-//     S(nx) -> (ny) = ( ( (n_y + 1) - n_x) * (a_x + a_y) ) / 2
-//     S(n51) -> (n200) = ( ( (200 + 1) - 51) * (358 + 1401) ) / 2
-//     S(n51) -> (n_200) = ( (201 - 51) * 1759 ) / 2
-//     S(n51) -> (n200) = (150 * 1759 ) / 2
-//     S(n51) -> (n200) = 263850 / 2
-//     S(n51) -> (n200) = 131925
+export function getGeometricNCost ({n, base, increaseFactor}) {
+  return base * (increaseFactor ** (n - 1))
+}
 
-// Note ^12: This is inclusive as it includes the cost of the 51st term/upgrade and the 200th term/upgrade.
+export function getGeometricCumulativeCost ({start, quantity, base, increaseFactor}) {
+  if (start === 0) {
+    return base * (increaseFactor ** (start + quantity) - 1) / (increaseFactor - 1)
+  }
+  let previousCost = getGeometricNCost({n: start, base, increaseFactor})
+  return getGeometricCumulativeCost({
+    start: 0,
+    base: previousCost * increaseFactor,
+    quantity: quantity,
+    increaseFactor
+  })
+}
 
 export const DEFAULT_VALUES = {
   clicks: 0,
@@ -317,7 +325,7 @@ export function computedValues({state}) {
     },
 
     'minions.baseCost': () => {return 10},
-    'minions.costIncreaseFactor': () => {return 5},
+    'minions.costIncreaseFactor': () => {return 1.1},
     'minions.basePower': () => {return 1},
     'minions.enabled': () => {
       return state.total.souls >= get('minions.baseCost')
@@ -327,13 +335,13 @@ export function computedValues({state}) {
     },
     'minions.costGetter': () => {
       return (quantity) => {
-        let cost = getArithmeticCumulativeCost({
-          start: state.lifetime.minions,
+        let cost = getGeometricCumulativeCost({
+          start: state.current.minions,
           base: get('minions.baseCost'),
           increaseFactor: get('minions.costIncreaseFactor'),
           quantity,
         })
-        return {value: cost, unit: 'souls'}
+        return {value: parseInt(cost), unit: 'souls'}
       }
     },
     'minions.power': () => {
@@ -344,8 +352,8 @@ export function computedValues({state}) {
     },
 
     'occultists.baseCost': () => {return 10},
-    'occultists.costIncreaseFactor': () => {return 5},
-    'occultists.basePower': () => {return 1},
+    'occultists.costIncreaseFactor': () => {return 1.3},
+    'occultists.basePower': () => {return 0.5},
     'occultists.enabled': () => {
       return state.total.minions >= get('occultists.baseCost')
     },
@@ -354,13 +362,13 @@ export function computedValues({state}) {
     },
     'occultists.costGetter': () => {
       return (quantity) => {
-        let cost = getArithmeticCumulativeCost({
+        let cost = getGeometricCumulativeCost({
           start: state.lifetime.occultists,
           base: get('occultists.baseCost'),
           increaseFactor: get('occultists.costIncreaseFactor'),
           quantity,
         })
-        return {value: cost, unit: 'minions'}
+        return {value: parseInt(cost), unit: 'minions'}
       }
     },
     'occultists.perTick': () => {
