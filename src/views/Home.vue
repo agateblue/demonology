@@ -99,7 +99,7 @@
             {{ 
               upgrade.description.replace(
                 '${value}',
-                formatNumber(upgrade.value, $store.state.settings.notation, upgrade.valueFormat))
+                formatNumber(getComputedValue(upgrade.value, $store.getters['values']), $store.state.settings.notation, upgrade.valueFormat))
             }}
           </p>
         </div>
@@ -111,6 +111,7 @@
 
 <script>
 import {formatNumber} from '@/utils'
+import {getComputedValue} from '@/game'
 
 import NumberBadge from '@/components/NumberBadge'
 import PurchaseButton from '@/components/PurchaseButton'
@@ -122,7 +123,8 @@ export default {
   },
   data () {
     return {
-      formatNumber
+      formatNumber,
+      getComputedValue
     }
   },
   methods: {

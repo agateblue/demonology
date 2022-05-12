@@ -262,6 +262,20 @@ export const UPGRADES = sortBy([
     valueFormat: '%'
   },
   {
+    id: "occultists.synergy.1",
+    name: "Moral support",
+    description: "Each one of your occultists multiply your minions power by ${value}",
+    available: has(8, 'lifetime', 'occultists'),
+    affects: {
+      'minions.basePower': ({state, value, modifierValue}) => {
+        return value * (modifierValue ** state.current.occultists)
+      }
+    },
+    cost: 1e5,
+    value: 'occultists.synergyPower',
+    valueFormat: '%'
+  },
+  {
     id: "occultists.power.4",
     name: "Demonic lore",
     description: "Increase occultists power by ${value}",
@@ -269,12 +283,22 @@ export const UPGRADES = sortBy([
     affects: {
       'occultists.basePower': multiplier
     },
-    cost: 1e5,
+    cost: 1e6,
     value: 1.5,
     valueFormat: '%'
   },
 ], ['cost'])
 
+
+export function getComputedValue (v, values) {
+  if (typeof v === 'string') {
+    if (typeof values === 'function') {
+      return values(v)
+    }
+    return values[v]
+  }
+  return v
+}
 
 export function getValues (state) {
   let finalValues = {}
@@ -313,7 +337,7 @@ export function computedValues({state}) {
       return v
     }
     for (const {modifier, modifierValue} of affectedValues[key] || []) {
-      v = modifier({value: v, modifierValue, state})
+      v = modifier({value: v, modifierValue: getComputedValue(modifierValue, get), state})
     }
     return v
   }
@@ -354,6 +378,7 @@ export function computedValues({state}) {
     'occultists.baseCost': () => {return 10},
     'occultists.costIncreaseFactor': () => {return 1.3},
     'occultists.basePower': () => {return 0.5},
+    'occultists.synergyPower': () => {return 1.1},
     'occultists.enabled': () => {
       return state.total.minions >= get('occultists.baseCost')
     },
