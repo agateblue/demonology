@@ -56,7 +56,7 @@ export function getGeometricCumulativeCost ({start, quantity, base, increaseFact
 }
 
 export const DEFAULT_VALUES = {
-  clicks: 0,
+  hunts: 0,
   souls: 0,
   minions: 0,
   occultists: 0,
@@ -163,7 +163,7 @@ export const UPGRADES = sortBy([
     affects: {
       'minions.basePower': additive,
     },
-    cost: 50,
+    cost: 100,
     value: 1,
   },
   {
@@ -174,7 +174,7 @@ export const UPGRADES = sortBy([
     affects: {
       'minions.basePower': additive,
     },
-    cost: 75,
+    cost: 1000,
     value: 2,
   },
   {
@@ -185,7 +185,7 @@ export const UPGRADES = sortBy([
     affects: {
       'minions.basePower': additive,
     },
-    cost: 150,
+    cost: 5000,
     value: 3,
   },
   {
@@ -196,34 +196,55 @@ export const UPGRADES = sortBy([
     affects: {
       'minions.basePower': additive,
     },
-    cost: 500,
+    cost: 25000,
     value: 5,
   },
   {
     id: "minions.power.5",
     name: "Wings",
     description: "Increase minion power by ${value}",
-    available: has(20, 'lifetime', 'minions'),
+    available: has(50, 'lifetime', 'minions'),
     affects: {
       'minions.basePower': additive,
     },
-    cost: 500,
+    cost: 125000,
     value: 10,
   },
   {
-    id: "clicks.lifetime.1",
-    name: "Disturbing presence",
-    description: "Improve power based on the number of hunts during this lifetime",
+    id: "hunt.power.1",
+    name: "Hounds",
+    description: "Increase hunt power by ${value}",
+    available: has(20, 'lifetime', 'hunts'),
     affects: {
-      'hunt.power': ({value, state}) => {
-        if (state.lifetime.clicks > 0) {
-          return value + Math.log(state.lifetime.clicks)
-        }
-        return value
-      },
+      'hunt.power': multiplier,
     },
-    cost: 250,
-    value: null,
+    cost: 200,
+    value: 1.25,
+    valueFormat: '%',
+  },
+  {
+    id: "hunt.power.2",
+    name: "Demonic olfaction",
+    description: "Increase hunt power by ${value}",
+    available: has(50, 'lifetime', 'hunts'),
+    affects: {
+      'hunt.power': multiplier,
+    },
+    cost: 1000,
+    value: 1.50,
+    valueFormat: '%',
+  },
+  {
+    id: "hunt.power.3",
+    name: "Silent orders",
+    description: "Increase hunt power by ${value}",
+    available: has(100, 'lifetime', 'hunts'),
+    affects: {
+      'hunt.power': multiplier,
+    },
+    cost: 10000,
+    value: 2,
+    valueFormat: '%',
   },
   {
     id: "occultists.power.1",
@@ -233,7 +254,7 @@ export const UPGRADES = sortBy([
     affects: {
       'occultists.basePower': multiplier
     },
-    cost: 500,
+    cost: 7500,
     value: 1.25,
     valueFormat: '%'
   },
@@ -241,11 +262,11 @@ export const UPGRADES = sortBy([
     id: "occultists.power.2",
     name: "Dark rituals",
     description: "Increase occultists power by ${value}",
-    available: has(3, 'lifetime', 'occultists'),
+    available: has(2, 'lifetime', 'occultists'),
     affects: {
       'occultists.basePower': multiplier
     },
-    cost: 1000,
+    cost: 50000,
     value: 1.25,
     valueFormat: '%'
   },
@@ -253,11 +274,11 @@ export const UPGRADES = sortBy([
     id: "occultists.power.3",
     name: "Secret gathering",
     description: "Increase occultists power by ${value}",
-    available: has(5, 'lifetime', 'occultists'),
+    available: has(3, 'lifetime', 'occultists'),
     affects: {
       'occultists.basePower': multiplier
     },
-    cost: 2000,
+    cost: 3e5,
     value: 2,
     valueFormat: '%'
   },
@@ -265,13 +286,13 @@ export const UPGRADES = sortBy([
     id: "occultists.synergy.1",
     name: "Moral support",
     description: "Each one of your occultists multiply your minions power by ${value}",
-    available: has(8, 'lifetime', 'occultists'),
+    available: has(4, 'lifetime', 'occultists'),
     affects: {
       'minions.basePower': ({state, value, modifierValue}) => {
         return value * (modifierValue ** state.current.occultists)
       }
     },
-    cost: 1e5,
+    cost: 5e5,
     value: 'occultists.synergyPower',
     valueFormat: '%'
   },
@@ -279,11 +300,11 @@ export const UPGRADES = sortBy([
     id: "occultists.power.4",
     name: "Demonic lore",
     description: "Increase occultists power by ${value}",
-    available: has(10, 'lifetime', 'occultists'),
+    available: has(5, 'lifetime', 'occultists'),
     affects: {
       'occultists.basePower': multiplier
     },
-    cost: 1e6,
+    cost: 2e6,
     value: 1.5,
     valueFormat: '%'
   },
@@ -375,7 +396,7 @@ export function computedValues({state}) {
       return get('minions.power') * state.current.minions
     },
 
-    'occultists.baseCost': () => {return 10},
+    'occultists.baseCost': () => {return 30},
     'occultists.costIncreaseFactor': () => {return 1.3},
     'occultists.basePower': () => {return 0.5},
     'occultists.synergyPower': () => {return 1.1},

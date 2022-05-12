@@ -13,7 +13,7 @@
         <number-badge
           unit="power"
           :value="parseInt($store.getters['values']['hunt.power'])"
-        > Power</number-badge>
+        > Hunt power</number-badge>
         <number-badge
           unit="minions"
           :value="parseInt($store.state.current.minions)"
@@ -131,7 +131,7 @@ export default {
     hunt () {
       this.$store.commit(
         'increment',
-        {name: 'clicks', value: 1}
+        {name: 'hunts', value: 1}
       )
       this.$store.commit(
         'increment',
