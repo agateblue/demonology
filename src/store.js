@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import VuexPersistence from 'vuex-persist'
+import throttle from 'lodash/throttle'
 
 import {DEFAULT_VALUES, getValueGetter} from './game'
 
@@ -101,6 +102,10 @@ const STORE = createStore({
         settings: state.settings,
         time: state.time,
       }),
+      saveState: throttle(
+        (key, state, storage) => {
+          storage[key] = JSON.stringify(state)
+        }, 3000)
     }).plugin
   ]
 })
