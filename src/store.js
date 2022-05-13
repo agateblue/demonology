@@ -1,7 +1,7 @@
 import { createStore } from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
-import {DEFAULT_VALUES, UPGRADES, getValues} from './game'
+import {DEFAULT_VALUES, getValueGetter} from './game'
 
 function inc (state, {name, value}) {
   state.current[name] += value
@@ -32,7 +32,7 @@ function getDefaultState () {
   }
 }
 
-export default createStore({
+const STORE = createStore({
   state: {
     ...getDefaultState()
   },
@@ -74,23 +74,18 @@ export default createStore({
     },
   },
   getters: {
-    activeUpgrades (state) {
-      return UPGRADES.filter((u) => {
-        return state.current.upgrades.indexOf(u.id) > -1
-      })
-    },
-    values (state) {
-      return getValues(state)
+    values () {
+      return (key) => {return GET(key)}
     },
   },
   actions: {
     tick ({state, commit, getters}) {
       let now = (new Date()).getTime()
       let elapsed = now - state.time.lastTick
-      let ticks = elapsed / getters.values['tick.duration']
+      let ticks = elapsed / getters.values('tick.duration')
       if (ticks > 0) {
-        if (getters.values['occultists.perTick'] > 0) {
-          let soulsIncome = getters.values['occultists.perTick'] * ticks
+        if (getters.values('occultists.perTick') > 0) {
+          let soulsIncome = getters.values('occultists.perTick') * ticks
           commit('increment', {name: 'souls', value: soulsIncome})
         }
       }
@@ -109,3 +104,7 @@ export default createStore({
     }).plugin
   ]
 })
+
+const GET = getValueGetter(STORE.state)
+
+export default STORE

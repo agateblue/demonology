@@ -12,8 +12,8 @@
     <h1 class="mt-4">Who am I?</h1>
     <div class="align-items--center justify-content--center">
       <fire class="mr-4"></fire>
-      <div class="py-2" v-if="$store.getters['values']['prompts.current']">
-        <p v-for="(row, idx) in $store.getters['values']['prompts.current'].text" :key="idx">
+      <div class="py-2" v-if="$store.getters['values']('prompts.current')">
+        <p v-for="(row, idx) in $store.getters['values']('prompts.current').text" :key="idx">
           <i>
             {{ row }}
           </i>

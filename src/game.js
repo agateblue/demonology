@@ -1,4 +1,4 @@
-import { reactive, computed } from 'vue'
+import { computed } from 'vue'
 
 import sortBy from 'lodash/sortBy'
 
@@ -321,16 +321,6 @@ export function getComputedValue (v, values) {
   return v
 }
 
-export function getValues (state) {
-  let finalValues = {}
-  let {values, get} = computedValues({
-    state: reactive(state)
-  })
-  for (const [key] of Object.entries(values)) {
-    finalValues[key] = get(key)
-  }
-  return finalValues
-}
 
 function groupByAffectedValue (el) {
   let u = {}
@@ -343,17 +333,21 @@ function groupByAffectedValue (el) {
   })
   return u
 }
-export function computedValues({state}) {
-  let activeUpgrades = UPGRADES.filter((u) => {
-    return state.current.upgrades.indexOf(u.id) > -1
-  }) 
-
-  let affectedValues = groupByAffectedValue(activeUpgrades)
+export function getValueGetter(state) {
 
   let values = {}
 
   function get(key, applyModifiers = true) {
     let v = values[key].value
+    if (key === 'upgrades.active') {
+      // performance optimization
+      // we now this key doesn't need any modifier
+      return v
+    }
+    let activeUpgrades = get('upgrades.active')
+
+    let affectedValues = groupByAffectedValue(activeUpgrades)
+
     if (!applyModifiers) {
       return v
     }
@@ -433,7 +427,9 @@ export function computedValues({state}) {
     'tick.duration': () => {return 1000}, 
   
     'upgrades.active': () => {
-      return activeUpgrades
+      return UPGRADES.filter((u) => {
+        return state.current.upgrades.indexOf(u.id) > -1
+      }) 
     },
     'upgrades.enabled': () => {
       if (state.current.upgrades.length > 0) {
@@ -462,5 +458,5 @@ export function computedValues({state}) {
     values[key] = computed(value)
   }
 
-  return {values, get}
+  return get
 }
