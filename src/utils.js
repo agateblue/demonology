@@ -5,9 +5,11 @@ export function renderMarkdown (source) {
 }
 
 const NOTATIONS = {
-  compact: new Intl.NumberFormat('en-US', {notation: 'compact', minimumFractionDigits: 2})
+  default: new Intl.NumberFormat('en-US', {notation: 'compact', minimumFractionDigits: 2}),
+  compact: new Intl.NumberFormat('en-US', {notation: 'compact', minimumFractionDigits: 2}),
+  scientific: new Intl.NumberFormat('en-US', {notation: 'scientific', minimumFractionDigits: 2}),
 }
-export function formatNumber (n, notation = "compact", valueFormat = null) {
+export function formatNumber (n, notation = 'default', valueFormat = null) {
   let suffix = ''
   if (valueFormat === '%') {
     n = (n - 1) * 100

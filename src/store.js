@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import VuexPersistence from 'vuex-persist'
 import throttle from 'lodash/throttle'
+import uniq from 'lodash/uniq'
 
 import {DEFAULT_VALUES, getValueGetter} from './game'
 
@@ -27,7 +28,7 @@ function getDefaultState () {
       ...DEFAULT_VALUES
     },
     settings: {
-      notation: "compact",
+      notation: "default",
       debug: process.env.NODE_ENV === 'development',
     }
   }
@@ -71,8 +72,12 @@ const STORE = createStore({
         return
       }
       state.current.souls -= cost 
-      state.current.upgrades = [...state.current.upgrades, id]
+      state.current.upgrades = uniq([...state.current.upgrades, id])
+      state.lifetime.upgrades = uniq([...state.lifetime.upgrades, id])
     },
+    setFromDebug (state, {namespace, name, value}) {
+      state[namespace][name] = value
+    }
   },
   getters: {
     values () {

@@ -6,6 +6,7 @@
     <!-- <router-link class="discrete" to="/">Lore</router-link> · -->
     <!-- <router-link class="discrete" to="/">Lord</router-link> · -->
     <router-link class="discrete" to="/settings">Settings</router-link> ·
+    <router-link class="discrete" to="/statistics">Statistics</router-link> ·
     <router-link class="discrete" to="/about">About</router-link>
   </nav>
   <div class="text--center py-4">
