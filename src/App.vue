@@ -54,7 +54,7 @@ export default {
   mounted () {
     let interval = 300
     this.loop = window.setInterval(() => {
-      this.$store.dispatch('tick')
+      this.$store.dispatch('tick', (new Date()).getTime())
     }, interval)
   },
   unmounted () {

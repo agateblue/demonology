@@ -4,6 +4,12 @@ import {
   getDefaultState,
 } from '@/store'
 
+function fakeValues(v) {
+  return (key) => {
+    return v[key]
+  }
+}
+
 describe('store', () => {
   it('mutation increment', () => {
     let state = getDefaultState()
@@ -15,6 +21,13 @@ describe('store', () => {
     expect(state.current.souls).toEqual(14)
     expect(state.lifetime.souls).toEqual(15)
     expect(state.total.souls).toEqual(16)
+  })
+  it('mutation lastTick', () => {
+    let state = getDefaultState()
+    state.time.lastTick = 1
+
+    mutations.lastTick(state, 4)
+    expect(state.time.lastTick).toEqual(4)
   })
   it('mutation reset', () => {
     let state = getDefaultState()
@@ -29,7 +42,7 @@ describe('store', () => {
     expect(state.total).toEqual(getDefaultState().total)
     expect(state.settings.notation).toEqual('noop')
   })
-  it('mutation hardreset', () => {
+  it('mutation hardReset', () => {
     let state = getDefaultState()
     state.settings.notation = 'noop' 
     state.current.souls = 2
@@ -123,5 +136,22 @@ describe('store', () => {
     mutations.setFromDebug(state, {namespace: 'lifetime', name: 'souls', value: 2})
 
     expect(state.lifetime.souls).toEqual(2)
+  })
+  it('actions tick no occultists', () => {
+    let commit = jest.fn()
+    let state = getDefaultState()
+    let values = {
+      'occultists.perTick': 12,
+      'tick.duration': 1000,
+    }
+    let getters = {values: fakeValues(values)}
+    state.time.lastTick = 0
+    let to = state.time.lastTick + 5000
+    actions.tick({commit, getters, state}, to)
+
+    expect(commit.mock.calls[0]).toEqual(
+      ['increment', {name: 'souls', value: 5 * values['occultists.perTick']}]
+    )
+    expect(commit.mock.calls[1]).toEqual(['lastTick', to])
   })
 })

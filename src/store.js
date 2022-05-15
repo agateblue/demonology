@@ -82,9 +82,8 @@ export const mutations = {
 }
 
 export const actions = {
-  tick ({state, commit, getters}) {
-    let now = (new Date()).getTime()
-    let elapsed = now - state.time.lastTick
+  tick ({state, commit, getters}, to) {
+    let elapsed = to - state.time.lastTick
     let ticks = elapsed / getters.values('tick.duration')
     if (ticks > 0) {
       if (getters.values('occultists.perTick') > 0) {
@@ -92,7 +91,7 @@ export const actions = {
         commit('increment', {name: 'souls', value: soulsIncome})
       }
     }
-    commit('lastTick', now)
+    commit('lastTick', to)
   }
 }
 
