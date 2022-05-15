@@ -78,7 +78,15 @@
       </p>    
     </section>
     <section class="my-3" v-if="$store.getters['values']('upgrades.enabled')">
-      <h2>Upgrades</h2>
+      <button
+        class="float--right"
+        @click.prevent="buyMaxUpgrades"
+        v-if="$store.state.total.upgrades.length >= 3"
+        :disabled="!canBuyMaxUpgrades"
+      >
+        Buy all
+      </button>
+      <h2 class="mt-0">Upgrades</h2>
       <template v-if="$store.getters['values']('upgrades.available').length > 0">
         <div v-for="upgrade in $store.getters['values']('upgrades.available')" :key="upgrade.key">
           <hr>
@@ -111,7 +119,7 @@
 
 <script>
 import {formatNumber} from '@/utils'
-import {getComputedValue} from '@/game'
+import {getComputedValue, getBuyableUpgrades} from '@/game'
 
 import NumberBadge from '@/components/NumberBadge'
 import PurchaseButton from '@/components/PurchaseButton'
@@ -127,6 +135,15 @@ export default {
       getComputedValue
     }
   },
+  computed: {
+    canBuyMaxUpgrades () {
+      let available = this.$store.state.current.souls
+      return (
+        this.$store.getters['values']('upgrades.available').length > 0
+        && this.$store.getters['values']('upgrades.available')[0].cost <= available
+      )
+    }
+  },
   methods: {
     hunt () {
       this.$store.commit(
@@ -137,6 +154,15 @@ export default {
         'increment',
         {name: 'souls', value: this.$store.getters['values']('hunt.power')}
       )
+    },
+    buyMaxUpgrades () {
+      let buyable = getBuyableUpgrades(
+        this.$store.getters['values']('upgrades.available'),
+        this.$store.state.current.souls
+      )
+      for (const upgrade of buyable) {
+        this.$store.commit('purchaseUpgrade', {id: upgrade.id, cost: upgrade.cost })
+      }
     }
   }
 }

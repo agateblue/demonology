@@ -55,6 +55,17 @@ export function getGeometricCumulativeCost ({start, quantity, base, increaseFact
   })
 }
 
+export function* getBuyableUpgrades(availableUpgrades, availableSouls) {
+  let remaining = availableSouls
+  for (const upgrade of availableUpgrades) {
+    if (upgrade.cost <= remaining) {
+      yield upgrade
+      remaining -= upgrade.cost
+    }
+  }
+}
+
+
 export const DEFAULT_VALUES = {
   hunts: 0,
   souls: 0,
