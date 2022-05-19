@@ -118,11 +118,20 @@
 </template>
 
 <script>
+import {bind, unbind} from '@/hotkeys'
 import {formatNumber} from '@/utils'
 import {getComputedValue, getBuyableUpgrades} from '@/game'
 
 import NumberBadge from '@/components/NumberBadge'
 import PurchaseButton from '@/components/PurchaseButton'
+
+function purchase({store, unit, costGetter, quantity}) {
+  let cost = costGetter(quantity)
+  store.commit(
+    'purchase',
+    {name: unit, quantity: quantity, cost}
+  )
+}
 
 export default {
   components: {
@@ -132,8 +141,66 @@ export default {
   data () {
     return {
       formatNumber,
-      getComputedValue
+      getComputedValue,
+      hotkeys: [
+        {key: 'h', handler: () => { this.hunt()}},
+        {key: 'u', handler: () => { this.buyMaxUpgrades()}},
+        {key: 'm', handler: () => {
+          purchase({
+            store: this.$store,
+            unit: 'minions',
+            quantity: 1,
+            costGetter: this.$store.getters['values']('minions.costGetter')
+          })
+        }},
+        {key: 'ctrl+m', handler: () => {
+          purchase({
+            store: this.$store,
+            unit: 'minions',
+            quantity: 10,
+            costGetter: this.$store.getters['values']('minions.costGetter')
+          })
+        }},
+        {key: 'shift+m', handler: () => {
+          purchase({
+            store: this.$store,
+            unit: 'minions',
+            quantity: 100,
+            costGetter: this.$store.getters['values']('minions.costGetter')
+          })
+        }},
+        {key: 'o', handler: () => {
+          purchase({
+            store: this.$store,
+            unit: 'occultists',
+            quantity: 1,
+            costGetter: this.$store.getters['values']('occultists.costGetter')
+          })
+        }},
+        {key: 'ctrl+o', handler: () => {
+          purchase({
+            store: this.$store,
+            unit: 'occultists',
+            quantity: 10,
+            costGetter: this.$store.getters['values']('occultists.costGetter')
+          })
+        }},
+        {key: 'shift+o', handler: () => {
+          purchase({
+            store: this.$store,
+            unit: 'occultists',
+            quantity: 100,
+            costGetter: this.$store.getters['values']('occultists.costGetter')
+          })
+        }},
+      ]
     }
+  },
+  mounted () {
+    bind(this.hotkeys)
+  },
+  unmounted () {
+    unbind(this.hotkeys)
   },
   computed: {
     canBuyMaxUpgrades () {

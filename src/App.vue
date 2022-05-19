@@ -38,6 +38,8 @@
   </div>
 </template>
 <script>
+import {bind, unbind} from '@/hotkeys'
+
 import Fire from '@/components/Fire'
 import NumberBadge from '@/components/NumberBadge'
 
@@ -48,16 +50,25 @@ export default {
   },
   data () {
     return {
-      loop: null
+      loop: null,
+      hotkeys: [
+        {key: '&, 1', handler: () => { this.$router.push('/')}},
+        {key: 'é, 2', handler: () => { this.$router.push('/settings')}},
+        {key: '", 3', handler: () => { this.$router.push('/statistics')}},
+        {key: "', 4", handler: () => { this.$router.push('/about')}},
+        {key: "ctrl+d", handler: () => { this.$store.commit('setting', {name: 'debug', value: !this.$store.state.settings.debug})}},
+      ]
     }
   },
   mounted () {
+    bind(this.hotkeys)
     let interval = 300
     this.loop = window.setInterval(() => {
       this.$store.dispatch('tick', (new Date()).getTime())
     }, interval)
   },
   unmounted () {
+    unbind(this.hotkeys)
     window.clearInverval(this.loop)
   }
 }
