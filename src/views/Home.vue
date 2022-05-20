@@ -28,7 +28,22 @@
           @click.prevent="hunt"
           :disabled="$store.state.current.preys < $store.getters['values']('hunt.power')"
         >
-          Hunt some preys
+          Hunt some preys<br>
+          <number-badge
+            unit="souls"
+            :value="parseInt($store.getters['values']('hunt.power'))"
+            prefix="+"
+          > Souls</number-badge>
+          <template v-if="$store.getters['values']('pain.enabled')">
+            <br>
+            <number-badge
+              unit="pain"
+              :value="parseInt($store.getters['values']('hunt.pain'))"
+              prefix="+"
+              
+            > Pain</number-badge>
+          </template>
+
         </button>
       </section>  
       <section v-if="$store.state.current.preys === 0" class="my-3">
@@ -107,8 +122,17 @@
           Your occultists channel your legion into the mortal realm, granting you
           <number-badge
             unit="souls"
-            :value="parseInt($store.getters['values']('occultists.perTick'))"
-          ></number-badge> every second.
+            :value="parseInt($store.getters['values']('occultists.soulsPerTick'))"
+          ></number-badge>
+          <template v-if="$store.getters['values']('occultists.painPerTick') > 0">
+            and
+            <number-badge
+              unit="pain"
+              :value="parseInt($store.getters['values']('occultists.painPerTick'))"
+            ></number-badge>
+
+          </template>
+           every second.
         </p>    
       </section>
       <section class="my-3" v-if="$store.getters['values']('upgrades.enabled')">
@@ -250,7 +274,11 @@ export default {
     hunt () {
       this.$store.commit(
         'gatherSouls',
-        {hunts: 1, power: this.$store.getters['values']('hunt.power')}
+        {
+          hunts: 1,
+          power: this.$store.getters['values']('hunt.power'),
+          pain: this.$store.getters['values']('hunt.pain'),
+        }
       )
     },
     buyMaxUpgrades () {

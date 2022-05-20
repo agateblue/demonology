@@ -38,18 +38,22 @@ export const mutations = {
   increment (state, {name, value}) {
     inc(state, {name, value})
   },
-  gatherSouls (state, {hunts, power}) {
+  gatherSouls (state, {hunts = 0, power, pain = 0}) {
     let available = state.current.preys
     let gathered = Math.min(power, available)
-    
+    let ratio = gathered / power
+
     if (gathered <= 0) {
       console.log("No more preys to gather")
       return
     }
     inc(state, {name: 'souls', value: gathered})
-    if (hunts) {
+    if (hunts > 0) {
       inc(state, {name: 'hunts', value: hunts})
       inc(state, {name: 'hunted', value: gathered})
+    }
+    if (pain > 0) {
+      inc(state, {name: 'pain', value: pain * ratio})
     }
     
     state.current.preys -= gathered
@@ -110,9 +114,10 @@ export const actions = {
     let elapsed = to - state.time.lastTick
     let ticks = elapsed / getters.values('tick.duration')
     if (ticks > 0) {
-      if (getters.values('occultists.perTick') > 0) {
-        let power = getters.values('occultists.perTick') * ticks
-        commit('gatherSouls', {power})
+      if (getters.values('occultists.soulsPerTick') > 0) {
+        let power = getters.values('occultists.soulsPerTick') * ticks
+        let pain = getters.values('occultists.painPerTick') * ticks
+        commit('gatherSouls', {power, pain})
       }
     }
     commit('lastTick', to)

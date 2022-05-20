@@ -74,6 +74,7 @@ export const DEFAULT_VALUES = {
   preys: 7.8e9,
   hunted: 0,
   awakenings: 0,
+  pain: 0,
   upgrades: [],
   name: null,
 }
@@ -488,7 +489,12 @@ export function getValueGetter(state) {
     'hunt.power': () => {
       return get("hunt.basePower") + get('minions.power.total')
     },
-
+    'hunt.powerToPainRatio': () => {
+      return 0.01
+    },
+    'hunt.pain': () => {
+      return get("hunt.power") * get('hunt.powerToPainRatio')
+    },
     'minions.baseCost': () => {return 10},
     'minions.costIncreaseFactor': () => {return 1.1},
     'minions.basePower': () => {return 1},
@@ -546,11 +552,20 @@ export function getValueGetter(state) {
         return {value: parseInt(cost), unit: 'minions'}
       }
     },
-    'occultists.perTick': () => {
+    'occultists.soulsPerTick': () => {
       return get('minions.power.total') * state.current.occultists * get('occultists.basePower')
+    },
+    'occultists.painRatio': () => {
+      return 0.0005
+    },
+    'occultists.painPerTick': () => {
+      return get('occultists.soulsPerTick') * get('occultists.painRatio')
     },
     'preys.enabled': () => {
       return state.total.awakenings.total > 0 || state.total.souls >= 1.5e7
+    },
+    'pain.enabled': () => {
+      return state.current.name != null
     },
     'prompts.available': () => {
       return PROMPTS.filter(p => {

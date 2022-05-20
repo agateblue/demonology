@@ -91,6 +91,9 @@ export default {
           getter: (v) => { return v.length }
         },
       ]
+      if (this.$store.state.total.awakenings > 0) {
+        s.push({name: 'pain', label: 'Pain'})
+      }
       if (this.$store.state.settings.debug) {
         s.push({name: 'awakenings', label: 'Awakenings'})
       }

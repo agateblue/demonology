@@ -31,8 +31,11 @@ describe('store', () => {
     state.current.hunted = 2
     state.lifetime.hunted = 6
     state.total.hunted = 9
+    state.current.pain = 20
+    state.lifetime.pain = 24
+    state.total.pain = 30
 
-    mutations.gatherSouls(state, {hunts: 1, power: 10})
+    mutations.gatherSouls(state, {hunts: 1, power: 10, pain: 5})
     expect(state.current.preys).toEqual(11)
     expect(state.current.souls).toEqual(10)
     expect(state.lifetime.souls).toEqual(13)
@@ -40,6 +43,9 @@ describe('store', () => {
     expect(state.current.hunted).toEqual(12)
     expect(state.lifetime.hunted).toEqual(16)
     expect(state.total.hunted).toEqual(19)
+    expect(state.current.pain).toEqual(25)
+    expect(state.lifetime.pain).toEqual(29)
+    expect(state.total.pain).toEqual(35)
   })
   it('mutation gatherSouls not hunt', () => {
     let state = getDefaultState()
@@ -88,8 +94,11 @@ describe('store', () => {
     state.current.hunted = 2
     state.lifetime.hunted = 6
     state.total.hunted = 9
+    state.current.pain = 20
+    state.lifetime.pain = 24
+    state.total.pain = 30
 
-    mutations.gatherSouls(state, {hunts: 1, power: 20})
+    mutations.gatherSouls(state, {hunts: 1, power: 20, pain: 2})
     expect(state.current.preys).toEqual(0)
     expect(state.current.souls).toEqual(10)
     expect(state.lifetime.souls).toEqual(13)
@@ -97,6 +106,9 @@ describe('store', () => {
     expect(state.current.hunted).toEqual(12)
     expect(state.lifetime.hunted).toEqual(16)
     expect(state.total.hunted).toEqual(19)
+    expect(state.current.pain).toEqual(21)
+    expect(state.lifetime.pain).toEqual(25)
+    expect(state.total.pain).toEqual(31)
   })
   it('mutation lastTick', () => {
     let state = getDefaultState()
@@ -217,7 +229,8 @@ describe('store', () => {
     let commit = jest.fn()
     let state = getDefaultState()
     let values = {
-      'occultists.perTick': 12,
+      'occultists.soulsPerTick': 12,
+      'occultists.painPerTick': 3,
       'tick.duration': 1000,
     }
     let getters = {values: fakeValues(values)}
@@ -226,7 +239,10 @@ describe('store', () => {
     actions.tick({commit, getters, state}, to)
 
     expect(commit.mock.calls[0]).toEqual(
-      ['gatherSouls', {power: 5 * values['occultists.perTick']}]
+      ['gatherSouls', {
+        power: 5 * values['occultists.soulsPerTick'],
+        pain: 5 * values['occultists.painPerTick'],
+      }]
     )
     expect(commit.mock.calls[1]).toEqual(['lastTick', to])
   })

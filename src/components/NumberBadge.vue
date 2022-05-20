@@ -3,6 +3,7 @@
     <span v-if="unit" class="unit">
       {{ unitToIcon[unit]}}
     </span>
+    <template v-if="prefix">{{ prefix }} </template>
     <span class="value">
       {{ formatNumber(value || 0) }}<slot></slot>
     </span>
@@ -16,8 +17,10 @@ export default {
   props: {
     value: {},
     unit: {},
+    prefix: {}
   },
   data () {
+    console.log('HELLO', this.prefix)
     return {
       unitToIcon: {
         souls: '⚱️',
@@ -25,6 +28,7 @@ export default {
         occultists: '🕯️',
         preys: '🐇',
         power: '💪',
+        pain: '🌀',
       },
       formatNumber
     }
