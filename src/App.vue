@@ -29,6 +29,12 @@
       :value="parseInt($store.state.current.souls)"
       v-if="$store.state.lifetime.souls > 0"
     > Souls</number-badge>
+    <number-badge
+      class="ml-4 float--right"
+      unit="preys"
+      :value="parseInt($store.state.current.preys)"
+      v-if="$store.getters['values']('preys.enabled')"
+    > Preys</number-badge>
   </div>
   <router-view/>
   <div style="position: fixed; bottom: 1em; right: 1em" v-if="$store.state.settings.debug">

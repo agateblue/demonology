@@ -3,7 +3,9 @@
     <section class="tiny transparent px-0 pt-0 my-3">
       <button
         class="fluid py-3 text--1"
-        @click.prevent="hunt">
+        @click.prevent="hunt"
+        :disabled="$store.state.current.preys < $store.getters['values']('hunt.power')"
+      >
         Hunt some preys
       </button>
     </section>  
@@ -214,12 +216,8 @@ export default {
   methods: {
     hunt () {
       this.$store.commit(
-        'increment',
-        {name: 'hunts', value: 1}
-      )
-      this.$store.commit(
-        'increment',
-        {name: 'souls', value: this.$store.getters['values']('hunt.power')}
+        'gatherSouls',
+        {hunts: 1, power: this.$store.getters['values']('hunt.power')}
       )
     },
     buyMaxUpgrades () {

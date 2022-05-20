@@ -71,6 +71,8 @@ export const DEFAULT_VALUES = {
   souls: 0,
   minions: 0,
   occultists: 0,
+  preys: 7.8e9,
+  hunted: 0,
   upgrades: [],
 }
 
@@ -159,7 +161,7 @@ export const PROMPTS = [
       "Maybe you should come back later",
     ],
     condition ({state}) {
-      return state.lifetime.souls >= 1e8
+      return state.lifetime.souls >= 1e10
     }
   },
 ]
@@ -424,6 +426,9 @@ export function getValueGetter(state) {
     },
     'occultists.perTick': () => {
       return get('minions.power.total') * state.current.occultists * get('occultists.basePower')
+    },
+    'preys.enabled': () => {
+      return state.total.souls >= 1e8
     },
     'prompts.available': () => {
       return PROMPTS.filter(p => {

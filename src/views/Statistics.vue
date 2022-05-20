@@ -57,6 +57,10 @@ export default {
           label: "Hunts"
         },
         {
+          name: "hunted",
+          label: "Hunted preys"
+        },
+        {
           name: "souls",
           label: "Souls"
         },

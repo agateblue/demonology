@@ -22,6 +22,82 @@ describe('store', () => {
     expect(state.lifetime.souls).toEqual(15)
     expect(state.total.souls).toEqual(16)
   })
+  it('mutation gatherSouls', () => {
+    let state = getDefaultState()
+    state.current.preys = 21
+    state.current.souls = 0
+    state.lifetime.souls = 3
+    state.total.souls = 4
+    state.current.hunted = 2
+    state.lifetime.hunted = 6
+    state.total.hunted = 9
+
+    mutations.gatherSouls(state, {hunts: 1, power: 10})
+    expect(state.current.preys).toEqual(11)
+    expect(state.current.souls).toEqual(10)
+    expect(state.lifetime.souls).toEqual(13)
+    expect(state.total.souls).toEqual(14)
+    expect(state.current.hunted).toEqual(12)
+    expect(state.lifetime.hunted).toEqual(16)
+    expect(state.total.hunted).toEqual(19)
+  })
+  it('mutation gatherSouls not hunt', () => {
+    let state = getDefaultState()
+    state.current.preys = 21
+    state.current.souls = 0
+    state.lifetime.souls = 3
+    state.total.souls = 4
+    state.current.hunted = 2
+    state.lifetime.hunted = 6
+    state.total.hunted = 9
+
+    mutations.gatherSouls(state, {power: 10})
+    expect(state.current.preys).toEqual(11)
+    expect(state.current.souls).toEqual(10)
+    expect(state.lifetime.souls).toEqual(13)
+    expect(state.total.souls).toEqual(14)
+    expect(state.current.hunted).toEqual(2)
+    expect(state.lifetime.hunted).toEqual(6)
+    expect(state.total.hunted).toEqual(9)
+  })
+  it('mutation gatherSouls does nothing if no more preys', () => {
+    let state = getDefaultState()
+    state.current.preys = 0
+    state.current.souls = 0
+    state.lifetime.souls = 3
+    state.total.souls = 4
+    state.current.hunted = 2
+    state.lifetime.hunted = 6
+    state.total.hunted = 9
+
+    mutations.gatherSouls(state, {hunts: 1, power: 10})
+    expect(state.current.preys).toEqual(0)
+    expect(state.current.souls).toEqual(0)
+    expect(state.lifetime.souls).toEqual(3)
+    expect(state.total.souls).toEqual(4)
+    expect(state.current.hunted).toEqual(2)
+    expect(state.lifetime.hunted).toEqual(6)
+    expect(state.total.hunted).toEqual(9)
+  })
+  it('mutation gatherSouls as much as available', () => {
+    let state = getDefaultState()
+    state.current.preys = 10
+    state.current.souls = 0
+    state.lifetime.souls = 3
+    state.total.souls = 4
+    state.current.hunted = 2
+    state.lifetime.hunted = 6
+    state.total.hunted = 9
+
+    mutations.gatherSouls(state, {hunts: 1, power: 20})
+    expect(state.current.preys).toEqual(0)
+    expect(state.current.souls).toEqual(10)
+    expect(state.lifetime.souls).toEqual(13)
+    expect(state.total.souls).toEqual(14)
+    expect(state.current.hunted).toEqual(12)
+    expect(state.lifetime.hunted).toEqual(16)
+    expect(state.total.hunted).toEqual(19)
+  })
   it('mutation lastTick', () => {
     let state = getDefaultState()
     state.time.lastTick = 1
@@ -137,7 +213,7 @@ describe('store', () => {
 
     expect(state.lifetime.souls).toEqual(2)
   })
-  it('actions tick no occultists', () => {
+  it('actions tick with occultists', () => {
     let commit = jest.fn()
     let state = getDefaultState()
     let values = {
@@ -150,7 +226,7 @@ describe('store', () => {
     actions.tick({commit, getters, state}, to)
 
     expect(commit.mock.calls[0]).toEqual(
-      ['increment', {name: 'souls', value: 5 * values['occultists.perTick']}]
+      ['gatherSouls', {power: 5 * values['occultists.perTick']}]
     )
     expect(commit.mock.calls[1]).toEqual(['lastTick', to])
   })
