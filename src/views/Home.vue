@@ -26,7 +26,7 @@
         <button
           class="fluid py-3 text--1"
           @click.prevent="hunt"
-          :disabled="$store.state.current.preys < $store.getters['values']('hunt.power')"
+          :disabled="$store.state.current.preys === 0"
         >
           Hunt some preys<br>
           <number-badge

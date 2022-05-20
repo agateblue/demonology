@@ -12,6 +12,11 @@ export function multiplier ({value, modifierValue}) {
   return value * modifierValue
 }
 
+export function getBaseLog(x, y) {
+  return Math.log(x) / Math.log(y);
+}
+
+
 export function filterUpgrades (upgrades, match) {
   return upgrades.filter(u => {
     return u.id.startsWith(match)
@@ -417,6 +422,39 @@ export const UPGRADES = sortBy([
     },
     cost: 1e5,
     value: 3,
+    valueFormat: '%',
+  },
+  {
+    id: "predator.power.2",
+    name: "Mind traps",
+    description: "Increase hunt power by ${value}",
+    available: all(
+      is('predator'),
+      has(1e6, 'lifetime', 'hunted'),
+    ),
+    affects: {
+      'hunt.power': multiplier,
+    },
+    cost: 1e6,
+    value: 3,
+    valueFormat: '%',
+  },
+  {
+    id: "predator.power.3",
+    name: "Frenzy",
+    description: "Increase hunt power based on your total hunted preys",
+    available: all(
+      is('predator'),
+      has(1e6, 'total', 'hunted'),
+    ),
+    affects: {
+      'hunt.power': ({value, modifierValue, state}) => {
+        let multiplier = getBaseLog(state.total.hunted, modifierValue)
+        return value * multiplier
+      }
+    },
+    cost: 1e7,
+    value: 100,
     valueFormat: '%',
   },
 ], ['cost'])
