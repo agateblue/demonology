@@ -41,7 +41,7 @@
           Devour your legion, souls and go dormant for a while
         </button>
       </section>
-      <section v-if="$store.state.lifetime.souls > 0">
+      <section v-if="$store.state.total.souls > 0">
         <h2>Legion</h2>
         <div class="stackable row">
           <number-badge
