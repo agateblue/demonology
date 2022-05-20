@@ -20,7 +20,6 @@ export default {
     prefix: {}
   },
   data () {
-    console.log('HELLO', this.prefix)
     return {
       unitToIcon: {
         souls: '⚱️',

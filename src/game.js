@@ -82,6 +82,20 @@ export const DEFAULT_VALUES = {
 function has(value, prefix, unit) {
   return ({state}) => { return state[prefix][unit] >= value}
 }
+function all (...conditions) {
+  return ({state}) => {
+    for (const condition of conditions) {
+      if (!condition({state})) {
+        return false
+      }
+      return true
+    }
+  }
+}
+
+function is (name) {
+  return ({state}) => { return state.current.name === name}
+}
 
 export const PROMPTS = [
   {
@@ -304,18 +318,6 @@ export const UPGRADES = sortBy([
     valueFormat: '%',
   },
   {
-    id: "hunt.power.3",
-    name: "Silent orders",
-    description: "Increase hunt power by ${value}",
-    available: has(100, 'total', 'hunts'),
-    affects: {
-      'hunt.power': multiplier,
-    },
-    cost: 10000,
-    value: 2,
-    valueFormat: '%',
-  },
-  {
     id: "occultists.power.1",
     name: "Hidden signs",
     description: "Increase occultists power by ${value}",
@@ -400,6 +402,22 @@ export const UPGRADES = sortBy([
     cost: 5e6,
     value: 1.5,
     valueFormat: '%'
+  },
+  //  upgrades related to names
+  {
+    id: "predator.power.1",
+    name: "Venom",
+    description: "Increase hunt power by ${value}",
+    available: all(
+      is('predator'),
+      has(1e5, 'lifetime', 'hunted'),
+    ),
+    affects: {
+      'hunt.power': multiplier,
+    },
+    cost: 1e5,
+    value: 3,
+    valueFormat: '%',
   },
 ], ['cost'])
 
@@ -562,7 +580,7 @@ export function getValueGetter(state) {
       return get('occultists.soulsPerTick') * get('occultists.painRatio')
     },
     'preys.enabled': () => {
-      return state.total.awakenings.total > 0 || state.total.souls >= 1.5e7
+      return state.total.awakenings > 0 || state.total.souls >= 1.5e7
     },
     'pain.enabled': () => {
       return state.current.name != null
