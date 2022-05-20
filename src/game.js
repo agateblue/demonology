@@ -297,7 +297,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "occultists.synergy.1",
-    name: "Moral support",
+    name: "Immoral support",
     description: "Each one of your occultists multiply your minions power by ${value}",
     available: has(4, 'lifetime', 'occultists'),
     affects: {
