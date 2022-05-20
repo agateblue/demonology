@@ -1,5 +1,5 @@
 <template>
-  <section class="narrow">
+  <section>
     <h1>Statistics</h1>
     <table class="simple">
       <thead>
@@ -9,6 +9,10 @@
           v-if="$store.state.settings.debug"
         >Current</th>
         <th :colspan="$store.state.settings.debug ? 2 : 1">Lifetime</th>
+        <th
+          :colspan="$store.state.settings.debug ? 2 : 1"
+          v-if="$store.state.settings.debug"
+        >Total</th>
       </thead>
       <tbody>
         <tr
@@ -51,7 +55,16 @@ import {formatNumber} from '@/utils'
 export default {
   data () {
     return {
-      stats: [
+      values: {
+        current: {},
+        lifetime: {},
+        total: {},
+      }
+    }
+  },
+  computed: {
+    stats () {
+      let s = [
         {
           name: "hunts",
           label: "Hunts"
@@ -77,19 +90,17 @@ export default {
           label: "Purchased upgrades",
           getter: (v) => { return v.length }
         },
-      ],
-      values: {
-        current: {},
-        lifetime: {},
-        total: {},
+      ]
+      if (this.$store.state.settings.debug) {
+        s.push({name: 'awakenings', label: 'Awakenings'})
       }
-    }
-  },
-  computed: {
+      return s
+    },
     columns () {
       let c = ["lifetime"]
       if (this.$store.state.settings.debug) {
         c.unshift('current')
+        c.push('total')
       }
       return c
     }

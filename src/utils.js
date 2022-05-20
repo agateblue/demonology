@@ -10,7 +10,7 @@ const NOTATIONS = {
   scientific: new Intl.NumberFormat('en-US', {notation: 'scientific', minimumFractionDigits: 2, maximumFractionDigits: 2}),
 }
 export function formatNumber (n, notation = 'default', valueFormat = null) {
-  if (n <= 10000) {
+  if (!valueFormat && n <= 10000) {
     return n
   }
   let suffix = ''

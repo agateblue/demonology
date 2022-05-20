@@ -230,4 +230,25 @@ describe('store', () => {
     )
     expect(commit.mock.calls[1]).toEqual(['lastTick', to])
   })
+  it('mutation sleep', () => {
+    let state = getDefaultState()
+    state.current.souls = 5
+    state.lifetime.souls = 10
+    state.total.awakenings = 0
+    state.total.souls = 50
+
+    mutations.sleep(state)
+
+    expect(state.current.souls).toEqual(0)
+    expect(state.lifetime.souls).toEqual(0)
+    expect(state.total.souls).toEqual(50)
+    expect(state.total.awakenings).toEqual(1)
+  })
+  it('mutation name', () => {
+    let state = getDefaultState()
+
+    mutations.name(state, 'noop1')
+
+    expect(state.current.name).toEqual('noop1')
+  })
 })

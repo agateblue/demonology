@@ -10,7 +10,12 @@
     <router-link class="discrete" to="/about">About</router-link>
   </nav>
   <div class="text--center py-4">
-    <h1 class="mt-4">Who am I?</h1>
+    <h1 class="mt-4">
+      <template v-if="!$store.state.current.name">Who am I?</template>
+      <template v-else>
+        I am {{ $store.getters['values']('names.current').name }}, {{ $store.getters['values']('names.current').title }} 
+      </template>
+    </h1>
     <div class="align-items--center justify-content--center">
       <fire class="mr-4"></fire>
       <div class="py-2" v-if="$store.getters['values']('prompts.current')">

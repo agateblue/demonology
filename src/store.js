@@ -94,6 +94,14 @@ export const mutations = {
   },
   setFromDebug (state, {namespace, name, value}) {
     state[namespace][name] = value
+  },
+  sleep (state) {
+    state.current = {...DEFAULT_VALUES}
+    state.lifetime = {...DEFAULT_VALUES}
+    state.total.awakenings += 1
+  },
+  name (state, value) {
+    state.current.name = value
   }
 }
 
