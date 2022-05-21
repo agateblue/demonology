@@ -5,8 +5,8 @@
     <router-link class="discrete" to="/">Netherworld</router-link> ·
     <!-- <router-link class="discrete" to="/">Lore</router-link> · -->
     <!-- <router-link class="discrete" to="/">Lord</router-link> · -->
-    <router-link class="discrete" to="/settings">Settings</router-link> ·
     <router-link class="discrete" to="/statistics">Statistics</router-link> ·
+    <router-link class="discrete" to="/settings">Settings</router-link> ·
     <router-link class="discrete" to="/about">About</router-link>
   </nav>
   <div class="text--center py-4">
@@ -70,8 +70,8 @@ export default {
       loop: null,
       hotkeys: [
         {key: '&, 1', handler: () => { this.$router.push('/')}},
-        {key: 'é, 2', handler: () => { this.$router.push('/settings')}},
-        {key: '", 3', handler: () => { this.$router.push('/statistics')}},
+        {key: 'é, 2', handler: () => { this.$router.push('/statistics')}},
+        {key: '", 3', handler: () => { this.$router.push('/settings')}},
         {key: "', 4", handler: () => { this.$router.push('/about')}},
         {key: "ctrl+d", handler: () => { this.$store.commit('setting', {name: 'debug', value: !this.$store.state.settings.debug})}},
       ]
