@@ -80,6 +80,7 @@ export const DEFAULT_VALUES = {
   hunted: 0,
   awakenings: 0,
   pain: 0,
+  evil: 0,
   upgrades: [],
   name: null,
 }
@@ -621,7 +622,7 @@ export function getValueGetter(state) {
       return state.total.awakenings > 0 || state.total.souls >= 1.5e7
     },
     'pain.enabled': () => {
-      return state.current.name != null
+      return state.current.name != null && state.total.pain > 0
     },
     'prompts.available': () => {
       return PROMPTS.filter(p => {
