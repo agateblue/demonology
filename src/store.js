@@ -7,7 +7,7 @@ import {DEFAULT_VALUES, getValueGetter} from './game'
 
 function inc (state, {name, value}) {
   state.current[name] += value
-  state.lifetime[name] += value
+  state.awakening[name] += value
   state.total[name] += value
 }
 
@@ -15,13 +15,13 @@ export function getDefaultState () {
   return {
     time: {
       gameStart: (new Date()).getTime(),
-      lifetimeStart: (new Date()).getTime(),
+      awakeningStart: (new Date()).getTime(),
       lastTick: (new Date()).getTime(),
     },
     current: {
       ...DEFAULT_VALUES
     },
-    lifetime: {
+    awakening: {
       ...DEFAULT_VALUES
     },
     total: {
@@ -63,7 +63,7 @@ export const mutations = {
   },
   reset (state) {
     state.current = {...DEFAULT_VALUES}
-    state.lifetime = {...DEFAULT_VALUES}
+    state.awakening = {...DEFAULT_VALUES}
     state.total = {...DEFAULT_VALUES}
   },
   hardReset (state) {
@@ -93,7 +93,7 @@ export const mutations = {
     }
     state.current.souls -= cost 
     state.current.upgrades = uniq([...state.current.upgrades, id])
-    state.lifetime.upgrades = uniq([...state.lifetime.upgrades, id])
+    state.awakening.upgrades = uniq([...state.awakening.upgrades, id])
     state.total.upgrades = uniq([...state.total.upgrades, id])
   },
   setFromDebug (state, {namespace, name, value}) {
@@ -101,7 +101,7 @@ export const mutations = {
   },
   sleep (state) {
     state.current = {...DEFAULT_VALUES}
-    state.lifetime = {...DEFAULT_VALUES}
+    state.awakening = {...DEFAULT_VALUES}
     state.total.awakenings += 1
   },
   name (state, value) {
@@ -139,7 +139,7 @@ const STORE = createStore({
     new VuexPersistence({
       reducer: (state) => ({
         current: state.current,
-        lifetime: state.lifetime,
+        awakening: state.awakening,
         total: state.total,
         settings: state.settings,
         time: state.time,

@@ -14,100 +14,100 @@ describe('store', () => {
   it('mutation increment', () => {
     let state = getDefaultState()
     state.current.souls = 2
-    state.lifetime.souls = 3
+    state.awakening.souls = 3
     state.total.souls = 4
 
     mutations.increment(state, {name: 'souls', value: 12})
     expect(state.current.souls).toEqual(14)
-    expect(state.lifetime.souls).toEqual(15)
+    expect(state.awakening.souls).toEqual(15)
     expect(state.total.souls).toEqual(16)
   })
   it('mutation gatherSouls', () => {
     let state = getDefaultState()
     state.current.preys = 21
     state.current.souls = 0
-    state.lifetime.souls = 3
+    state.awakening.souls = 3
     state.total.souls = 4
     state.current.hunted = 2
-    state.lifetime.hunted = 6
+    state.awakening.hunted = 6
     state.total.hunted = 9
     state.current.pain = 20
-    state.lifetime.pain = 24
+    state.awakening.pain = 24
     state.total.pain = 30
 
     mutations.gatherSouls(state, {hunts: 1, power: 10, pain: 5})
     expect(state.current.preys).toEqual(11)
     expect(state.current.souls).toEqual(10)
-    expect(state.lifetime.souls).toEqual(13)
+    expect(state.awakening.souls).toEqual(13)
     expect(state.total.souls).toEqual(14)
     expect(state.current.hunted).toEqual(12)
-    expect(state.lifetime.hunted).toEqual(16)
+    expect(state.awakening.hunted).toEqual(16)
     expect(state.total.hunted).toEqual(19)
     expect(state.current.pain).toEqual(25)
-    expect(state.lifetime.pain).toEqual(29)
+    expect(state.awakening.pain).toEqual(29)
     expect(state.total.pain).toEqual(35)
   })
   it('mutation gatherSouls not hunt', () => {
     let state = getDefaultState()
     state.current.preys = 21
     state.current.souls = 0
-    state.lifetime.souls = 3
+    state.awakening.souls = 3
     state.total.souls = 4
     state.current.hunted = 2
-    state.lifetime.hunted = 6
+    state.awakening.hunted = 6
     state.total.hunted = 9
 
     mutations.gatherSouls(state, {power: 10})
     expect(state.current.preys).toEqual(11)
     expect(state.current.souls).toEqual(10)
-    expect(state.lifetime.souls).toEqual(13)
+    expect(state.awakening.souls).toEqual(13)
     expect(state.total.souls).toEqual(14)
     expect(state.current.hunted).toEqual(2)
-    expect(state.lifetime.hunted).toEqual(6)
+    expect(state.awakening.hunted).toEqual(6)
     expect(state.total.hunted).toEqual(9)
   })
   it('mutation gatherSouls does nothing if no more preys', () => {
     let state = getDefaultState()
     state.current.preys = 0
     state.current.souls = 0
-    state.lifetime.souls = 3
+    state.awakening.souls = 3
     state.total.souls = 4
     state.current.hunted = 2
-    state.lifetime.hunted = 6
+    state.awakening.hunted = 6
     state.total.hunted = 9
 
     mutations.gatherSouls(state, {hunts: 1, power: 10})
     expect(state.current.preys).toEqual(0)
     expect(state.current.souls).toEqual(0)
-    expect(state.lifetime.souls).toEqual(3)
+    expect(state.awakening.souls).toEqual(3)
     expect(state.total.souls).toEqual(4)
     expect(state.current.hunted).toEqual(2)
-    expect(state.lifetime.hunted).toEqual(6)
+    expect(state.awakening.hunted).toEqual(6)
     expect(state.total.hunted).toEqual(9)
   })
   it('mutation gatherSouls as much as available', () => {
     let state = getDefaultState()
     state.current.preys = 10
     state.current.souls = 0
-    state.lifetime.souls = 3
+    state.awakening.souls = 3
     state.total.souls = 4
     state.current.hunted = 2
-    state.lifetime.hunted = 6
+    state.awakening.hunted = 6
     state.total.hunted = 9
     state.current.pain = 20
-    state.lifetime.pain = 24
+    state.awakening.pain = 24
     state.total.pain = 30
 
     mutations.gatherSouls(state, {hunts: 1, power: 20, pain: 2})
     expect(state.current.preys).toEqual(0)
     expect(state.current.souls).toEqual(10)
-    expect(state.lifetime.souls).toEqual(13)
+    expect(state.awakening.souls).toEqual(13)
     expect(state.total.souls).toEqual(14)
     expect(state.current.hunted).toEqual(12)
-    expect(state.lifetime.hunted).toEqual(16)
+    expect(state.awakening.hunted).toEqual(16)
     expect(state.total.hunted).toEqual(19)
     expect(state.current.pain).toEqual(21)
-    expect(state.lifetime.pain).toEqual(25)
+    expect(state.awakening.pain).toEqual(25)
     expect(state.total.pain).toEqual(31)
   })
   it('mutation lastTick', () => {
@@ -121,12 +121,12 @@ describe('store', () => {
     let state = getDefaultState()
     state.settings.notation = 'noop' 
     state.current.souls = 2
-    state.lifetime.souls = 3
+    state.awakening.souls = 3
     state.total.souls = 4
 
     mutations.reset(state)
     expect(state.current).toEqual(getDefaultState().current)
-    expect(state.lifetime).toEqual(getDefaultState().lifetime)
+    expect(state.awakening).toEqual(getDefaultState().awakening)
     expect(state.total).toEqual(getDefaultState().total)
     expect(state.settings.notation).toEqual('noop')
   })
@@ -134,7 +134,7 @@ describe('store', () => {
     let state = getDefaultState()
     state.settings.notation = 'noop' 
     state.current.souls = 2
-    state.lifetime.souls = 3
+    state.awakening.souls = 3
     state.total.souls = 4
 
     mutations.hardReset(state)
@@ -150,14 +150,14 @@ describe('store', () => {
     let state = getDefaultState()
     state.current.minions = 0
     state.current.souls = 32
-    state.lifetime.minions = 2
+    state.awakening.minions = 2
     state.total.minions = 4
     let cost = {unit: 'souls', value: 14}
 
     mutations.purchase(state, {cost, quantity: 2, name: 'minions'})
 
     expect(state.current.minions).toEqual(2)
-    expect(state.lifetime.minions).toEqual(4)
+    expect(state.awakening.minions).toEqual(4)
     expect(state.total.minions).toEqual(6)
 
     expect(state.current.souls).toEqual(18)
@@ -166,7 +166,7 @@ describe('store', () => {
     let state = getDefaultState()
     state.current.minions = 0
     state.current.souls = 32
-    state.lifetime.minions = 2
+    state.awakening.minions = 2
     state.total.minions = 4
     let cost = {unit: 'souls', value: 44}
 
@@ -179,51 +179,51 @@ describe('store', () => {
     let state = getDefaultState()
     state.current.souls = 50
     state.current.upgrades = ['noop1']
-    state.lifetime.upgrades = ['noop1', 'noop2']
+    state.awakening.upgrades = ['noop1', 'noop2']
     state.total.upgrades = ['noop1', 'noop2', 'noop3']
 
     mutations.purchaseUpgrade(state, {cost: 44, id: 'noop4'})
 
     expect(state.current.souls).toEqual(6)
     expect(state.current.upgrades).toEqual(['noop1', 'noop4'])
-    expect(state.lifetime.upgrades).toEqual(['noop1', 'noop2', 'noop4'])
+    expect(state.awakening.upgrades).toEqual(['noop1', 'noop2', 'noop4'])
     expect(state.total.upgrades).toEqual(['noop1', 'noop2', 'noop3', 'noop4'])
   })
   it('mutation purchaseUpgrade too expensive', () => {
     let state = getDefaultState()
     state.current.souls = 10
     state.current.upgrades = ['noop1']
-    state.lifetime.upgrades = ['noop1', 'noop2']
+    state.awakening.upgrades = ['noop1', 'noop2']
     state.total.upgrades = ['noop1', 'noop2', 'noop3']
 
     mutations.purchaseUpgrade(state, {cost: 44, id: 'noop4'})
 
     expect(state.current.souls).toEqual(10)
     expect(state.current.upgrades).toEqual(['noop1'])
-    expect(state.lifetime.upgrades).toEqual(['noop1', 'noop2'])
+    expect(state.awakening.upgrades).toEqual(['noop1', 'noop2'])
     expect(state.total.upgrades).toEqual(['noop1', 'noop2', 'noop3'])
   })
   it('mutation purchaseUpgrade skips already purchased', () => {
     let state = getDefaultState()
     state.current.souls = 50
     state.current.upgrades = ['noop1']
-    state.lifetime.upgrades = ['noop1', 'noop2']
+    state.awakening.upgrades = ['noop1', 'noop2']
     state.total.upgrades = ['noop1', 'noop2', 'noop3']
 
     mutations.purchaseUpgrade(state, {cost: 44, id: 'noop1'})
 
     expect(state.current.souls).toEqual(50)
     expect(state.current.upgrades).toEqual(['noop1'])
-    expect(state.lifetime.upgrades).toEqual(['noop1', 'noop2'])
+    expect(state.awakening.upgrades).toEqual(['noop1', 'noop2'])
     expect(state.total.upgrades).toEqual(['noop1', 'noop2', 'noop3'])
   })
   it('mutation setFromDebug', () => {
     let state = getDefaultState()
-    state.lifetime.souls = 50
+    state.awakening.souls = 50
 
-    mutations.setFromDebug(state, {namespace: 'lifetime', name: 'souls', value: 2})
+    mutations.setFromDebug(state, {namespace: 'awakening', name: 'souls', value: 2})
 
-    expect(state.lifetime.souls).toEqual(2)
+    expect(state.awakening.souls).toEqual(2)
   })
   it('actions tick with occultists', () => {
     let commit = jest.fn()
@@ -249,14 +249,14 @@ describe('store', () => {
   it('mutation sleep', () => {
     let state = getDefaultState()
     state.current.souls = 5
-    state.lifetime.souls = 10
+    state.awakening.souls = 10
     state.total.awakenings = 0
     state.total.souls = 50
 
     mutations.sleep(state)
 
     expect(state.current.souls).toEqual(0)
-    expect(state.lifetime.souls).toEqual(0)
+    expect(state.awakening.souls).toEqual(0)
     expect(state.total.souls).toEqual(50)
     expect(state.total.awakenings).toEqual(1)
   })

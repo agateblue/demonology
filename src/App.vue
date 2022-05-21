@@ -32,7 +32,7 @@
       class="ml-4 float--right"
       unit="souls"
       :value="parseInt($store.state.current.souls)"
-      v-if="$store.state.lifetime.souls > 0"
+      v-if="$store.state.awakening.souls > 0"
     > Souls</number-badge>
     <number-badge
       class="ml-4 float--right"
