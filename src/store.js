@@ -3,7 +3,7 @@ import VuexPersistence from 'vuex-persist'
 import throttle from 'lodash/throttle'
 import uniq from 'lodash/uniq'
 
-import {DEFAULT_VALUES, getValueGetter} from './game'
+import {DEFAULT_VALUES, getDefaultValues, getValueGetter} from './game'
 
 function inc (state, {name, value}) {
   state.current[name] += value
@@ -66,12 +66,6 @@ export const mutations = {
   lastTick (state, time) {
     state.time.lastTick = time
   },
-  reset (state) {
-    state.current = {...DEFAULT_VALUES}
-    state.awakening = {...DEFAULT_VALUES}
-    state.harvest = {...DEFAULT_VALUES}
-    state.total = {...DEFAULT_VALUES}
-  },
   hardReset (state) {
     Object.assign(state, getDefaultState())
   },
@@ -107,13 +101,21 @@ export const mutations = {
     state[namespace][name] = value
   },
   sleep (state) {
-    state.current = {...DEFAULT_VALUES}
-    state.awakening = {...DEFAULT_VALUES}
+    state.current = getDefaultValues({evilPower: GET('evil.power')})
+    state.awakening = {...state.current}
+    state.harvest.awakenings += 1
     state.total.awakenings += 1
   },
   name (state, value) {
     state.current.name = value
-  }
+  },
+  harvest (state, {evil}) {
+    state.total.harvests += 1
+    state.total.evil += evil
+    state.current = getDefaultValues({evilPower: GET('evil.power')})
+    state.awakening = {...state.current}
+    state.harvest = {...state.current}
+  },
 }
 
 export const actions = {
@@ -123,7 +125,7 @@ export const actions = {
     if (ticks > 0) {
       if (getters.values('occultists.soulsPerTick') > 0) {
         let power = getters.values('occultists.soulsPerTick') * ticks
-        let pain = getters.values('occultists.painPerTick') * ticks
+        let pain = getters.values('pain.enabled') ? getters.values('occultists.painPerTick') * ticks : 0
         commit('gatherSouls', {power, pain})
       }
     }
@@ -147,6 +149,7 @@ const STORE = createStore({
       reducer: (state) => ({
         current: state.current,
         awakening: state.awakening,
+        harvest: state.harvest,
         total: state.total,
         settings: state.settings,
         time: state.time,

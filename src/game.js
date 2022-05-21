@@ -99,6 +99,12 @@ export const DEFAULT_VALUES = {
   name: null,
 }
 
+export function getDefaultValues({evilPower}) {
+  let v = {...DEFAULT_VALUES}
+  v.preys = v.preys * evilPower
+  return v
+}
+
 function has(value, prefix, unit) {
   return ({state}) => { return state[prefix][unit] >= value}
 }
@@ -215,6 +221,24 @@ export const PROMPTS = [
     ],
     condition ({state}) {
       return state.total.awakenings > 0
+    }
+  },
+  {
+    text: [
+      "Far from this world, beyond this realm",
+      "Another place to overwhelm",
+    ],
+    condition ({get}) {
+      return get('evil.buyMaxGetter')() > 0
+    }
+  },
+  {
+    text: [
+      "You have found a new dimension",
+      "You can engulf in dementia",
+    ],
+    condition ({state}) {
+      return state.total.harvests > 0
     }
   },
 
@@ -559,18 +583,24 @@ export function getValueGetter(state) {
     'evil.baseCost': () => {return 1e6},
     'evil.costIncreaseFactor': () => {return 1.2},
     'evil.basePower': () => {return 1},
-    'evil.costGetter': () => {
-      return (quantity) => {
-        let cost = getGeometricCumulativeCost({
-          start: state.awakening.occultists,
+    'evil.power': () => {
+      return (1 + state.total.evil) * get('evil.basePower')
+    },
+    'evil.buyMaxGetter': () => {
+      return () => {
+        let buyable = getGeometricMaxBuyable({
+          start: state.total.evil,
           base: get('evil.baseCost'),
           increaseFactor: get('evil.costIncreaseFactor'),
-          quantity,
+          available: parseInt(state.harvest.pain)
         })
-        return {value: parseInt(cost), unit: 'pain'}
+        return buyable
       }
     },
-    'hunt.basePower': () => {return 1},
+    'evil.enabled': () => {
+      return state.total.evil > 0 || get('evil.buyMaxGetter')() > 0
+    },
+    'hunt.basePower': () => {return 1 * get('evil.power')},
     'hunt.power': () => {
       return get("hunt.basePower") + get('minions.power.total')
     },
@@ -582,7 +612,7 @@ export function getValueGetter(state) {
     },
     'minions.baseCost': () => {return 10},
     'minions.costIncreaseFactor': () => {return 1.1},
-    'minions.basePower': () => {return 1},
+    'minions.basePower': () => {return 1 * get('evil.power')},
     'minions.enabled': () => {
       return state.total.awakenings > 0 || state.total.souls >= get('minions.baseCost')
     },
@@ -620,7 +650,10 @@ export function getValueGetter(state) {
     },
 
     'names.available': () => {
-      return NAMES
+      if (state.harvest.awakenings > 0) {
+        return NAMES
+      }
+      return []
     },
     'names.current': () => {
       return NAMES.filter((n) => {
@@ -674,7 +707,7 @@ export function getValueGetter(state) {
       return state.total.awakenings > 0 || state.total.souls >= 1.5e7
     },
     'pain.enabled': () => {
-      return state.current.name != null && state.total.pain > 0
+      return state.harvest.awakenings > 0
     },
     'prompts.available': () => {
       return PROMPTS.filter(p => {
@@ -708,7 +741,7 @@ export function getValueGetter(state) {
     },
     'upgrades.available': () => {
       let upgrades = UPGRADES.filter((u) => {
-        return state.current.upgrades.indexOf(u.id) < 0 && state.total.souls >= u.cost
+        return state.current.upgrades.indexOf(u.id) < 0 && state.awakening.souls >= u.cost
       })
       return upgrades.filter((u) => {
         if (!u.available) {

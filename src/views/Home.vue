@@ -19,7 +19,6 @@
       </section>
     </template>
     <template v-else>
-
       <section
         class="tiny transparent px-0 pt-0 my-3"
       >
@@ -46,17 +45,125 @@
 
         </button>
       </section>  
+      <section
+        class="tiny transparent px-0 pt-0 my-3 text--center"
+        v-if="$store.state.total.awakenings > 0 || $store.getters['values']('evil.enabled')"
+      >
+        <button
+          class="py-2 mx-2"
+          v-if="$store.state.total.awakenings > 0"
+          @click.prevent="showSleep = !showSleep"
+        >
+          Go dormant
+        </button>
+        <button
+          class="py-2 mx-2"
+          v-if="$store.getters['values']('evil.enabled')"
+          @click.prevent="showHarvest = !showHarvest"
+          :disabled="$store.state.total.harvests === 0 && $store.getters['values']('evil.buyMaxGetter')() === 0"
+        >
+          Harvest
+          <number-badge
+            unit="evil"
+            :value="$store.getters['values']('evil.buyMaxGetter')()"
+          > Evil</number-badge>
+        </button>
+      </section>
+      <section
+        class="my-3"
+        v-if="showHarvest"
+      >
+        <h2>Reap what you sow</h2>
+        <p v-if="$store.getters['values']('evil.buyMaxGetter')() < $store.state.total.evil">
+          <i>Warning: harvesting now won't yield many evil points. You may want to get more pain first.</i>
+        </p>
+        <p>
+          The pain of your preys shimmer in the crimson skies.
+        </p>
+        <p>
+          You could feed on it, grow in power and take over another realm. Or you could wait.
+        </p>
+        <p>
+          If you harvest now, you will:
+        </p>
+        <ul>
+          <li>
+            Lose
+            <number-badge
+              unit="pain"
+              :value="parseInt($store.state.harvest.pain)"
+            >
+              Pain
+            </number-badge>
+          </li>
+          <li>
+            Gain
+            <number-badge
+              unit="evil"
+              :value="$store.getters['values']('evil.buyMaxGetter')()"
+            > Evil</number-badge>
+          </li>
+          <li>
+            Lose your souls, legion and upgrades
+          </li>
+          <li>
+            Forget your path
+          </li>
+          <li>
+            Start again in another realm
+          </li>
+        </ul>
+        <p>
+          Each Evil point increase your Hunt power, Minions power
+          and the number of preys in your realm by
+          {{ formatNumber($store.getters['values']('evil.basePower') + 1, 'compact', '%') }}
+        </p>
+        <div class="stackable row">
+          <button @click.prevent="$store.commit('harvest', {evil: $store.getters['values']('evil.buyMaxGetter')()}); showHarvest = false">
+            Start the harvest
+          </button>
+          <button @click.prevent="showHarvest = false">
+            I am not done with this world
+          </button>
+        </div>
+      </section>
+      <section v-if="showSleep" class="my-3">
+        <h2>Everyone must rest</h2>
+        <p>
+          Maybe it's time for you to change paths and find new ways to play with your preys? 
+        </p>
+        <ul>
+          <li>Devour your legion and souls</li>
+          <li>Lose your upgrades</li>
+          <li>Take a new path</li>
+          <li>Wake up to a world full of preys</li>
+        </ul>
+        <div class="stackable row">
+          <button @click.prevent="showSleep = false; $store.commit('sleep')">
+            Go dormant for a while
+          </button>
+          <button @click.prevent="showSleep = false">
+            Stay awake
+          </button>
+        </div>
+      </section>
       <section v-if="$store.state.current.preys === 0" class="my-3">
         <h2>The world is empty</h2>
         <p>
           You have consumed all life in your world. Your legion wanders aimlessly.
           It is time for you to go dormant until the world heal and you can hunt again.
         </p>
-        <button @click.prevent="$store.commit('sleep')">
-          Devour your legion, souls and go dormant for a while
+        <ul>
+          <li>Devour your legion and souls</li>
+          <li>Lose your upgrades</li>
+          <li>Take a new path</li>
+          <li>Wake up to a world full of preys</li>
+        </ul>
+        <button @click.prevent="showSleep = false; $store.commit('sleep')">
+          Go dormant for a while
         </button>
       </section>
-      <section v-if="$store.state.total.souls > 0">
+      <section v-if="$store.state.harvest.souls > 0">
         <h2>Legion</h2>
         <div class="stackable row">
           <number-badge
@@ -143,7 +250,7 @@
             unit="souls"
             :value="parseInt($store.getters['values']('occultists.soulsPerTick'))"
           ></number-badge>
-          <template v-if="$store.getters['values']('occultists.painPerTick') > 0">
+          <template v-if="$store.getters['values']('pain.enabled') && $store.getters['values']('occultists.painPerTick') > 0">
             and
             <number-badge
               unit="pain"
@@ -220,6 +327,8 @@ export default {
     return {
       formatNumber,
       getComputedValue,
+      showHarvest: false,
+      showSleep: false,
       hotkeys: [
         {key: 'h', handler: () => { this.hunt()}},
         {key: 'u', handler: () => { this.buyMaxUpgrades()}},
@@ -314,7 +423,7 @@ export default {
         {
           hunts: 1,
           power: this.$store.getters['values']('hunt.power'),
-          pain: this.$store.getters['values']('hunt.pain'),
+          pain: this.$store.getters['values']('pain.enabled') ? this.$store.getters['values']('hunt.pain') : 0,
         }
       )
     },

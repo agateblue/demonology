@@ -98,12 +98,16 @@ export default {
           getter: (v) => { return v.length }
         },
       ]
-      if (this.$store.state.total.awakenings > 0) {
+      if (this.$store.state.total.awakenings > 0 || this.$store.state.settings.debug) {
         s.push({name: 'pain', label: 'Pain'})
       }
+      if (this.$store.state.total.evil > 0 || this.$store.state.settings.debug) {
+        s.push({name: 'evil', label: 'Evil'})
+      }
       if (this.$store.state.settings.debug) {
+        s.push({name: 'preys', label: 'Preys'})
         s.push({name: 'awakenings', label: 'Awakenings'})
-        s.push({name: 'harvest', label: 'Harvests'})
+        s.push({name: 'harvests', label: 'Harvests'})
       }
       return s
     },

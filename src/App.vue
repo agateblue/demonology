@@ -50,13 +50,19 @@
       <number-badge
         class="ml-4 float--right"
         unit="pain"
-        :value="parseInt($store.state.current.pain)"
+        :value="parseInt($store.state.harvest.pain)"
         v-if="$store.getters['values']('pain.enabled')"
       > Pain</number-badge>
+      <number-badge
+        class="ml-4 float--right"
+        unit="evil"
+        :value="parseInt($store.state.total.evil)"
+        v-if="$store.state.total.evil > 0"
+      > Evil</number-badge>
     </div>
     <router-view/>
     <div style="position: fixed; bottom: 1em; right: 1em" v-if="$store.state.settings.debug">
-      <button @click.prevent="$store.commit('reset')">
+      <button @click.prevent="$store.commit('hardReset')">
         Reset
       </button>
     </div>

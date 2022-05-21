@@ -28,6 +28,8 @@ export default {
         preys: '🐇',
         power: '💪',
         pain: '🌀',
+        evil: '🩸',
+
       },
       formatNumber
     }

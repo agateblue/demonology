@@ -142,21 +142,6 @@ describe('store', () => {
     mutations.lastTick(state, 4)
     expect(state.time.lastTick).toEqual(4)
   })
-  it('mutation reset', () => {
-    let state = getDefaultState()
-    state.settings.notation = 'noop' 
-    state.current.souls = 2
-    state.awakening.souls = 3
-    state.harvest.souls = 3
-    state.total.souls = 4
-
-    mutations.reset(state)
-    expect(state.current).toEqual(getDefaultState().current)
-    expect(state.awakening).toEqual(getDefaultState().awakening)
-    expect(state.harvest).toEqual(getDefaultState().harvest)
-    expect(state.total).toEqual(getDefaultState().total)
-    expect(state.settings.notation).toEqual('noop')
-  })
   it('mutation hardReset', () => {
     let state = getDefaultState()
     state.settings.notation = 'noop' 
@@ -269,6 +254,7 @@ describe('store', () => {
       'occultists.soulsPerTick': 12,
       'occultists.painPerTick': 3,
       'tick.duration': 1000,
+      'pain.enabled': true,
     }
     let getters = {values: fakeValues(values)}
     state.time.lastTick = 0
@@ -305,5 +291,29 @@ describe('store', () => {
     mutations.name(state, 'noop1')
 
     expect(state.current.name).toEqual('noop1')
+  })
+  it('mutation harvest', () => {
+    let state = getDefaultState()
+    state.current.souls = 5
+    state.current.name = 'noop'
+    state.awakening.souls = 10
+    state.harvest.souls = 3
+    state.total.awakenings = 1
+    state.total.evil = 12
+    state.total.souls = 50
+    state.total.harvests = 2
+
+    mutations.harvest(state, {evil: 12})
+
+    expect(state.current.souls).toEqual(0)
+    expect(state.harvest.souls).toEqual(0)
+    expect(state.awakening.souls).toEqual(0)
+    expect(state.current.awakenings).toEqual(0)
+    expect(state.harvest.awakenings).toEqual(0)
+    expect(state.awakening.awakenings).toEqual(0)
+    expect(state.total.souls).toEqual(50)
+    expect(state.total.evil).toEqual(24)
+    expect(state.total.harvests).toEqual(3)
+    expect(state.current.name).toEqual(null)
   })
 })
