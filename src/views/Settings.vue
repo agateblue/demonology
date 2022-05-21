@@ -1,7 +1,7 @@
 <template>
   <section class="narrow">
     <h1>Settings</h1>
-    <div class="checkbox field">
+    <div class="checkbox field" v-if="allowDebugMode">
       <input
         id="debug"
         name="debug"
@@ -44,6 +44,7 @@
 export default {
   data () {
     return {
+      allowDebugMode: process.env.NODE_ENV === 'development',
       hotkeys: [
         {key: '1', effect: 'Show Netherworld tab'},
         {key: '2', effect: 'Show Settings tab'},
