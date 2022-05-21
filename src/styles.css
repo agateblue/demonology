@@ -157,18 +157,21 @@ a.router-link-active {
   font-size: 120%;
 }
 
-.align-items--center {
-  display: flex;
-  align-items: center;
-}
 
-.justify-content--center {
-  display: flex;
-  justify-content: center;
-}
-.justify-content--space-between {
-  display: flex;
-  justify-content: space-between;
+@media screen and (min-width: 600px) {
+  .align-items--center {
+    display: flex;
+    align-items: center;
+  }
+  .justify-content--center {
+    display: flex;
+    justify-content: center;
+  }
+  .justify-content--space-between {
+    display: flex;
+    justify-content: space-between;
+  }
+
 }
 
 table {
@@ -444,7 +447,7 @@ hr {
 
 /* fire animation */
 #fire {
-  height: 75px;
+  height: 60px;
   width: auto;
 }
 
@@ -521,6 +524,7 @@ hr {
 
 .number-badge {
   font-family: monospace;
+  word-break: keep-all;
 }
 
 .number-badge .unit {

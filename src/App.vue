@@ -16,8 +16,8 @@
       <router-link class="discrete" to="/settings">Settings</router-link> ·
       <router-link class="discrete" to="/about">About</router-link>
     </nav>
-    <div class="text--center py-4">
-      <h1 class="mt-4">
+    <div class="text--center py-2">
+      <h1 class="mt-4 mb-2">
         <template v-if="!$store.state.current.name">Who am I?</template>
         <template v-else>
           I am {{ $store.getters['values']('names.current').name }}, {{ $store.getters['values']('names.current').title }} 
@@ -25,8 +25,12 @@
       </h1>
       <div class="align-items--center justify-content--center">
         <fire class="mr-4"></fire>
-        <div class="py-2" v-if="$store.getters['values']('prompts.current')">
-          <p v-for="(row, idx) in $store.getters['values']('prompts.current').text" :key="idx">
+        <div v-if="$store.getters['values']('prompts.current')">
+          <p
+            v-for="(row, idx) in $store.getters['values']('prompts.current').text"
+            :key="idx"
+            class="my-0"
+          >
             <i>
               {{ row }}
             </i>
@@ -34,27 +38,27 @@
         </div>
       </div>
     </div>
-    <div class="align-items--center justify-content--center mb-4 text--2">
+    <div class="align-items--center justify-content--center mt-4 mb-4 text--2 text--center">
       <number-badge
-        class="ml-4 float--right"
+        class="ml-4"
         unit="souls"
         :value="parseInt($store.state.current.souls)"
         v-if="$store.state.awakening.souls > 0"
       > Souls</number-badge>
       <number-badge
-        class="ml-4 float--right"
+        class="ml-4"
         unit="preys"
         :value="parseInt($store.state.current.preys)"
         v-if="$store.getters['values']('preys.enabled')"
       > Preys</number-badge>
       <number-badge
-        class="ml-4 float--right"
+        class="ml-4"
         unit="pain"
         :value="parseInt($store.state.harvest.pain)"
         v-if="$store.getters['values']('pain.enabled')"
       > Pain</number-badge>
       <number-badge
-        class="ml-4 float--right"
+        class="ml-4"
         unit="evil"
         :value="parseInt($store.state.total.evil)"
         v-if="$store.state.total.evil > 0"

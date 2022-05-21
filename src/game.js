@@ -211,7 +211,7 @@ export const PROMPTS = [
       "Something needs to be done",
     ],
     condition ({state}) {
-      return state.total.souls >= 1.5e7
+      return state.current.preys === 0
     }
   },
   {
