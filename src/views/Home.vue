@@ -262,11 +262,24 @@
           Buy all
         </button>
         <h2 class="mt-0">Upgrades</h2>
-        <template v-if="$store.getters['values']('upgrades.available').length > 0">
-          <div v-for="upgrade in $store.getters['values']('upgrades.available')" :key="upgrade.key">
+        <a
+          href=""
+          v-if="shownUpgrades === 'upgrades.available'"
+          @click.prevent="shownUpgrades = 'upgrades.active'">
+          Show active
+        </a>
+        <a
+          href=""
+          v-else
+          @click.prevent="shownUpgrades = 'upgrades.available'">
+          Show available
+        </a>
+        <template v-if="$store.getters['values'](shownUpgrades).length > 0">
+          <div v-for="upgrade in $store.getters['values'](shownUpgrades)" :key="upgrade.key">
             <hr>
             <div>
               <button
+                v-if="shownUpgrades === 'upgrades.available'"
                 class="float--right"
                 :disabled="$store.state.current.souls < upgrade.cost"
                 @click.prevent="$store.commit('purchaseUpgrade', {id: upgrade.id, cost: upgrade.cost })"
@@ -288,7 +301,10 @@
             </p>
           </div>
         </template>
-        <p v-else>No available upgrades. Try getting more souls.</p>
+        <template v-else>
+          <p v-if="shownUpgrades === 'upgrades.available'">No available upgrades. Try getting more souls.</p>
+          <p v-else>You haven't purchased any upgrade yet.</p>
+        </template>
       </section>
     </template>
   </div>
@@ -321,6 +337,7 @@ export default {
       getComputedValue,
       showHarvest: false,
       showSleep: false,
+      shownUpgrades: 'upgrades.available',
       hotkeys: [
         {key: 'h', handler: () => { this.hunt()}},
         {key: 'u', handler: () => { this.buyMaxUpgrades()}},
