@@ -8,7 +8,13 @@
           :colspan="$store.state.settings.debug ? 2 : 1"
           v-if="$store.state.settings.debug"
         >Current</th>
-        <th :colspan="$store.state.settings.debug ? 2 : 1">Awakening</th>
+        <th 
+          :colspan="$store.state.settings.debug ? 2 : 1"
+        >Awakening</th>
+        <th 
+          :colspan="$store.state.settings.debug ? 2 : 1"
+          v-if="$store.state.settings.debug"
+        >Harvest</th>
         <th
           :colspan="$store.state.settings.debug ? 2 : 1"
           v-if="$store.state.settings.debug"
@@ -18,7 +24,7 @@
         <tr
           v-for="stat in stats"
           :key="stat.label"
-          v-memo="[stat.id, getValue(stat, 'current'), getValue(stat, 'awakening')]"
+          v-memo="[stat.id, getValue(stat, 'current'), getValue(stat, 'awakening'), getValue(stat, 'harvest')]"
         >
           <td>{{ stat.label }}</td>
           <template v-for="column in columns" :key="column">
@@ -58,6 +64,7 @@ export default {
       values: {
         current: {},
         awakening: {},
+        harvest: {},
         total: {},
       }
     }
@@ -96,6 +103,7 @@ export default {
       }
       if (this.$store.state.settings.debug) {
         s.push({name: 'awakenings', label: 'Awakenings'})
+        s.push({name: 'harvest', label: 'Harvests'})
       }
       return s
     },
@@ -103,6 +111,7 @@ export default {
       let c = ["awakening"]
       if (this.$store.state.settings.debug) {
         c.unshift('current')
+        c.push('harvest')
         c.push('total')
       }
       return c

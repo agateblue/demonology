@@ -8,6 +8,7 @@ import {DEFAULT_VALUES, getValueGetter} from './game'
 function inc (state, {name, value}) {
   state.current[name] += value
   state.awakening[name] += value
+  state.harvest[name] += value
   state.total[name] += value
 }
 
@@ -16,12 +17,16 @@ export function getDefaultState () {
     time: {
       gameStart: (new Date()).getTime(),
       awakeningStart: (new Date()).getTime(),
+      harvestStart: (new Date()).getTime(),
       lastTick: (new Date()).getTime(),
     },
     current: {
       ...DEFAULT_VALUES
     },
     awakening: {
+      ...DEFAULT_VALUES
+    },
+    harvest: {
       ...DEFAULT_VALUES
     },
     total: {
@@ -64,6 +69,7 @@ export const mutations = {
   reset (state) {
     state.current = {...DEFAULT_VALUES}
     state.awakening = {...DEFAULT_VALUES}
+    state.harvest = {...DEFAULT_VALUES}
     state.total = {...DEFAULT_VALUES}
   },
   hardReset (state) {
@@ -94,6 +100,7 @@ export const mutations = {
     state.current.souls -= cost 
     state.current.upgrades = uniq([...state.current.upgrades, id])
     state.awakening.upgrades = uniq([...state.awakening.upgrades, id])
+    state.harvest.upgrades = uniq([...state.harvest.upgrades, id])
     state.total.upgrades = uniq([...state.total.upgrades, id])
   },
   setFromDebug (state, {namespace, name, value}) {

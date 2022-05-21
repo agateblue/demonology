@@ -92,6 +92,7 @@ export const DEFAULT_VALUES = {
   preys: 7.8e9,
   hunted: 0,
   awakenings: 0,
+  harvests: 0,
   pain: 0,
   evil: 0,
   upgrades: [],
@@ -583,7 +584,7 @@ export function getValueGetter(state) {
     'minions.costIncreaseFactor': () => {return 1.1},
     'minions.basePower': () => {return 1},
     'minions.enabled': () => {
-      return state.total.awakenings.total > 0 || state.total.souls >= get('minions.baseCost')
+      return state.total.awakenings > 0 || state.total.souls >= get('minions.baseCost')
     },
     'minions.cost': () => {
       return (state.awakening.minions + 1) * get('minions.baseCost')
@@ -632,7 +633,7 @@ export function getValueGetter(state) {
     'occultists.basePower': () => {return 0.5},
     'occultists.synergyPower': () => {return 1.1},
     'occultists.enabled': () => {
-      return state.total.awakenings.total > 0 || state.total.minions >= get('occultists.baseCost')
+      return state.total.awakenings > 0 || state.total.minions >= get('occultists.baseCost')
     },
     'occultists.cost': () => {
       return (state.awakening.occultists + 1) * get('occultists.baseCost')

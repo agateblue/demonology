@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="$store.state.total.awakenings > 0 && !$store.state.current.name">
+    <template v-if="$store.state.harvest.awakenings > 0 && !$store.state.current.name">
       <section class="text--center">
         <h2>Choose your path</h2>
         <p>Evil can take many forms. Choose wisely.</p>
