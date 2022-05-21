@@ -7,7 +7,7 @@ The game itself is free and [open-source](https://github.com/agateblue/demonolog
 ## Credits and inspirations
 
 - [Deepak K Vijayan](https://codepen.io/2xsamurai/pen/EKpYMg) for the flame animation
-- [entropyqueen_](https://twitter.com/entropyqueen_) and [99klnd](https://www.reddit.com/r/incremental_games/comments/99klnd/tutorial_and_questions_finding_cost_cumulative/) for the math
+- [entropyqueen_](https://twitter.com/entropyqueen_), [99klnd](https://www.reddit.com/r/incremental_games/comments/99klnd/tutorial_and_questions_finding_cost_cumulative/) and [Shack_Man](https://www.reddit.com/r/incremental_games/comments/fxw3w2/comment/fmxexno/?context=3) for the math
 - [IM Fell English SC](https://fonts.google.com/specimen/IM+Fell+English+SC) for the title font
 - [Roboto Slab](https://fonts.google.com/specimen/Roboto+Slab) for the body font
 - [Grimoire Incremental](https://play.google.com/store/apps/details?id=com.dragonmegaliths.grimoire)
