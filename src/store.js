@@ -101,7 +101,7 @@ export const mutations = {
     state[namespace][name] = value
   },
   sleep (state) {
-    state.current = getDefaultValues({evilPower: GET('evil.power')})
+    state.current = getDefaultValues({evilPower: GET('evil.power'), currentPreys: state.current.preys})
     state.awakening = {...state.current}
     state.harvest.awakenings += 1
     state.total.awakenings += 1
@@ -116,6 +116,9 @@ export const mutations = {
     state.awakening = {...state.current}
     state.harvest = {...state.current}
   },
+  breed (state, {rate}) {
+    state.current.preys += state.current.preys * rate
+  }
 }
 
 export const actions = {
@@ -123,6 +126,10 @@ export const actions = {
     let elapsed = to - state.time.lastTick
     let ticks = elapsed / getters.values('tick.duration')
     if (ticks > 0) {
+      if (getters.values('preys.breedingRate') > 0 && state.current.preys > 0) {
+        let rate = getters.values('preys.breedingRate') * ticks
+        commit('breed', {rate})
+      }
       if (getters.values('occultists.soulsPerTick') > 0) {
         let power = getters.values('occultists.soulsPerTick') * ticks
         let pain = getters.values('pain.enabled') ? getters.values('occultists.painPerTick') * ticks : 0

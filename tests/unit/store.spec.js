@@ -247,14 +247,24 @@ describe('store', () => {
 
     expect(state.awakening.souls).toEqual(2)
   })
+  it('mutation breed', () => {
+    let state = getDefaultState()
+    state.current.preys = 10
+
+    mutations.breed(state, {rate: 0.1})
+
+    expect(state.current.preys).toEqual(11)
+  })
   it('actions tick with occultists', () => {
     let commit = jest.fn()
     let state = getDefaultState()
+    state.current.preys = 10
     let values = {
       'occultists.soulsPerTick': 12,
       'occultists.painPerTick': 3,
       'tick.duration': 1000,
       'pain.enabled': true,
+      'preys.breedingRate': 0.1,
     }
     let getters = {values: fakeValues(values)}
     state.time.lastTick = 0
@@ -262,12 +272,17 @@ describe('store', () => {
     actions.tick({commit, getters, state}, to)
 
     expect(commit.mock.calls[0]).toEqual(
+      ['breed', {
+        rate: 0.1 * 5
+      }]
+    )
+    expect(commit.mock.calls[1]).toEqual(
       ['gatherSouls', {
         power: 5 * values['occultists.soulsPerTick'],
         pain: 5 * values['occultists.painPerTick'],
       }]
     )
-    expect(commit.mock.calls[1]).toEqual(['lastTick', to])
+    expect(commit.mock.calls[2]).toEqual(['lastTick', to])
   })
   it('mutation sleep', () => {
     let state = getDefaultState()
@@ -284,6 +299,14 @@ describe('store', () => {
     expect(state.awakening.souls).toEqual(0)
     expect(state.total.souls).toEqual(50)
     expect(state.total.awakenings).toEqual(1)
+  })
+  it('mutation sleep existing preys', () => {
+    let state = getDefaultState()
+    state.current.preys = 1e19
+
+    mutations.sleep(state)
+
+    expect(state.current.preys).toEqual(1e19)
   })
   it('mutation name', () => {
     let state = getDefaultState()

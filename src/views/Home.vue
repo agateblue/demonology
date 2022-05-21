@@ -235,7 +235,7 @@
             ></purchase-button>
           </div>
           <p v-if="$store.state.current.occultists > 0">
-            Your occultists channel your legion into the mortal realm, granting you
+            Your occultists channel your legion's power into the mortal realm, granting you
             <number-badge
               unit="souls"
               :value="parseInt($store.getters['values']('occultists.soulsPerTick'))"

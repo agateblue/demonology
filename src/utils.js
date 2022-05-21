@@ -18,6 +18,9 @@ export function formatNumber (n, notation = 'default', valueFormat = null) {
     n = (n - 1) * 100
     suffix = ' %'
   }
+  if (valueFormat === 'raw%') {
+    suffix = ' %'
+  }
   let f = NOTATIONS[notation]
   return f.format(n) + suffix
 }
