@@ -54,9 +54,11 @@ export default {
         {key: 'm', effect: 'Purchase 1 minion'},
         {key: 'ctrl+m', effect: 'Purchase 10 minions'},
         {key: 'shift+m', effect: 'Purchase 100 minions'},
+        {key: 'ctrl+shift+m', effect: 'Purchase max minions'},
         {key: 'o', effect: 'Purchase 1 occultist'},
         {key: 'ctrl+o', effect: 'Purchase 10 occultists'},
         {key: 'shift+o', effect: 'Purchase 100 occultists'},
+        {key: 'ctrl+shift+o', effect: 'Purchase max occultists'},
         {key: 'ctrl+d', effect: 'Enable/disable debug mode'},
       ]
     }

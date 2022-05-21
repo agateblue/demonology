@@ -80,6 +80,7 @@
             <th class="text--center text--monospace">x1</th>
             <th class="text--center text--monospace">x10</th>
             <th class="text--center text--monospace">x100</th>
+            <th class="text--center text--monospace">Max</th>
           </thead>
           <tbody>
             <tr v-if="$store.getters['values']('minions.enabled')">
@@ -94,6 +95,15 @@
                   @purchase="$store.commit('purchase', {name: 'minions', quantity: $event.quantity, cost: $event.cost })"
                 ></purchase-button>
               </td>
+              <td>
+                <purchase-button
+                  class="fluid"
+                  :quantity="'max'"
+                  :cost-getter="$store.getters['values']('minions.costGetter')"
+                  :max-quantity-getter="$store.getters['values']('minions.buyMaxGetter')"
+                  @purchase="$store.commit('purchase', {name: 'minions', quantity: $event.quantity, cost: $event.cost })"
+                ></purchase-button>
+              </td>
             </tr>
             <tr v-if="$store.getters['values']('occultists.enabled')">
               <td>
@@ -104,6 +114,15 @@
                   class="fluid"
                   :quantity="quantity"
                   :cost-getter="$store.getters['values']('occultists.costGetter')"
+                  @purchase="$store.commit('purchase', {name: 'occultists', quantity: $event.quantity, cost: $event.cost })"
+                ></purchase-button>
+              </td>
+              <td>
+                <purchase-button
+                  class="fluid"
+                  :quantity="'max'"
+                  :cost-getter="$store.getters['values']('occultists.costGetter')"
+                  :max-quantity-getter="$store.getters['values']('occultists.buyMaxGetter')"
                   @purchase="$store.commit('purchase', {name: 'occultists', quantity: $event.quantity, cost: $event.cost })"
                 ></purchase-button>
               </td>
@@ -228,6 +247,15 @@ export default {
             costGetter: this.$store.getters['values']('minions.costGetter')
           })
         }},
+        {key: 'ctrl+shift+m', handler: () => {
+          let buyable = this.$store.getters['values']('minions.buyMaxGetter')()
+          purchase({
+            store: this.$store,
+            unit: 'minions',
+            quantity: buyable,
+            costGetter: this.$store.getters['values']('minions.costGetter')
+          })
+        }},
         {key: 'o', handler: () => {
           purchase({
             store: this.$store,
@@ -249,6 +277,15 @@ export default {
             store: this.$store,
             unit: 'occultists',
             quantity: 100,
+            costGetter: this.$store.getters['values']('occultists.costGetter')
+          })
+        }},
+        {key: 'ctrl+shift+o', handler: () => {
+          let buyable = this.$store.getters['values']('occultists.buyMaxGetter')()
+          purchase({
+            store: this.$store,
+            unit: 'occultists',
+            quantity: buyable,
             costGetter: this.$store.getters['values']('occultists.costGetter')
           })
         }},

@@ -3,6 +3,7 @@ import {
   getArithmeticCumulativeCost,
   getGeometricNCost,
   getGeometricCumulativeCost,
+  getGeometricMaxBuyable,
 } from '@/game'
 
 describe('game', () => {
@@ -45,5 +46,17 @@ describe('game', () => {
     expect(getGeometricCumulativeCost({start: 3, quantity: 1, base: 10, increaseFactor: 2})).toEqual(80)
     expect(getGeometricCumulativeCost({start: 3, quantity: 2, base: 10, increaseFactor: 2})).toEqual(240)
     expect(getGeometricCumulativeCost({start: 3, quantity: 3, base: 10, increaseFactor: 2})).toEqual(560)
+  })
+  it('getGeometricMaxBuyable', () => {
+    expect(getGeometricMaxBuyable({start: 0, available: 9, base: 10, increaseFactor: 2})).toEqual(0)
+    expect(getGeometricMaxBuyable({start: 0, available: 10, base: 10, increaseFactor: 2})).toEqual(1)
+    expect(getGeometricMaxBuyable({start: 0, available: 30, base: 10, increaseFactor: 2})).toEqual(2)
+    expect(getGeometricMaxBuyable({start: 0, available: 70, base: 10, increaseFactor: 2})).toEqual(3)
+  })
+  it('getGeometricMaxBuyable start offset', () => {
+    expect(getGeometricMaxBuyable({start: 1, available: 10, base: 10, increaseFactor: 2})).toEqual(0)
+    expect(getGeometricMaxBuyable({start: 1, available: 30, base: 10, increaseFactor: 2})).toEqual(1)
+    expect(getGeometricMaxBuyable({start: 1, available: 70, base: 10, increaseFactor: 2})).toEqual(2)
+    expect(getGeometricMaxBuyable({start: 2, available: 120, base: 10, increaseFactor: 2})).toEqual(2)
   })
 })

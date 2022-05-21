@@ -59,6 +59,19 @@ export function getGeometricCumulativeCost ({start, quantity, base, increaseFact
     increaseFactor
   })
 }
+export function getGeometricMaxBuyable ({start, available, base, increaseFactor}) {
+  // from https://blog.kongregate.com/the-math-of-idle-games-part-i/
+  let basePrice = base
+  let expo = increaseFactor
+  let unitsOwned = start
+  let topHalf = available * (expo - 1)
+  let bottomHalf = (expo ** unitsOwned) * basePrice
+  let step = topHalf / bottomHalf + 1
+  let logged = Math.log(step) / Math.log(expo)
+  let maxBuys = Math.floor(logged)
+
+  return maxBuys
+}
 
 export function* getBuyableUpgrades(availableUpgrades, availableSouls) {
   let remaining = availableSouls
@@ -542,6 +555,20 @@ export function getValueGetter(state) {
   }
 
   let config = {
+    'evil.baseCost': () => {return 1e6},
+    'evil.costIncreaseFactor': () => {return 1.2},
+    'evil.basePower': () => {return 1},
+    'evil.costGetter': () => {
+      return (quantity) => {
+        let cost = getGeometricCumulativeCost({
+          start: state.awakening.occultists,
+          base: get('evil.baseCost'),
+          increaseFactor: get('evil.costIncreaseFactor'),
+          quantity,
+        })
+        return {value: parseInt(cost), unit: 'pain'}
+      }
+    },
     'hunt.basePower': () => {return 1},
     'hunt.power': () => {
       return get("hunt.basePower") + get('minions.power.total')
@@ -570,6 +597,18 @@ export function getValueGetter(state) {
           quantity,
         })
         return {value: parseInt(cost), unit: 'souls'}
+      }
+    },
+    'minions.buyMaxGetter': () => {
+      return () => {
+
+        let buyable = getGeometricMaxBuyable({
+          start: state.current.minions,
+          base: get('minions.baseCost'),
+          increaseFactor: get('minions.costIncreaseFactor'),
+          available: parseInt(state.current.souls)
+        })
+        return buyable
       }
     },
     'minions.power': () => {
@@ -607,6 +646,18 @@ export function getValueGetter(state) {
           quantity,
         })
         return {value: parseInt(cost), unit: 'minions'}
+      }
+    },
+    'occultists.buyMaxGetter': () => {
+      return () => {
+
+        let buyable = getGeometricMaxBuyable({
+          start: state.current.occultists,
+          base: get('occultists.baseCost'),
+          increaseFactor: get('occultists.costIncreaseFactor'),
+          available: parseInt(state.current.minions)
+        })
+        return buyable
       }
     },
     'occultists.soulsPerTick': () => {
