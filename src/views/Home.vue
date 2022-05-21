@@ -266,13 +266,13 @@
           href=""
           v-if="shownUpgrades === 'upgrades.available'"
           @click.prevent="shownUpgrades = 'upgrades.active'">
-          Show active
+          Show active upgrades
         </a>
         <a
           href=""
           v-else
           @click.prevent="shownUpgrades = 'upgrades.available'">
-          Show available
+          Show available upgrades
         </a>
         <template v-if="$store.getters['values'](shownUpgrades).length > 0">
           <div v-for="upgrade in $store.getters['values'](shownUpgrades)" :key="upgrade.key">
