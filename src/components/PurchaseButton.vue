@@ -1,14 +1,18 @@
 <template>
   <button @click.prevent="submit" :disabled="!canPurchase">
-    <number-badge
-      v-if="quantity === 'max'"
-      :value="realQuantity"
-    ></number-badge>
-    <number-badge
-      v-else
-      :value="cost.value"
-      :unit="cost.unit"
-    ></number-badge>
+    <template v-if="quantity === 'max'">
+      Max (<number-badge
+        :value="realQuantity"
+      ></number-badge>)
+    </template>
+    <template v-else>
+      {{ realQuantity }} for
+      <number-badge
+        
+        :value="cost.value"
+        :unit="cost.unit"
+      ></number-badge>
+    </template>
   </button>
 </template>
 

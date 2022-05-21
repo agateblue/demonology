@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="$store.state.harvest.awakenings > 0 && !$store.state.current.name">
-      <section class="text--center">
+      <section class="narrow text--center">
         <h2>Choose your path</h2>
         <p>Evil can take many forms. Choose wisely.</p>
         <div class="stackable row">
@@ -70,7 +70,7 @@
         </button>
       </section>
       <section
-        class="my-3"
+        class="narrow my-3"
         v-if="showHarvest"
       >
         <h2>Reap what you sow</h2>
@@ -127,7 +127,7 @@
           </button>
         </div>
       </section>
-      <section v-if="showSleep" class="my-3">
+      <section v-if="showSleep" class="narrow my-3">
         <h2>Everyone must rest</h2>
         <p>
           Maybe it's time for you to change paths and find new ways to play with your preys? 
@@ -147,7 +147,7 @@
           </button>
         </div>
       </section>
-      <section v-if="$store.state.current.preys === 0" class="my-3">
+      <section v-if="$store.state.current.preys === 0" class="narrow my-3">
         <h2>The world is empty</h2>
         <p>
           You have consumed all life in your world. Your legion wanders aimlessly.
@@ -163,105 +163,92 @@
           Go dormant for a while
         </button>
       </section>
-      <section v-if="$store.state.harvest.souls > 0">
+      <section v-if="$store.state.harvest.souls > 0" class="narrow">
         <h2>Legion</h2>
-        <div class="stackable row">
-          <number-badge
-            unit="power"
-            :value="parseInt($store.getters['values']('hunt.power'))"
-          > Hunt power</number-badge>
-          <number-badge
-            unit="minions"
-            :value="parseInt($store.state.current.minions)"
-            v-if="$store.state.current.minions > 0"
-          > Minions</number-badge>
-          <number-badge
-            unit="occultists"
-            :value="parseInt($store.state.current.occultists)"
-            v-if="$store.state.current.occultists > 0"
-          > Occultists</number-badge>
-        </div>
-        <table class="my-4" v-if="$store.getters['values']('minions.enabled') || $store.getters['values']('occultists.enabled')">
-          <thead>
-            <th>Action</th>
-            <th class="text--center text--monospace">x1</th>
-            <th class="text--center text--monospace">x10</th>
-            <th class="text--center text--monospace">x100</th>
-            <th class="text--center text--monospace">Max</th>
-          </thead>
-          <tbody>
-            <tr v-if="$store.getters['values']('minions.enabled')">
-              <td>
-                Turn preys into Minions 
-              </td>
-              <td v-for="quantity in [1, 10, 100]" :key="quantity">
-                <purchase-button
-                  class="fluid"
-                  :quantity="quantity"
-                  :cost-getter="$store.getters['values']('minions.costGetter')"
-                  @purchase="$store.commit('purchase', {name: 'minions', quantity: $event.quantity, cost: $event.cost })"
-                ></purchase-button>
-              </td>
-              <td>
-                <purchase-button
-                  class="fluid"
-                  :quantity="'max'"
-                  :cost-getter="$store.getters['values']('minions.costGetter')"
-                  :max-quantity-getter="$store.getters['values']('minions.buyMaxGetter')"
-                  @purchase="$store.commit('purchase', {name: 'minions', quantity: $event.quantity, cost: $event.cost })"
-                ></purchase-button>
-              </td>
-            </tr>
-            <tr v-if="$store.getters['values']('occultists.enabled')">
-              <td>
-                Turn preys into Occultists 
-              </td>
-              <td v-for="quantity in [1, 10, 100]" :key="quantity">
-                <purchase-button
-                  class="fluid"
-                  :quantity="quantity"
-                  :cost-getter="$store.getters['values']('occultists.costGetter')"
-                  @purchase="$store.commit('purchase', {name: 'occultists', quantity: $event.quantity, cost: $event.cost })"
-                ></purchase-button>
-              </td>
-              <td>
-                <purchase-button
-                  class="fluid"
-                  :quantity="'max'"
-                  :cost-getter="$store.getters['values']('occultists.costGetter')"
-                  :max-quantity-getter="$store.getters['values']('occultists.buyMaxGetter')"
-                  @purchase="$store.commit('purchase', {name: 'occultists', quantity: $event.quantity, cost: $event.cost })"
-                ></purchase-button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <p v-if="$store.state.current.minions > 0">
-          Your legion improves your power by
-          <number-badge
-            unit="power"
-            :value="parseInt($store.getters['values']('minions.power.total'))"
-          >
-          </number-badge>.
-        </p>
-        <p v-if="$store.state.current.occultists > 0">
-          Your occultists channel your legion into the mortal realm, granting you
-          <number-badge
-            unit="souls"
-            :value="parseInt($store.getters['values']('occultists.soulsPerTick'))"
-          ></number-badge>
-          <template v-if="$store.getters['values']('pain.enabled') && $store.getters['values']('occultists.painPerTick') > 0">
-            and
+        <number-badge
+          unit="power"
+          :value="parseInt($store.getters['values']('hunt.power'))"
+        > Hunt power</number-badge>
+        <number-badge
+          unit="minions"
+          class="ml-4"
+          :value="parseInt($store.state.current.minions)"
+          v-if="$store.state.current.minions > 0"
+        > Minions</number-badge>
+        <number-badge
+          unit="occultists"
+          class="ml-4"
+          :value="parseInt($store.state.current.occultists)"
+          v-if="$store.state.current.occultists > 0"
+        > Occultists</number-badge>
+        <div v-if="$store.getters['values']('minions.enabled')" class="mt-4">
+          <hr>
+          <h3>
+            Turn preys into Minions 
+          </h3>
+          <p v-if="$store.state.current.minions > 0">
+            Your legion improves your power by
             <number-badge
-              unit="pain"
-              :value="parseInt($store.getters['values']('occultists.painPerTick'))"
+              unit="power"
+              :value="parseInt($store.getters['values']('minions.power.total'))"
+            >
+            </number-badge>.
+          </p>
+          <div class="stackable row">
+            <purchase-button
+              v-for="quantity in [1, 10, 100]"
+              :key="quantity"
+              :quantity="quantity"
+              :cost-getter="$store.getters['values']('minions.costGetter')"
+              @purchase="$store.commit('purchase', {name: 'minions', quantity: $event.quantity, cost: $event.cost })"
+            ></purchase-button>
+            <purchase-button
+              :quantity="'max'"
+              :cost-getter="$store.getters['values']('minions.costGetter')"
+              :max-quantity-getter="$store.getters['values']('minions.buyMaxGetter')"
+              @purchase="$store.commit('purchase', {name: 'minions', quantity: $event.quantity, cost: $event.cost })"
+            ></purchase-button>
+          </div>
+        </div>
+        <div v-if="$store.getters['values']('occultists.enabled')" class="mt-4">
+          <hr>
+          <h3>
+            Turn preys into Occultists 
+          </h3>
+          <p v-if="$store.state.current.occultists > 0">
+            Your occultists channel your legion into the mortal realm, granting you
+            <number-badge
+              unit="souls"
+              :value="parseInt($store.getters['values']('occultists.soulsPerTick'))"
             ></number-badge>
+            <template v-if="$store.getters['values']('pain.enabled') && $store.getters['values']('occultists.painPerTick') > 0">
+              and
+              <number-badge
+                unit="pain"
+                :value="parseInt($store.getters['values']('occultists.painPerTick'))"
+              ></number-badge>
 
-          </template>
-           every second.
-        </p>    
+            </template>
+            every second.
+          </p>    
+          <div class="stackable row">
+            <purchase-button
+              v-for="quantity in [1, 10, 100]"
+              :key="quantity"
+              :quantity="quantity"
+              :cost-getter="$store.getters['values']('occultists.costGetter')"
+              @purchase="$store.commit('purchase', {name: 'occultists', quantity: $event.quantity, cost: $event.cost })"
+            ></purchase-button>
+            <purchase-button
+              :quantity="'max'"
+              :cost-getter="$store.getters['values']('occultists.costGetter')"
+              :max-quantity-getter="$store.getters['values']('occultists.buyMaxGetter')"
+              @purchase="$store.commit('purchase', {name: 'occultists', quantity: $event.quantity, cost: $event.cost })"
+            ></purchase-button>
+          </div>
+        </div>
       </section>
-      <section class="my-3" v-if="$store.getters['values']('upgrades.enabled')">
+      <section class="narrow my-3" v-if="$store.getters['values']('upgrades.enabled')">
         <button
           class="float--right"
           @click.prevent="buyMaxUpgrades"
