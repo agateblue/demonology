@@ -517,7 +517,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "controller.society.1",
-    group: "Flock society",
+    group: "Flock civilivization",
     name: "Fear",
     description: "Increase occultists power over your flock by ${value}",
     available: all(
@@ -533,7 +533,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "controller.society.2",
-    group: "Flock society",
+    group: "Flock civilivization",
     name: "Faith",
     description: "Increase occultists power over your flock by ${value}",
     available: all(
@@ -549,7 +549,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "controller.society.3",
-    group: "Flock society",
+    group: "Flock civilivization",
     name: "Sacrifices",
     description: "Increase occultists power over your flock by ${value}",
     available: all(
@@ -565,7 +565,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "controller.society.4",
-    group: "Flock society",
+    group: "Flock civilivization",
     name: "Breeding",
     description: "Encourage breeding among your flock, increasing its size by ${value} per second",
     available: all(
@@ -580,7 +580,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "controller.society.5",
-    group: "Flock society",
+    group: "Flock civilivization",
     name: "Gender",
     description: "Increased the amount of pain generated from your flock by ${value} per second",
     available: all(
