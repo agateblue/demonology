@@ -187,6 +187,7 @@
           </div>
         </div>
         <div v-if="$store.getters['values']('minions.enabled')" class="mt-3">
+          <hr>
           <h3>
             Turn prey into Minions 
           </h3>
@@ -254,30 +255,32 @@
       </section>
       <section class="narrow my-3" v-if="$store.getters['values']('upgrades.enabled')">
         <button
-          class="float--right"
+          class="float--right ml-4"
           @click.prevent="buyMaxUpgrades"
           v-if="$store.state.total.upgrades.length >= 3"
           :disabled="!canBuyMaxUpgrades"
         >
           Buy all
         </button>
-        <h2 class="mt-0">Upgrades</h2>
         <a
           href=""
+          class="float--right mt-1"
           v-if="shownUpgrades === 'upgrades.available'"
           @click.prevent="shownUpgrades = 'upgrades.active'">
           Show active upgrades
         </a>
         <a
           href=""
+          class="float--right mt-1"
           v-else
           @click.prevent="shownUpgrades = 'upgrades.available'">
           Show available upgrades
         </a>
+        <h2 class="mt-0">Upgrades</h2>
+        <hr>
         <template v-if="$store.getters['values'](shownUpgrades).length > 0">
           <div v-for="upgrade in $store.getters['values'](shownUpgrades)" :key="upgrade.key">
-            <hr>
-            <div>
+            <div class="mt-4">
               <button
                 v-if="shownUpgrades === 'upgrades.available'"
                 class="float--right"

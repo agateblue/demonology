@@ -8,19 +8,20 @@
   --body-width: 800px;
   --narrow-width: 650px;
   --tiny-width: 450px;
-  --body-background: #400000;
+  --body-background-color-1: #160000;
+  --body-background-color-2: #200000;
   --body-color: gainsboro;
   --body-font-family: Roboto Slab, serif;
   --header-font-family: IfFellEnglishSC-Regular, serif;
   --monospace-font-family: monospace;
-  --accent-color: crimson;
+  --accent-color: #990000;
 
   --border-color: rgba(255, 255, 255, 0.1);
   --border-radius: 3px;
 
-  --button-background: #900000;
+  --button-background: #4F0000;
 
-  --link-color: crimson;
+  --link-color: var(--accent-color);
   --link-discrete-color: var(--body-color);
 
   --fire-main-color: darkorange;
@@ -54,7 +55,7 @@ html {
 body {
   margin: 0;
   color: var(--body-color);
-  background-color: var(--body-background);
+  background: linear-gradient(var(--body-background-color-1), var(--body-background-color-2));
   padding: var(--spacing-2);
 }
 section {
@@ -65,7 +66,7 @@ section {
   width: 100%;
 }
 section:not(.transparent) {
-  background-color: rgba(255, 255, 255, 0.1);
+  /* background-color: rgba(255, 255, 255, 0.1); */
 }
 body > * {
   margin: 0 auto;
@@ -188,7 +189,7 @@ table {
   border-spacing: 0;
 }
 tr:hover td {
-  background-color: var(--body-background);
+  background-color: var(--body-background-color-2);
 }
 td, th {
   padding: var(--spacing-2);
