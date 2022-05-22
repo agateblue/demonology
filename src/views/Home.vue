@@ -27,7 +27,7 @@
           @click.prevent="hunt"
           :disabled="$store.state.current.prey === 0"
         >
-          <div class="text--1 mb-1">Hunt some prey</div>
+          <div class="text--1 mb-1">Hunt</div>
           <number-badge
             unit="souls"
             :value="parseInt($store.getters['values']('hunt.power'))"
@@ -305,7 +305,7 @@
           </div>
         </template>
         <template v-else>
-          <p v-if="shownUpgrades === 'upgrades.available'">No available upgrades. Try getting more souls.</p>
+          <p v-if="shownUpgrades === 'upgrades.available'">No available upgrades. Try to get more souls or expand your legion to unlock new upgrades.</p>
           <p v-else>You haven't purchased any upgrade yet.</p>
         </template>
       </section>
