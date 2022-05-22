@@ -50,6 +50,7 @@
 html {
   scroll-behavior: smooth;
   font-family: var(--body-font-family);
+  background: var(--body-background-color-1);
 }
 
 body {
