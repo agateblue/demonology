@@ -73,7 +73,12 @@
           </tr>
           <tr v-for="value in debugValues" :key="value.key" class="text--monospace">
             <td>{{ value.key }}</td>
-            <td class="text--right">{{ formatNumber(value.value.toFixed(3)) }}</td>
+            <td class="text--right">
+              <template v-if="typeof value.value === 'number'">
+                {{ formatNumber(value.value.toFixed(3)) }}
+              </template>
+              <template v-else>{{ value.value }}</template>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -222,7 +227,7 @@ export default {
       }
       for (const key of keys) {
         let value = this.$store.getters['values'](key)
-        if (typeof value === 'number') {
+        if (typeof value === 'number' || typeof value === 'boolean' || typeof value === 'string') {
           v.push({key, value})
         }
       }
