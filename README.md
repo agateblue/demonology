@@ -1,6 +1,6 @@
 # Demonology
 
-An incremental game about harvesting souls and growing in power.
+An incremental game about souls harvesting and growing evil.
 
 Play it at https://demonology.agate.blue/
 
