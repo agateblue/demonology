@@ -47,10 +47,10 @@
       > Souls</number-badge>
       <number-badge
         class="ml-4"
-        unit="preys"
-        :value="parseInt($store.state.current.preys)"
-        v-if="$store.getters['values']('preys.enabled')"
-      > Preys</number-badge>
+        unit="prey"
+        :value="parseInt($store.state.current.prey)"
+        v-if="$store.getters['values']('prey.enabled')"
+      > Prey</number-badge>
       <number-badge
         class="ml-4"
         unit="pain"

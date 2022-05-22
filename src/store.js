@@ -44,12 +44,12 @@ export const mutations = {
     inc(state, {name, value})
   },
   gatherSouls (state, {hunts = 0, power, pain = 0}) {
-    let available = state.current.preys
+    let available = state.current.prey
     let gathered = Math.min(power, available)
     let ratio = gathered / power
 
     if (gathered <= 0) {
-      console.log("No more preys to gather")
+      console.log("No more prey to gather")
       return
     }
     inc(state, {name: 'souls', value: gathered})
@@ -61,7 +61,7 @@ export const mutations = {
       inc(state, {name: 'pain', value: pain * ratio})
     }
     
-    state.current.preys -= gathered
+    state.current.prey -= gathered
   },
   lastTick (state, time) {
     state.time.lastTick = time
@@ -101,7 +101,7 @@ export const mutations = {
     state[namespace][name] = value
   },
   sleep (state) {
-    state.current = getDefaultValues({evilPower: GET('evil.power'), currentPreys: state.current.preys})
+    state.current = getDefaultValues({evilPower: GET('evil.power'), currentPrey: state.current.prey})
     state.awakening = {...state.current}
     state.harvest.awakenings += 1
     state.total.awakenings += 1
@@ -117,7 +117,7 @@ export const mutations = {
     state.harvest = {...state.current}
   },
   breed (state, {rate}) {
-    state.current.preys += state.current.preys * rate
+    state.current.prey += state.current.prey * rate
   }
 }
 
@@ -126,8 +126,8 @@ export const actions = {
     let elapsed = to - state.time.lastTick
     let ticks = elapsed / getters.values('tick.duration')
     if (ticks > 0) {
-      if (getters.values('preys.breedingRate') > 0 && state.current.preys > 0) {
-        let rate = getters.values('preys.breedingRate') * ticks
+      if (getters.values('prey.breedingRate') > 0 && state.current.prey > 0) {
+        let rate = getters.values('prey.breedingRate') * ticks
         commit('breed', {rate})
       }
       if (getters.values('occultists.soulsPerTick') > 0) {

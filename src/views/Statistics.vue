@@ -78,7 +78,7 @@ export default {
         },
         {
           name: "hunted",
-          label: "Hunted preys"
+          label: "Hunted prey"
         },
         {
           name: "souls",
@@ -105,7 +105,7 @@ export default {
         s.push({name: 'evil', label: 'Evil'})
       }
       if (this.$store.state.settings.debug) {
-        s.push({name: 'preys', label: 'Preys'})
+        s.push({name: 'prey', label: 'Prey'})
         s.push({name: 'awakenings', label: 'Awakenings'})
         s.push({name: 'harvests', label: 'Harvests'})
       }

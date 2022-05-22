@@ -25,7 +25,7 @@ export default {
         souls: '⚱️',
         minions: '😈',
         occultists: '🕯️',
-        preys: '🐇',
+        prey: '🐇',
         power: '💪',
         pain: '🌀',
         evil: '🩸',

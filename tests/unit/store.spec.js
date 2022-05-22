@@ -26,7 +26,7 @@ describe('store', () => {
   })
   it('mutation gatherSouls', () => {
     let state = getDefaultState()
-    state.current.preys = 21
+    state.current.prey = 21
     state.current.souls = 0
     state.current.hunted = 2
     state.current.pain = 20
@@ -41,7 +41,7 @@ describe('store', () => {
     state.total.pain = 30
 
     mutations.gatherSouls(state, {hunts: 1, power: 10, pain: 5})
-    expect(state.current.preys).toEqual(11)
+    expect(state.current.prey).toEqual(11)
     expect(state.current.souls).toEqual(10)
     expect(state.current.hunted).toEqual(12)
     expect(state.current.pain).toEqual(25)
@@ -57,7 +57,7 @@ describe('store', () => {
   })
   it('mutation gatherSouls not hunt', () => {
     let state = getDefaultState()
-    state.current.preys = 21
+    state.current.prey = 21
     state.current.souls = 0
     state.current.hunted = 2
     state.awakening.souls = 3
@@ -69,7 +69,7 @@ describe('store', () => {
 
 
     mutations.gatherSouls(state, {power: 10})
-    expect(state.current.preys).toEqual(11)
+    expect(state.current.prey).toEqual(11)
     expect(state.current.souls).toEqual(10)
     expect(state.current.hunted).toEqual(2)
     expect(state.awakening.souls).toEqual(13)
@@ -81,9 +81,9 @@ describe('store', () => {
     expect(state.total.souls).toEqual(14)
     expect(state.total.hunted).toEqual(9)
   })
-  it('mutation gatherSouls does nothing if no more preys', () => {
+  it('mutation gatherSouls does nothing if no more prey', () => {
     let state = getDefaultState()
-    state.current.preys = 0
+    state.current.prey = 0
     state.current.souls = 0
     state.current.hunted = 2
     state.awakening.souls = 3
@@ -94,7 +94,7 @@ describe('store', () => {
     state.total.hunted = 9
 
     mutations.gatherSouls(state, {hunts: 1, power: 10})
-    expect(state.current.preys).toEqual(0)
+    expect(state.current.prey).toEqual(0)
     expect(state.current.souls).toEqual(0)
     expect(state.current.hunted).toEqual(2)
     expect(state.awakening.souls).toEqual(3)
@@ -106,7 +106,7 @@ describe('store', () => {
   })
   it('mutation gatherSouls as much as available', () => {
     let state = getDefaultState()
-    state.current.preys = 10
+    state.current.prey = 10
     state.current.souls = 0
     state.current.pain = 20
     state.current.hunted = 2
@@ -121,7 +121,7 @@ describe('store', () => {
     state.total.pain = 30
 
     mutations.gatherSouls(state, {hunts: 1, power: 20, pain: 2})
-    expect(state.current.preys).toEqual(0)
+    expect(state.current.prey).toEqual(0)
     expect(state.current.souls).toEqual(10)
     expect(state.current.hunted).toEqual(12)
     expect(state.current.pain).toEqual(21)
@@ -249,22 +249,22 @@ describe('store', () => {
   })
   it('mutation breed', () => {
     let state = getDefaultState()
-    state.current.preys = 10
+    state.current.prey = 10
 
     mutations.breed(state, {rate: 0.1})
 
-    expect(state.current.preys).toEqual(11)
+    expect(state.current.prey).toEqual(11)
   })
   it('actions tick with occultists', () => {
     let commit = jest.fn()
     let state = getDefaultState()
-    state.current.preys = 10
+    state.current.prey = 10
     let values = {
       'occultists.soulsPerTick': 12,
       'occultists.painPerTick': 3,
       'tick.duration': 1000,
       'pain.enabled': true,
-      'preys.breedingRate': 0.1,
+      'prey.breedingRate': 0.1,
     }
     let getters = {values: fakeValues(values)}
     state.time.lastTick = 0
@@ -300,13 +300,13 @@ describe('store', () => {
     expect(state.total.souls).toEqual(50)
     expect(state.total.awakenings).toEqual(1)
   })
-  it('mutation sleep existing preys', () => {
+  it('mutation sleep existing prey', () => {
     let state = getDefaultState()
-    state.current.preys = 1e19
+    state.current.prey = 1e19
 
     mutations.sleep(state)
 
-    expect(state.current.preys).toEqual(1e19)
+    expect(state.current.prey).toEqual(1e19)
   })
   it('mutation name', () => {
     let state = getDefaultState()

@@ -25,9 +25,9 @@
         <button
           class="py-2 px-4"
           @click.prevent="hunt"
-          :disabled="$store.state.current.preys === 0"
+          :disabled="$store.state.current.prey === 0"
         >
-          <div class="text--1 mb-1">Hunt some preys</div>
+          <div class="text--1 mb-1">Hunt some prey</div>
           <number-badge
             unit="souls"
             :value="parseInt($store.getters['values']('hunt.power'))"
@@ -78,7 +78,7 @@
           <i>Warning: harvesting now won't yield many evil points. You may want to get more pain first.</i>
         </p>
         <p>
-          The pain of your preys shimmer in the crimson skies.
+          The pain of your prey shimmer in the crimson skies.
         </p>
         <p>
           You could feed on it, grow in power and take over another realm. Or you could wait.
@@ -115,7 +115,7 @@
         </ul>
         <p>
           Each Evil point increase your Hunt power, Minions power
-          and the number of preys in your realm by
+          and the number of prey in your realm by
           {{ formatNumber($store.getters['values']('evil.basePower') + 1, 'compact', '%') }}
         </p>
         <div class="stackable row">
@@ -130,13 +130,13 @@
       <section v-if="showSleep" class="narrow my-3">
         <h2>Everyone must rest</h2>
         <p>
-          Maybe it's time for you to change paths and find new ways to play with your preys? 
+          Maybe it's time for you to change paths and find new ways to play with your prey? 
         </p>
         <ul>
           <li>Devour your legion and souls</li>
           <li>Lose your upgrades</li>
           <li>Take a new path</li>
-          <li>Wake up to a world full of preys</li>
+          <li>Wake up to a world full of prey</li>
         </ul>
         <div class="stackable row">
           <button @click.prevent="showSleep = false; $store.commit('sleep')">
@@ -147,7 +147,7 @@
           </button>
         </div>
       </section>
-      <section v-if="$store.state.current.preys === 0" class="narrow my-3">
+      <section v-if="$store.state.current.prey === 0" class="narrow my-3">
         <h2>The world is empty</h2>
         <p>
           You have consumed all life in your world. Your legion wanders aimlessly.
@@ -157,7 +157,7 @@
           <li>Devour your legion and souls</li>
           <li>Lose your upgrades</li>
           <li>Take a new path</li>
-          <li>Wake up to a world full of preys</li>
+          <li>Wake up to a world full of prey</li>
         </ul>
         <button @click.prevent="showSleep = false; $store.commit('sleep')">
           Go dormant for a while
@@ -188,7 +188,7 @@
         </div>
         <div v-if="$store.getters['values']('minions.enabled')" class="mt-3">
           <h3>
-            Turn preys into Minions 
+            Turn prey into Minions 
           </h3>
           <div class="stackable row">
             <purchase-button

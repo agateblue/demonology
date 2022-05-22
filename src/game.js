@@ -89,7 +89,7 @@ export const DEFAULT_VALUES = {
   souls: 0,
   minions: 0,
   occultists: 0,
-  preys: 7.8e9,
+  prey: 7.8e9,
   hunted: 0,
   awakenings: 0,
   harvests: 0,
@@ -99,9 +99,9 @@ export const DEFAULT_VALUES = {
   name: null,
 }
 
-export function getDefaultValues({evilPower, currentPreys = 0}) {
+export function getDefaultValues({evilPower, currentPrey = 0}) {
   let v = {...DEFAULT_VALUES}
-  v.preys = Math.max(v.preys * evilPower, currentPreys)
+  v.prey = Math.max(v.prey * evilPower, currentPrey)
   return v
 }
 
@@ -211,7 +211,7 @@ export const PROMPTS = [
       "Something needs to be done",
     ],
     condition ({state}) {
-      return state.current.preys === 0
+      return state.current.prey === 0
     }
   },
   {
@@ -481,7 +481,7 @@ export const UPGRADES = sortBy([
   {
     id: "predator.power.3",
     name: "Frenzy",
-    description: "Increase hunt power based on your total hunted preys",
+    description: "Increase hunt power based on your total hunted prey",
     available: all(
       is('predator'),
       has(1e6, 'total', 'hunted'),
@@ -544,12 +544,12 @@ export const UPGRADES = sortBy([
   {
     id: "controller.society.4",
     name: "Breeding",
-    description: "Encourage breeding among your preys, increasing their number by ${value} per second",
+    description: "Encourage breeding among your prey, increasing their number by ${value} per second",
     available: all(
       is('controller'),
     ),
     affects: {
-      'preys.breedingRate': additive,
+      'prey.breedingRate': additive,
     },
     cost: 5e7,
     value: 0.001,
@@ -600,7 +600,7 @@ export const NAMES = [
     title: "the Controller",
     perks: [
       'Unlocks pain',
-      'Govern your preys',
+      'Govern your prey',
       'Idle gameplay',
     ]
   },
@@ -776,10 +776,10 @@ export function getValueGetter(state) {
     'occultists.painPerTick': () => {
       return get('occultists.soulsPerTick') * get('occultists.painRatio')
     },
-    'preys.enabled': () => {
+    'prey.enabled': () => {
       return state.total.awakenings > 0 || state.total.souls >= 1.5e7
     },
-    'preys.breedingRate': () => {
+    'prey.breedingRate': () => {
       return 0
     },
     'pain.enabled': () => {
