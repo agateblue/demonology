@@ -454,12 +454,12 @@ export const UPGRADES = sortBy([
     description: "Increase hunt power by ${value}",
     available: all(
       is('predator'),
-      has(1e5, 'awakening', 'hunted'),
+      has(10, 'awakening', 'hunted'),
     ),
     affects: {
       'hunt.power': multiplier,
     },
-    cost: 1e5,
+    cost: 1e2,
     value: 3,
     valueFormat: '%',
   },
@@ -502,12 +502,12 @@ export const UPGRADES = sortBy([
     description: "Increase occultists power by ${value}",
     available: all(
       is('controller'),
-      has(3, 'awakening', 'occultists'),
+      has(1, 'awakening', 'occultists'),
     ),
     affects: {
       'occultists.power': multiplier,
     },
-    cost: 1e5,
+    cost: 1e4,
     value: 2,
     valueFormat: '%',
   },
