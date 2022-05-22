@@ -115,7 +115,7 @@
         </ul>
         <p>
           Each Evil point increase your Hunt power, Minions power
-          and the number of prey in your realm by
+          and the initial size of the flock by
           {{ formatNumber($store.getters['values']('evil.basePower') + 1, 'compact', '%') }}
         </p>
         <div class="stackable row">
@@ -293,7 +293,7 @@
                   unit="souls"
                 ></number-badge>
               </button>
-              <strong>{{ upgrade.name }}</strong>
+              <strong>{{ upgrade.group }} · {{ upgrade.name }}</strong>
             </div>
             <p>
               {{ 

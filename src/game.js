@@ -258,6 +258,7 @@ export const PROMPTS = [
 export const UPGRADES = sortBy([
   {
     id: "minions.power.1",
+    group: "Minions",
     name: "Fangs",
     description: "Increase minion power by ${value}",
     available: has(1, 'awakening', 'minions'),
@@ -269,6 +270,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "minions.power.2",
+    group: "Minions",
     name: "Horns",
     description: "Increase minion power by ${value}",
     available: has(5, 'awakening', 'minions'),
@@ -280,6 +282,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "minions.power.3",
+    group: "Minions",
     name: "Claws",
     description: "Increase minion power by ${value}",
     available: has(10, 'awakening', 'minions'),
@@ -291,6 +294,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "minions.power.4",
+    group: "Minions",
     name: "Tails",
     description: "Increase minion power by ${value}",
     available: has(20, 'awakening', 'minions'),
@@ -302,6 +306,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "minions.power.5",
+    group: "Minions",
     name: "Wings",
     description: "Increase minion power by ${value}",
     available: has(50, 'awakening', 'minions'),
@@ -313,6 +318,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "minions.power.6",
+    group: "Minions",
     name: "Tentacles",
     description: "Increase minion power by ${value}",
     available: has(500, 'awakening', 'minions'),
@@ -325,6 +331,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "minions.power.7",
+    group: "Legion",
     name: "Critical mess",
     description: "Each minion increase your minions power by ${value} (multiplicative)",
     available: has(666, 'awakening', 'minions'),
@@ -339,6 +346,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "hunt.power.1",
+    group: "Hunt",
     name: "Hounds",
     description: "Increase hunt power by ${value}",
     available: has(20, 'total', 'hunts'),
@@ -351,6 +359,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "hunt.power.2",
+    group: "Avatar",
     name: "Demonic olfaction",
     description: "Increase hunt power by ${value}",
     available: has(50, 'total', 'hunts'),
@@ -363,6 +372,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "occultists.power.1",
+    group: "Occultists",
     name: "Hidden signs",
     description: "Increase occultists power by ${value}",
     available: has(1, 'awakening', 'occultists'),
@@ -375,6 +385,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "occultists.power.2",
+    group: "Occultists",
     name: "Dark rituals",
     description: "Increase occultists power by ${value}",
     available: has(2, 'awakening', 'occultists'),
@@ -387,6 +398,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "occultists.power.3",
+    group: "Occultists",
     name: "Secret gathering",
     description: "Increase occultists power by ${value}",
     available: has(3, 'awakening', 'occultists'),
@@ -399,6 +411,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "occultists.power.4",
+    group: "Occultists",
     name: "Demonic lore",
     description: "Increase occultists power by ${value}",
     available: has(5, 'awakening', 'occultists'),
@@ -411,6 +424,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "occultists.power.5",
+    group: "Occultists",
     name: "Blood runes",
     description: "Increase occultists power by ${value}",
     available: has(7, 'awakening', 'occultists'),
@@ -423,6 +437,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "occultists.synergy.1",
+    group: "Legion",
     name: "Immoral support",
     description: "Each one of your occultists multiply your minions power by ${value}",
     available: has(4, 'awakening', 'occultists'),
@@ -437,6 +452,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "occultists.synergy.2",
+    group: "Legion",
     name: "Demonic gates",
     description: "Increase Immoral support power by ${value}",
     available: has(6, 'awakening', 'occultists'),
@@ -450,6 +466,7 @@ export const UPGRADES = sortBy([
   //  upgrades related to names
   {
     id: "predator.power.1",
+    group: "Avatar",
     name: "Venom",
     description: "Increase hunt power by ${value}",
     available: all(
@@ -465,6 +482,7 @@ export const UPGRADES = sortBy([
   },
   {
     id: "predator.power.2",
+    group: "Avatar",
     name: "Mind traps",
     description: "Increase hunt power by ${value}",
     available: all(
@@ -480,7 +498,8 @@ export const UPGRADES = sortBy([
   },
   {
     id: "predator.power.3",
-    name: "Frenzy",
+    group: "Avatar",
+    name: "Avatar · Frenzy",
     description: "Increase hunt power based on your total hunted prey",
     available: all(
       is('predator'),
@@ -498,8 +517,9 @@ export const UPGRADES = sortBy([
   },
   {
     id: "controller.society.1",
+    group: "Flock society",
     name: "Fear",
-    description: "Increase occultists power by ${value}",
+    description: "Increase occultists power over your flock by ${value}",
     available: all(
       is('controller'),
       has(1, 'awakening', 'occultists'),
@@ -513,8 +533,9 @@ export const UPGRADES = sortBy([
   },
   {
     id: "controller.society.2",
+    group: "Flock society",
     name: "Faith",
-    description: "Increase occultists power by ${value}",
+    description: "Increase occultists power over your flock by ${value}",
     available: all(
       is('controller'),
       has(4, 'awakening', 'occultists'),
@@ -528,8 +549,9 @@ export const UPGRADES = sortBy([
   },
   {
     id: "controller.society.3",
+    group: "Flock society",
     name: "Sacrifices",
-    description: "Increase occultists power by ${value}",
+    description: "Increase occultists power over your flock by ${value}",
     available: all(
       is('controller'),
       has(5, 'awakening', 'occultists'),
@@ -543,8 +565,9 @@ export const UPGRADES = sortBy([
   },
   {
     id: "controller.society.4",
+    group: "Flock society",
     name: "Breeding",
-    description: "Encourage breeding among your prey, increasing their number by ${value} per second",
+    description: "Encourage breeding among your flock, increasing its size by ${value} per second",
     available: all(
       is('controller'),
     ),
@@ -557,8 +580,9 @@ export const UPGRADES = sortBy([
   },
   {
     id: "controller.society.5",
+    group: "Flock society",
     name: "Gender",
-    description: "Increased the amount of pain generated by your occultists by ${value} per second",
+    description: "Increased the amount of pain generated from your flock by ${value} per second",
     available: all(
       is('controller'),
     ),
@@ -600,7 +624,7 @@ export const NAMES = [
     title: "the Controller",
     perks: [
       'Unlocks pain',
-      'Govern your prey',
+      'Govern the flock',
       'Idle gameplay',
     ]
   },

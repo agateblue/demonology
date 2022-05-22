@@ -81,13 +81,14 @@
       <table>
         <thead>
           <th>ID</th>
+          <th>Group</th>
           <th>Name</th>
           <th>Description</th>
           <th></th>
         </thead>
         <tbody>
           <tr>
-            <td colspan="2">
+            <td colspan="3">
               <div class="field">
                 <input type="text" placeholder="Filter" v-model="upgradeQuery">
               </div>
@@ -100,6 +101,7 @@
           </tr>
           <tr v-for="upgrade in debugUpgrades" :key="upgrade.id">
             <td class="text--monospace">{{ upgrade.id }}</td>
+            <td>{{ upgrade.group }}</td>
             <td>{{ upgrade.name }}</td>
             <td>{{ 
                 upgrade.description.replace(
@@ -196,10 +198,15 @@ export default {
       return c
     },
     debugUpgrades () {
-      let upgrades = sortBy(UPGRADES, ['id'])
+      let upgrades = sortBy(UPGRADES, ['group', 'id'])
       if (this.upgradeQuery) {
         upgrades = upgrades.filter((u) => {
-          let haystack = [u.id.toLowerCase(), u.name.toLowerCase(), u.description.toLowerCase()].join(' ')
+          let haystack = [
+            u.id.toLowerCase(),
+            u.name.toLowerCase(),
+            u.group.toLowerCase(),
+            u.description.toLowerCase()
+          ].join(' ')
           return haystack.includes(this.upgradeQuery.toLowerCase())
         })
       }
