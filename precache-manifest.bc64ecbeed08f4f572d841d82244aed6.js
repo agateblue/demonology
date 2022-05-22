@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "1caed36691ff9a68241c",
+    "revision": "92bdff60f3b57ba11731",
     "url": "/css/app.c541d393.css"
   },
   {
@@ -12,12 +12,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/fonts/RobotoSlab-VariableFont_wght.d5bc4637.ttf"
   },
   {
-    "revision": "1487cbc3ffd37ee41252ce45e4cefa66",
+    "revision": "ffffbfec7996c7b9bee5ac6b9fb88d80",
     "url": "/index.html"
   },
   {
-    "revision": "1caed36691ff9a68241c",
-    "url": "/js/app.f42032b2.js"
+    "revision": "92bdff60f3b57ba11731",
+    "url": "/js/app.cfb8583d.js"
   },
   {
     "revision": "fb6fef7d0a643412a13a",
