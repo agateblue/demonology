@@ -198,7 +198,7 @@ export const PROMPTS = [
   },
   {
     text: [
-      "Maybe you are going to fast?",
+      "Maybe you are going too fast?",
       "Very soon, you will kill the last",
     ],
     condition ({state}) {
