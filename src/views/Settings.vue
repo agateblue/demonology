@@ -1,7 +1,7 @@
 <template>
   <section class="narrow">
     <h1>Settings</h1>
-    <div class="checkbox field" v-if="allowDebugMode">
+    <div class="checkbox field" v-if="$store.getters.allowDebugMode">
       <input
         id="debug"
         name="debug"
@@ -43,25 +43,28 @@
 
 export default {
   data () {
+    let hotkeys = [
+      {key: '1', effect: 'Show Netherworld tab'},
+      {key: '2', effect: 'Show Statistics tab'},
+      {key: '3', effect: 'Show Story tab'},
+      {key: 'a', effect: 'Show About tab'},
+      {key: 's', effect: 'Show Settings tab'},
+      {key: 'h', effect: 'Hunt'},
+      {key: 'u', effect: 'Purchase all available upgrades'},
+      {key: 'm', effect: 'Purchase 1 minion'},
+      {key: 'ctrl+m', effect: 'Purchase 10 minions'},
+      {key: 'shift+m', effect: 'Purchase 100 minions'},
+      {key: 'ctrl+shift+m', effect: 'Purchase max minions'},
+      {key: 'o', effect: 'Purchase 1 occultist'},
+      {key: 'ctrl+o', effect: 'Purchase 10 occultists'},
+      {key: 'shift+o', effect: 'Purchase 100 occultists'},
+      {key: 'ctrl+shift+o', effect: 'Purchase max occultists'},
+    ]
+    if (this.$store.getters.allowDebugMode) {
+      hotkeys.push({key: 'ctrl+d', effect: 'Enable/disable debug mode'})
+    }
     return {
-      allowDebugMode: process.env.NODE_ENV === 'development',
-      hotkeys: [
-        {key: '1', effect: 'Show Netherworld tab'},
-        {key: '2', effect: 'Show Settings tab'},
-        {key: '3', effect: 'Show Statistics tab'},
-        {key: '4', effect: 'Show About tab'},
-        {key: 'h', effect: 'Hunt'},
-        {key: 'u', effect: 'Purchase all available upgrades'},
-        {key: 'm', effect: 'Purchase 1 minion'},
-        {key: 'ctrl+m', effect: 'Purchase 10 minions'},
-        {key: 'shift+m', effect: 'Purchase 100 minions'},
-        {key: 'ctrl+shift+m', effect: 'Purchase max minions'},
-        {key: 'o', effect: 'Purchase 1 occultist'},
-        {key: 'ctrl+o', effect: 'Purchase 10 occultists'},
-        {key: 'shift+o', effect: 'Purchase 100 occultists'},
-        {key: 'ctrl+shift+o', effect: 'Purchase max occultists'},
-        {key: 'ctrl+d', effect: 'Enable/disable debug mode'},
-      ]
+      hotkeys,
     }
   },
   methods: {

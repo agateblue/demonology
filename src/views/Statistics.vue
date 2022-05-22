@@ -53,11 +53,82 @@
         </tr>
       </tbody>
     </table>
+    <template v-if="$store.state.settings.debug">
+      <h2>Values</h2>
+      <table>
+        <thead>
+          <th>Key</th>
+          <th>Value</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="field">
+                <input type="text" placeholder="Filter" v-model="valueQuery">
+              </div>
+            </td>
+            <td>
+              <a href="" @click.prevent="valueQuery = ''">Clear query</a>
+            </td>
+          </tr>
+          <tr v-for="value in debugValues" :key="value.key" class="text--monospace">
+            <td>{{ value.key }}</td>
+            <td class="text--right">{{ formatNumber(value.value.toFixed(3)) }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>Upgrades</h2>
+      <table>
+        <thead>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="2">
+              <div class="field">
+                <input type="text" placeholder="Filter" v-model="upgradeQuery">
+              </div>
+            </td>
+            <td>
+              <a href="" @click.prevent="upgradeQuery = ''">Clear query</a> ·
+              <a href="" @click.prevent="toggleAll(debugUpgrades, true)">Enable all</a> ·
+              <a href="" @click.prevent="toggleAll(debugUpgrades, false)">Disable all</a>
+            </td>
+          </tr>
+          <tr v-for="upgrade in debugUpgrades" :key="upgrade.id">
+            <td class="text--monospace">{{ upgrade.id }}</td>
+            <td>{{ upgrade.name }}</td>
+            <td>{{ 
+                upgrade.description.replace(
+                  '${value}',
+                  formatNumber(getComputedValue(upgrade.value, $store.getters['values']), 'compact', upgrade.valueFormat))
+              }}
+            </td>
+            <td>
+              <div class="checkbox field">
+                <input
+                  :id="`upgrade-enable-${upgrade.id}`"
+                  type="checkbox"
+                  @change="$store.commit('setUpgradeFromDebug', {id: upgrade.id, value: $event.target.checked})"
+                  :checked="$store.state.current.upgrades.indexOf(upgrade.id) > -1">
+                <label :for="`upgrade-enable-${upgrade.id}`">Enabled</label>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </template>
   </section>
 </template>
 
 <script>
 import {formatNumber} from '@/utils'
+import sortBy from 'lodash/sortBy'
+import {UPGRADES, getComputedValue} from '@/game'
+
 export default {
   data () {
     return {
@@ -66,7 +137,11 @@ export default {
         awakening: {},
         harvest: {},
         total: {},
-      }
+      },
+      upgradeQuery: '',
+      valueQuery: '',
+      formatNumber,
+      getComputedValue
     }
   },
   computed: {
@@ -119,9 +194,40 @@ export default {
         c.push('total')
       }
       return c
+    },
+    debugUpgrades () {
+      let upgrades = sortBy(UPGRADES, ['id'])
+      if (this.upgradeQuery) {
+        upgrades = upgrades.filter((u) => {
+          let haystack = [u.id.toLowerCase(), u.name.toLowerCase(), u.description.toLowerCase()].join(' ')
+          return haystack.includes(this.upgradeQuery.toLowerCase())
+        })
+      }
+      return upgrades
+    },
+    debugValues () {
+      let v = []
+      let keys = sortBy(Object.keys(this.$store.getters['valuesForDebug']))
+      if (this.valueQuery) {
+        keys = keys.filter(k => {
+          return k.toLowerCase().includes(this.valueQuery.toLowerCase())
+        })
+      }
+      for (const key of keys) {
+        let value = this.$store.getters['values'](key)
+        if (typeof value === 'number') {
+          v.push({key, value})
+        }
+      }
+      return v
     }
   },
   methods: {
+    toggleAll (upgrades, value) {
+      for (const upgrade of upgrades) {
+        this.$store.commit('setUpgradeFromDebug', {id: upgrade.id, value})
+      }
+    },
     getValue (stat, period, notation = 'default') {
       let initial = this.$store.state[period][stat.name]
       let v

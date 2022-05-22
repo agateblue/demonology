@@ -109,6 +109,17 @@ export const mutations = {
 
     }
   },
+  setUpgradeFromDebug (state, {id, value}) {
+    for (const namespace of ALL_NAMESPACES) {
+      if (value) {
+        state[namespace].upgrades = uniq([...state[namespace].upgrades, id])
+      } else {
+        state[namespace].upgrades = state[namespace].upgrades.filter(u => {
+          return u != id
+        })
+      }
+    }
+  },
   sleep (state) {
     state.current = getDefaultValues({evilPower: GET('evil.power'), currentPrey: state.current.prey})
     state.awakening = {...state.current}
@@ -159,6 +170,12 @@ const STORE = createStore({
     values () {
       return (key) => {return GET(key)}
     },
+    valuesForDebug () {
+      return VALUES
+    },
+    allowDebugMode () {
+      return process.env.NODE_ENV === 'development'
+    }
   },
   plugins: [
     new VuexPersistence({
@@ -178,6 +195,8 @@ const STORE = createStore({
   ]
 })
 
-const GET = getValueGetter(STORE.state)
+const {get, values} = getValueGetter(STORE.state)
+const GET = get
+const VALUES = values
 
 export default STORE

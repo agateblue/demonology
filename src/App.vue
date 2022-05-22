@@ -90,16 +90,21 @@ export default {
     NumberBadge
   },
   data () {
+    let hotkeys = [
+      {key: '&, 1', handler: () => { this.$router.push('/')}},
+      {key: 'é, 2', handler: () => { this.$router.push('/statistics')}},
+      {key: '", 3', handler: () => { this.$router.push('/story')}},
+      {key: 's', handler: () => { this.$router.push('/settings')}},
+      {key: "a", handler: () => { this.$router.push('/about')}},
+    ]
+
+    if (this.$store.getters.allowDebugMode) {
+      hotkeys.push({key: "ctrl+d", handler: () => { this.$store.commit('setting', {name: 'debug', value: !this.$store.state.settings.debug})}})
+    }
     return {
       loop: null,
       duplicateTab: false,
-      hotkeys: [
-        {key: '&, 1', handler: () => { this.$router.push('/')}},
-        {key: 'é, 2', handler: () => { this.$router.push('/statistics')}},
-        {key: '", 3', handler: () => { this.$router.push('/settings')}},
-        {key: "', 4", handler: () => { this.$router.push('/about')}},
-        {key: "ctrl+d", handler: () => { this.$store.commit('setting', {name: 'debug', value: !this.$store.state.settings.debug})}},
-      ]
+      hotkeys
     }
   },
   mounted () {

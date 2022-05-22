@@ -505,7 +505,7 @@ export const UPGRADES = sortBy([
       has(1, 'awakening', 'occultists'),
     ),
     affects: {
-      'occultists.power': multiplier,
+      'occultists.basePower': multiplier,
     },
     cost: 1e4,
     value: 2,
@@ -520,7 +520,7 @@ export const UPGRADES = sortBy([
       has(4, 'awakening', 'occultists'),
     ),
     affects: {
-      'occultists.power': multiplier,
+      'occultists.basePower': multiplier,
     },
     cost: 1e6,
     value: 2,
@@ -535,7 +535,7 @@ export const UPGRADES = sortBy([
       has(5, 'awakening', 'occultists'),
     ),
     affects: {
-      'occultists.power': multiplier,
+      'occultists.basePower': multiplier,
     },
     cost: 5e6,
     value: 3,
@@ -832,5 +832,5 @@ export function getValueGetter(state) {
     values[key] = computed(value)
   }
 
-  return get
+  return {get, values}
 }

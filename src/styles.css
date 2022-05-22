@@ -187,6 +187,9 @@ table {
   font-size: 90%;
   border-spacing: 0;
 }
+tr:hover td {
+  background-color: var(--body-background);
+}
 td, th {
   padding: var(--spacing-2);
   border: 1px solid var(--border-color);

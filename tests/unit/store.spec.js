@@ -296,6 +296,28 @@ describe('store', () => {
     expect(state.harvest.souls).toEqual(80)
     expect(state.total.souls).toEqual(90)
   })
+  it('mutation setUpgradeFromDebug', () => {
+    let state = getDefaultState()
+    state.current.upgrades = []
+    state.awakening.upgrades = ['noop1']
+    state.harvest.upgrades = ['noop2']
+    state.total.upgrades = ['noop3']
+
+    mutations.setUpgradeFromDebug(state, {id: 'noop0', value: true})
+
+    expect(state.current.upgrades).toEqual(['noop0'])
+    expect(state.awakening.upgrades).toEqual(['noop1', 'noop0'])
+    expect(state.harvest.upgrades).toEqual(['noop2', 'noop0'])
+    expect(state.total.upgrades).toEqual(['noop3', 'noop0'])
+
+    mutations.setUpgradeFromDebug(state, {id: 'noop0', value: false})
+
+    expect(state.current.upgrades).toEqual([])
+    expect(state.awakening.upgrades).toEqual(['noop1'])
+    expect(state.harvest.upgrades).toEqual(['noop2'])
+    expect(state.total.upgrades).toEqual(['noop3'])
+
+  })
   it('mutation breed', () => {
     let state = getDefaultState()
     state.current.prey = 10
