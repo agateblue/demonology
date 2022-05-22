@@ -12,7 +12,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/fonts/RobotoSlab-VariableFont_wght.d5bc4637.ttf"
   },
   {
-    "revision": "5b133ed95af90e3f07b8d1e78c78b8e3",
+    "revision": "edcce3c806c55067d8693cb901033246",
     "url": "/index.html"
   },
   {
