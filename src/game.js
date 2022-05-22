@@ -129,8 +129,8 @@ export const PROMPTS = [
       'The sky is void, the earth is grey',
       'You crave the body of a prey',
     ],
-    condition ({state}) {
-      return state.total.souls === 0
+    condition () {
+      return true
     }
   },
   {
@@ -139,7 +139,7 @@ export const PROMPTS = [
       'A soul remains, so does your thirst',
     ],
     condition ({state}) {
-      return state.total.souls === 1
+      return state.total.souls > 0
     }
   },
   {
@@ -157,7 +157,7 @@ export const PROMPTS = [
       'Witness the birth of your legion',
     ],
     condition ({get, state}) {
-      return state.awakening.minions === 0 && state.current.souls >= get("minions.cost")
+      return state.total.minions > 0 || state.current.souls >= get("minions.cost")
     }
   },
   {
@@ -166,7 +166,7 @@ export const PROMPTS = [
       "Gathering souls in the process",
     ],
     condition ({state}) {
-      return state.awakening.minions > 0
+      return state.total.minions > 0
     }
   },
   {
@@ -175,7 +175,7 @@ export const PROMPTS = [
       "Your nightmares need an open door"
     ],
     condition ({get, state}) {
-      return state.awakening.occultists === 0 && state.current.minions >= get("occultists.cost")
+      return state.current.minions >= get("occultists.cost") || state.total.occultists > 0
     }
   },
   {
@@ -184,7 +184,7 @@ export const PROMPTS = [
       'Hundreds of souls roam the ether'
     ],
     condition ({state}) {
-      return state.awakening.occultists > 0
+      return state.total.occultists > 0
     }
   },
   {
@@ -211,7 +211,7 @@ export const PROMPTS = [
       "Something needs to be done",
     ],
     condition ({state}) {
-      return state.current.prey === 0
+      return state.current.prey === 0 || state.total.awakenings > 0
     }
   },
   {

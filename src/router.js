@@ -3,6 +3,7 @@ import About from './views/About.vue'
 import Home from './views/Home.vue'
 import Settings from './views/Settings.vue'
 import Statistics from './views/Statistics.vue'
+import Story from './views/Story.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/statistics',
     name: 'Statistics',
     component: Statistics
+  },
+  {
+    path: '/story',
+    name: 'Story',
+    component: Story
   },
 ]
 

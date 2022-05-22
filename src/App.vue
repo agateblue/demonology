@@ -13,8 +13,7 @@
       <!-- <router-link class="discrete" to="/">Lore</router-link> · -->
       <!-- <router-link class="discrete" to="/">Lord</router-link> · -->
       <router-link class="discrete" to="/statistics">Statistics</router-link> ·
-      <router-link class="discrete" to="/settings">Settings</router-link> ·
-      <router-link class="discrete" to="/about">About</router-link>
+      <router-link class="discrete" to="/story">Story</router-link>
     </nav>
     <div class="text--center py-2">
       <h1 class="mt-4 mb-2">
@@ -64,7 +63,14 @@
         v-if="$store.state.total.evil > 0"
       > Evil</number-badge>
     </div>
-    <router-view/>
+    <router-view class="view" />
+    <footer
+      class="text--center my-4"
+    >
+
+      <router-link class="discrete" to="/settings">Settings</router-link> ·
+      <router-link class="discrete" to="/about">About</router-link>
+    </footer>
     <div style="position: fixed; bottom: 1em; right: 1em" v-if="$store.state.settings.debug">
       <button @click.prevent="$store.commit('hardReset')">
         Reset
