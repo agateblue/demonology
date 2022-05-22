@@ -23,8 +23,10 @@
         class="tiny transparent px-0 pt-0 my-3 justify-content--center text--center"
       >
         <button
-          class="py-2 px-4"
+          class="py-2 px-4 text--unselectable"
           @click.prevent="hunt"
+          @touchstart="startHunting"
+          @touchend="stopHunting"
           :disabled="$store.state.current.prey === 0"
         >
           <div class="text--1 mb-1">Hunt</div>
@@ -314,6 +316,7 @@
 </template>
 
 <script>
+import throttle from 'lodash/throttle'
 import {bind, unbind} from '@/hotkeys'
 import {formatNumber} from '@/utils'
 import {getComputedValue, getBuyableUpgrades} from '@/game'
@@ -340,6 +343,8 @@ export default {
       getComputedValue,
       showHarvest: false,
       showSleep: false,
+      huntStarted: false,
+      huntInterval: null,
       shownUpgrades: 'upgrades.available',
       hotkeys: [
         {key: 'h', handler: () => { this.hunt()}},
@@ -418,6 +423,9 @@ export default {
   },
   unmounted () {
     unbind(this.hotkeys)
+    if (this.huntInterval) {
+      window.clearInterval(this.huntInterval)
+    }
   },
   computed: {
     canBuyMaxUpgrades () {
@@ -429,7 +437,26 @@ export default {
     }
   },
   methods: {
-    hunt () {
+    startHunting () {
+      this.huntStarted = true
+      if (this.huntInterval) {
+        window.clearInterval(this.huntInterval)
+      }
+      window.setTimeout(() => {
+        if (this.huntStarted) {
+          this.huntInterval = window.setInterval(() => {
+            this.hunt()
+          })
+        }
+      }, 25)
+    },
+    stopHunting () {
+      if (this.huntInterval) {
+        window.clearInterval(this.huntInterval)
+      }
+      this.huntStarted = false
+    },
+    hunt: throttle(function() {
       this.$store.commit(
         'gatherSouls',
         {
@@ -438,7 +465,7 @@ export default {
           pain: this.$store.getters['values']('pain.enabled') ? this.$store.getters['values']('hunt.pain') : 0,
         }
       )
-    },
+    }, 50),
     buyMaxUpgrades () {
       let buyable = getBuyableUpgrades(
         this.$store.getters['values']('upgrades.available'),

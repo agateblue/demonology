@@ -164,6 +164,9 @@ a.router-link-active {
 .text--2 {
   font-size: 120%;
 }
+.text--unselectable {
+  user-select: none;
+}
 
 
 @media screen and (min-width: 600px) {
