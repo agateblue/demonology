@@ -11,6 +11,7 @@ function inc (state, {name, value}) {
   state.harvest[name] += value
   state.total[name] += value
 }
+const ALL_NAMESPACES = ["current", "awakening", "harvest", "total"]
 
 export function getDefaultState () {
   return {
@@ -98,7 +99,15 @@ export const mutations = {
     state.total.upgrades = uniq([...state.total.upgrades, id])
   },
   setFromDebug (state, {namespace, name, value}) {
-    state[namespace][name] = value
+    let diff = value - state[namespace][name]
+    state[namespace][name] += diff
+    if (diff > 0) {
+      let nextNamespaces = ALL_NAMESPACES.slice(ALL_NAMESPACES.indexOf(namespace) + 1)
+      for (const n of nextNamespaces) {
+        state[n][name] += diff
+      }
+
+    }
   },
   sleep (state) {
     state.current = getDefaultValues({evilPower: GET('evil.power'), currentPrey: state.current.prey})

@@ -247,6 +247,55 @@ describe('store', () => {
 
     expect(state.awakening.souls).toEqual(2)
   })
+  it('mutation setFromDebug increase affects higher namespaces', () => {
+    let state = getDefaultState()
+    state.current.souls = 50
+    state.awakening.souls = 70
+    state.harvest.souls = 80
+    state.total.souls = 90
+
+    mutations.setFromDebug(state, {namespace: 'current', name: 'souls', value: 52})
+
+    expect(state.current.souls).toEqual(52)
+    expect(state.awakening.souls).toEqual(72)
+    expect(state.harvest.souls).toEqual(82)
+    expect(state.total.souls).toEqual(92)
+
+    mutations.setFromDebug(state, {namespace: 'awakening', name: 'souls', value: 74})
+
+    expect(state.current.souls).toEqual(52)
+    expect(state.awakening.souls).toEqual(74)
+    expect(state.harvest.souls).toEqual(84)
+    expect(state.total.souls).toEqual(94)
+    
+    mutations.setFromDebug(state, {namespace: 'harvest', name: 'souls', value: 86})
+
+    expect(state.current.souls).toEqual(52)
+    expect(state.awakening.souls).toEqual(74)
+    expect(state.harvest.souls).toEqual(86)
+    expect(state.total.souls).toEqual(96)
+    
+    mutations.setFromDebug(state, {namespace: 'total', name: 'souls', value: 98})
+
+    expect(state.current.souls).toEqual(52)
+    expect(state.awakening.souls).toEqual(74)
+    expect(state.harvest.souls).toEqual(86)
+    expect(state.total.souls).toEqual(98)
+  })
+  it('mutation setFromDebug lower does not affect higher namespaces', () => {
+    let state = getDefaultState()
+    state.current.souls = 50
+    state.awakening.souls = 70
+    state.harvest.souls = 80
+    state.total.souls = 90
+
+    mutations.setFromDebug(state, {namespace: 'current', name: 'souls', value: 40})
+
+    expect(state.current.souls).toEqual(40)
+    expect(state.awakening.souls).toEqual(70)
+    expect(state.harvest.souls).toEqual(80)
+    expect(state.total.souls).toEqual(90)
+  })
   it('mutation breed', () => {
     let state = getDefaultState()
     state.current.prey = 10
