@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.3de5469ac5844e646f9c21f059a3fc62.js"
+  "/precache-manifest.81b70b94581ea03eee3f1d731603eb85.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "Demonology"});
