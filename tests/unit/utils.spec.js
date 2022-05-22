@@ -5,6 +5,9 @@ import {
   getGeometricCumulativeCost,
   getGeometricMaxBuyable,
 } from '@/game'
+import {
+  formatNumber,
+} from '@/utils'
 
 describe('game', () => {
   it('getArithmeticNCost', () => {
@@ -58,5 +61,24 @@ describe('game', () => {
     expect(getGeometricMaxBuyable({start: 1, available: 30, base: 10, increaseFactor: 2})).toEqual(1)
     expect(getGeometricMaxBuyable({start: 1, available: 70, base: 10, increaseFactor: 2})).toEqual(2)
     expect(getGeometricMaxBuyable({start: 2, available: 120, base: 10, increaseFactor: 2})).toEqual(2)
+  })
+  it('formatNumber short', () => {
+    expect(formatNumber(12)).toEqual("12")
+    expect(formatNumber(12.1)).toEqual("12")
+    expect(formatNumber(1200)).toEqual("1,200")
+  })
+  it('formatNumber big', () => {
+    expect(formatNumber(12000)).toEqual("1.20e4")
+    expect(formatNumber(10000)).toEqual("1.00e4")
+    expect(formatNumber(12001)).toEqual("1.20e4")
+    expect(formatNumber(1e63)).toEqual("1.00e63")
+  })
+  it('formatNumber %', () => {
+    expect(formatNumber(1.25, '%')).toEqual("25 %")
+    expect(formatNumber(3, '%')).toEqual("200 %")
+  })
+  it('formatNumber raw%', () => {
+    expect(formatNumber(0.005, 'raw%')).toEqual("0.005 %")
+    expect(formatNumber(5, 'raw%')).toEqual("5 %")
   })
 })

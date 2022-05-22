@@ -575,7 +575,7 @@ export const UPGRADES = sortBy([
       'prey.breedingRate': additive,
     },
     cost: 5e7,
-    value: 0.005,
+    value: 5,
     valueFormat: 'raw%',
   },
   {

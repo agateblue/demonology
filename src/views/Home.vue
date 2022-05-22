@@ -32,14 +32,14 @@
           <div class="text--1 mb-1">Hunt</div>
           <number-badge
             unit="souls"
-            :value="parseInt($store.getters['values']('hunt.power'))"
+            :value="$store.getters['values']('hunt.power')"
             prefix="+"
           > Souls</number-badge>
           <template v-if="$store.getters['values']('pain.enabled')">
             <number-badge
               class="ml-4"
               unit="pain"
-              :value="parseInt($store.getters['values']('hunt.pain'))"
+              :value="$store.getters['values']('hunt.pain')"
               prefix="+"
               
             > Pain</number-badge>
@@ -93,7 +93,7 @@
             Lose
             <number-badge
               unit="pain"
-              :value="parseInt($store.state.harvest.pain)"
+              :value="$store.state.harvest.pain"
             >
               Pain
             </number-badge>
@@ -118,7 +118,7 @@
         <p>
           Each Evil point increase your Hunt power, Minions power
           and the initial size of the flock by
-          {{ formatNumber($store.getters['values']('evil.basePower') + 1, 'compact', '%') }}
+          {{ formatNumber($store.getters['values']('evil.basePower') + 1, '%') }}
         </p>
         <div class="stackable row">
           <button @click.prevent="$store.commit('harvest', {evil: $store.getters['values']('evil.buyMaxGetter')()}); showHarvest = false">
@@ -172,18 +172,18 @@
           <div>
             <number-badge
               unit="power"
-              :value="parseInt($store.getters['values']('hunt.power'))"
+              :value="$store.getters['values']('hunt.power')"
             > Hunt power</number-badge>
             <number-badge
               unit="minions"
               class="ml-4"
-              :value="parseInt($store.state.current.minions)"
+              :value="$store.state.current.minions"
               v-if="$store.state.current.minions > 0"
             > Minions</number-badge>
             <number-badge
               unit="occultists"
               class="ml-4"
-              :value="parseInt($store.state.current.occultists)"
+              :value="$store.state.current.occultists"
               v-if="$store.state.current.occultists > 0"
             > Occultists</number-badge>
           </div>
@@ -212,7 +212,7 @@
             Your legion improves your power by
             <number-badge
               unit="power"
-              :value="parseInt($store.getters['values']('minions.power.total'))"
+              :value="$store.getters['values']('minions.power.total')"
             >
             </number-badge>.
           </p>
@@ -241,13 +241,13 @@
             Your occultists channel your legion's power into the mortal realm, granting you
             <number-badge
               unit="souls"
-              :value="parseInt($store.getters['values']('occultists.soulsPerTick'))"
+              :value="$store.getters['values']('occultists.soulsPerTick')"
             ></number-badge>
             <template v-if="$store.getters['values']('pain.enabled') && $store.getters['values']('occultists.painPerTick') > 0">
               and
               <number-badge
                 unit="pain"
-                :value="parseInt($store.getters['values']('occultists.painPerTick'))"
+                :value="$store.getters['values']('occultists.painPerTick')"
               ></number-badge>
 
             </template>
@@ -301,7 +301,7 @@
               {{ 
                 upgrade.description.replace(
                   '${value}',
-                  formatNumber(getComputedValue(upgrade.value, $store.getters['values']), 'compact', upgrade.valueFormat))
+                  formatNumber(getComputedValue(upgrade.value, $store.getters['values']), upgrade.valueFormat))
               }}
             </p>
           </div>

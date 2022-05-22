@@ -4,23 +4,31 @@ export function renderMarkdown (source) {
   return marked.parse(source)
 }
 
-const NOTATIONS = {
-  default: new Intl.NumberFormat('en-US', {notation: 'scientific', minimumFractionDigits: 2, maximumFractionDigits: 2}),
-  compact: new Intl.NumberFormat('en-US', {notation: 'compact', minimumFractionDigits: 2, maximumFractionDigits: 2}),
-  scientific: new Intl.NumberFormat('en-US', {notation: 'scientific', minimumFractionDigits: 2, maximumFractionDigits: 2}),
+function toExp(n) {
+  return n.toExponential(2).replace('+', '')
 }
-export function formatNumber (n, notation = 'default', valueFormat = null) {
-  if (!valueFormat && n <= 10000) {
-    return n
-  }
-  let suffix = ''
-  if (valueFormat === '%') {
+
+const PERCENT_FORMAT = new Intl.NumberFormat('en-US', {notation: 'compact', minimumFractionDigits: 0})
+const SHORT_FORMAT = Intl.NumberFormat('en-US')
+const NOTATIONS = {
+  'short': (n) => {
+    return SHORT_FORMAT.format(parseInt(n))
+  },
+  'exponential': toExp,
+  'default': toExp,
+  '%': (n) => {
     n = (n - 1) * 100
-    suffix = ' %'
+    return PERCENT_FORMAT.format(n) + ' %'
+  },
+  'raw%': (n) => {
+    return PERCENT_FORMAT.format(n) + ' %'
   }
-  if (valueFormat === 'raw%') {
-    suffix = ' %'
+}
+export function formatNumber (n, notation = 'default') {
+  if (notation === 'default' && n < 10000) {
+    notation = 'short' 
   }
-  let f = NOTATIONS[notation]
-  return f.format(n) + suffix
+  let formatter = NOTATIONS[notation] || NOTATIONS['default']
+
+  return formatter(n)
 }

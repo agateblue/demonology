@@ -75,7 +75,7 @@
             <td>{{ value.key }}</td>
             <td class="text--right">
               <template v-if="typeof value.value === 'number'">
-                {{ formatNumber(value.value.toFixed(3)) }}
+                {{ formatNumber(value.value) }}
               </template>
               <template v-else>{{ value.value }}</template>
             </td>
@@ -111,7 +111,7 @@
             <td>{{ 
                 upgrade.description.replace(
                   '${value}',
-                  formatNumber(getComputedValue(upgrade.value, $store.getters['values']), 'compact', upgrade.valueFormat))
+                  formatNumber(getComputedValue(upgrade.value, $store.getters['values']), upgrade.valueFormat))
               }}
             </td>
             <td>
@@ -246,10 +246,10 @@ export default {
       if (stat.getter) {
         v = stat.getter(initial)
       } else {
-        v = formatNumber(parseInt(initial), notation) 
+        v = formatNumber(initial, notation) 
       }
       if (this.values[period][stat.name] === undefined) {
-        this.values[period][stat.name] = formatNumber(parseInt(initial), 'scientific') 
+        this.values[period][stat.name] = v
       }
       return v
     },

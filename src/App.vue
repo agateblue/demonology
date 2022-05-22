@@ -41,25 +41,25 @@
       <number-badge
         class="ml-4"
         unit="souls"
-        :value="parseInt($store.state.current.souls)"
+        :value="$store.state.current.souls"
         v-if="$store.state.awakening.souls > 0"
       > Souls</number-badge>
       <number-badge
         class="ml-4"
         unit="prey"
-        :value="parseInt($store.state.current.prey)"
+        :value="$store.state.current.prey"
         v-if="$store.getters['values']('prey.enabled')"
       > Prey</number-badge>
       <number-badge
         class="ml-4"
         unit="pain"
-        :value="parseInt($store.state.harvest.pain)"
+        :value="$store.state.harvest.pain"
         v-if="$store.getters['values']('pain.enabled')"
       > Pain</number-badge>
       <number-badge
         class="ml-4"
         unit="evil"
-        :value="parseInt($store.state.total.evil)"
+        :value="$store.state.total.evil"
         v-if="$store.state.total.evil > 0"
       > Evil</number-badge>
     </div>

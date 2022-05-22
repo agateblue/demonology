@@ -14,12 +14,13 @@ function inc (state, {name, value}) {
 const ALL_NAMESPACES = ["current", "awakening", "harvest", "total"]
 
 export function getDefaultState () {
+  let now = (new Date()).getTime()
   return {
     time: {
-      gameStart: (new Date()).getTime(),
-      awakeningStart: (new Date()).getTime(),
-      harvestStart: (new Date()).getTime(),
-      lastTick: (new Date()).getTime(),
+      gameStart: now,
+      awakeningStart: now,
+      harvestStart: now,
+      lastTick: now,
     },
     current: {
       ...DEFAULT_VALUES
