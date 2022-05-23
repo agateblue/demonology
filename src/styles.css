@@ -106,7 +106,9 @@ header {
 h1:first-child,
 h2:first-child,
 h3:first-child,
-h4:first-child {
+h4:first-child,
+p:first-child
+{
   margin-top: 0;
 }
 section > *:last-child, p:last-child
@@ -541,6 +543,7 @@ hr {
 .number-badge {
   font-family: monospace;
   word-break: keep-all;
+  display: inline-block;
 }
 
 .number-badge .unit {
@@ -575,6 +578,17 @@ hr {
 .tooltip.visible .tooltip--content {
   animation: tooltipFadeIn 0.15s;
   display: block;
+}
+.tooltip--content p {
+  line-height: 1.4;
+  font-size: 90%;
+}
+.tooltip--content td:first-child {
+  font-style: italic;
+}
+.tooltip--content tr:last-child td {
+  font-style: normal;
+  font-weight: bold;
 }
 
 @keyframes tooltipFadeIn {

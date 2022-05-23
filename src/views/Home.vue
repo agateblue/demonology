@@ -170,22 +170,51 @@
 
           <h2 class="mb-0">Legion</h2>
           <div>
-            <number-badge
-              unit="power"
-              :value="$store.getters['values']('hunt.power')"
-            > Hunt power</number-badge>
-            <number-badge
-              unit="minions"
-              class="ml-4"
-              :value="$store.state.current.minions"
-              v-if="$store.state.current.minions > 0"
-            > Minions</number-badge>
-            <number-badge
-              unit="occultists"
-              class="ml-4"
-              :value="$store.state.current.occultists"
-              v-if="$store.state.current.occultists > 0"
-            > Occultists</number-badge>
+            <span>
+              <tooltip id="tooltip-hunt-power">
+                <p>
+                  Your hunt power determine how much souls you gather with each hunt.
+                </p>
+                <value-detail :source="$store.getters['values']('hunt.power.detail')"></value-detail>
+              </tooltip>
+              <number-badge
+                unit="power"
+                :value="$store.getters['values']('hunt.power')"
+                v-tooltip="'tooltip-hunt-power'"
+              > Hunt power</number-badge>
+            </span>
+            <span v-if="$store.state.current.minions > 0">
+              <tooltip id="tooltip-minions">
+                <p>
+                  Your minions assist you during your hunt.
+                  <template v-if="$store.state.current.occultists > 0">
+                    They also gather souls passively through your occultists.
+                  </template>
+                </p>
+                <value-detail :source="$store.getters['values']('minions.power.detail')"></value-detail>
+              </tooltip>
+              <number-badge
+                unit="minions"
+                class="ml-4"
+                :value="$store.state.current.minions"
+                v-tooltip="'tooltip-minions'"
+              > Minions</number-badge>
+            </span>
+            <span v-if="$store.state.current.occultists > 0">
+              <tooltip id="tooltip-occultists">
+                <p>
+                  Your occultists channel your legion's power into the mortal realm,
+                  granting you souls passively, each second.
+                </p>
+                <value-detail :source="$store.getters['values']('occultists.soulsPerTick.detail')"></value-detail>
+              </tooltip>
+              <number-badge
+                unit="occultists"
+                class="ml-4"
+                :value="$store.state.current.occultists"
+                v-tooltip="'tooltip-occultists'"
+              > Occultists</number-badge>
+            </span>
           </div>
         </div>
         <div v-if="$store.getters['values']('minions.enabled')" class="mt-3">
@@ -208,14 +237,6 @@
               @purchase="$store.commit('purchase', {name: 'minions', quantity: $event.quantity, cost: $event.cost })"
             ></purchase-button>
           </div>
-          <p v-if="$store.state.current.minions > 0">
-            Your legion improves your power by
-            <number-badge
-              unit="power"
-              :value="$store.getters['values']('minions.power.total')"
-            >
-            </number-badge>.
-          </p>
         </div>
         <div v-if="$store.getters['values']('occultists.enabled')" class="mt-2">
           <hr>
@@ -237,22 +258,6 @@
               @purchase="$store.commit('purchase', {name: 'occultists', quantity: $event.quantity, cost: $event.cost })"
             ></purchase-button>
           </div>
-          <p v-if="$store.state.current.occultists > 0">
-            Your occultists channel your legion's power into the mortal realm, granting you
-            <number-badge
-              unit="souls"
-              :value="$store.getters['values']('occultists.soulsPerTick')"
-            ></number-badge>
-            <template v-if="$store.getters['values']('pain.enabled') && $store.getters['values']('occultists.painPerTick') > 0">
-              and
-              <number-badge
-                unit="pain"
-                :value="$store.getters['values']('occultists.painPerTick')"
-              ></number-badge>
-
-            </template>
-            every second.
-          </p>    
         </div>
       </section>
       <section class="narrow my-3" v-if="$store.getters['values']('upgrades.enabled')">
@@ -321,6 +326,8 @@ import {bind, unbind} from '@/hotkeys'
 import {formatNumber} from '@/utils'
 import {getComputedValue, getBuyableUpgrades} from '@/game'
 
+import Tooltip from '@/components/Tooltip'
+import ValueDetail from '@/components/ValueDetail'
 import NumberBadge from '@/components/NumberBadge'
 import PurchaseButton from '@/components/PurchaseButton'
 
@@ -336,6 +343,8 @@ export default {
   components: {
     NumberBadge,
     PurchaseButton,
+    Tooltip,
+    ValueDetail,
   },
   data () {
     return {

@@ -38,30 +38,75 @@
       </div>
     </div>
     <div class="align-items--center justify-content--center mt-4 mb-4 text--2 text--center">
-      <number-badge
-        class="ml-4"
-        unit="souls"
-        :value="$store.state.current.souls"
-        v-if="$store.state.awakening.souls > 0"
-      > Souls</number-badge>
-      <number-badge
-        class="ml-4"
-        unit="prey"
-        :value="$store.state.current.prey"
-        v-if="$store.getters['values']('prey.enabled')"
-      > Prey</number-badge>
-      <number-badge
-        class="ml-4"
-        unit="pain"
-        :value="$store.state.harvest.pain"
-        v-if="$store.getters['values']('pain.enabled')"
-      > Pain</number-badge>
-      <number-badge
-        class="ml-4"
-        unit="evil"
-        :value="$store.state.total.evil"
-        v-if="$store.state.total.evil > 0"
-      > Evil</number-badge>
+      <span v-if="$store.state.awakening.souls > 0">
+        <tooltip id="tooltip-souls">
+          <p>
+            Souls let you expand your legion and purchase upgrade.
+            <template v-if="$store.getters['values']('occultists.soulsPerTick') > 0">
+              Your occultists gather souls each second.
+            </template>
+          </p>
+          <value-detail :source="$store.getters['values']('occultists.soulsPerTick.detail')"></value-detail>
+        </tooltip>
+          
+        <number-badge
+          class="ml-4"
+          unit="souls"
+          :value="$store.state.current.souls"
+          v-tooltip="'tooltip-souls'"
+        > Souls</number-badge>
+      </span>
+      <span v-if="$store.getters['values']('prey.enabled')">
+        <tooltip id="tooltip-prey">
+          <p>
+            A prey dies for every soul gathered.
+            <template v-if="$store.getters['values']('prey.breedingRate') > 0">
+              Through breeding, the flock gives birth to new prey every second.
+            </template>
+          </p>
+          <value-detail :source="$store.getters['values']('prey.breedingRate.detail')"></value-detail>
+        </tooltip>
+        <number-badge
+          class="ml-4"
+          unit="prey"
+          :value="$store.state.current.prey"
+          v-tooltip="'tooltip-prey'"
+        > Prey</number-badge>
+      </span>
+      <span v-if="$store.getters['values']('pain.enabled')">
+        <tooltip id="tooltip-pain">
+          <p>
+            Hunting prey grant you pain, based on your hunt power.
+          </p>
+          <value-detail :source="$store.getters['values']('hunt.pain.detail')"></value-detail>
+          <template v-if="$store.getters['values']('occultists.painPerTick') > 0">
+            <p>
+              Your occultists collect pain from your flock each second.
+            </p>
+            <value-detail :source="$store.getters['values']('occultists.painPerTick.detail')"></value-detail>
+          </template>
+        </tooltip>
+        <number-badge
+          class="ml-4"
+          unit="pain"
+          :value="$store.state.harvest.pain"
+          v-tooltip="'tooltip-pain'"
+        > Pain</number-badge>
+      </span>
+      <span v-if="$store.state.total.evil > 0">
+        <tooltip id="tooltip-evil">
+          <p>
+            Evil multiply your hunt power, the power of your legion and the initial size of your flock.
+          </p>
+          <value-detail :source="$store.getters['values']('evil.power.detail')"></value-detail>
+        </tooltip>
+        <number-badge
+          class="ml-4"
+          unit="evil"
+          :value="$store.state.total.evil"
+          v-tooltip="'tooltip-evil'"          
+        > Evil</number-badge>
+      </span>
     </div>
     <router-view class="view" />
     <footer
@@ -82,12 +127,17 @@
 import {bind, unbind} from '@/hotkeys'
 
 import Fire from '@/components/Fire'
+import Tooltip from '@/components/Tooltip'
+import ValueDetail from '@/components/ValueDetail'
+
 import NumberBadge from '@/components/NumberBadge'
 
 export default {
   components: {
     Fire,
-    NumberBadge
+    NumberBadge,
+    Tooltip,
+    ValueDetail,
   },
   data () {
     let hotkeys = [
