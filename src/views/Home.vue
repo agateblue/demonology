@@ -153,7 +153,7 @@
         <h2>The world is empty</h2>
         <p>
           You have consumed all life in your world. Your legion wanders aimlessly.
-          It is time for you to go dormant until the world heal and you can hunt again.
+          It is time for you to go dormant until the world heals and you can hunt again.
         </p>
         <ul>
           <li>Devour your legion and souls</li>
