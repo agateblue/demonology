@@ -67,6 +67,10 @@ describe('game', () => {
     expect(formatNumber(12.1)).toEqual("12")
     expect(formatNumber(1200)).toEqual("1,200")
   })
+  it('formatNumber small number with lot of decimals', () => {
+    expect(formatNumber(0.1)).toEqual("0.1000")
+    expect(formatNumber(0.0001)).toEqual("0.0001")
+  })
   it('formatNumber big', () => {
     expect(formatNumber(12000)).toEqual("1.20e4")
     expect(formatNumber(10000)).toEqual("1.00e4")
