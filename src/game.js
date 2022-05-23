@@ -575,7 +575,7 @@ export const UPGRADES = sortBy([
       'prey.breedingRate': additive,
     },
     cost: 5e7,
-    value: 5,
+    value: 0.005,
     valueFormat: 'raw%',
   },
   {
@@ -657,7 +657,12 @@ export function getValueGetter(state) {
   let values = {}
 
   function get(key, applyModifiers = true) {
-    let v = values[key].value
+    let v
+    try {
+      v = values[key].value
+    } catch (e) {
+      throw `${key} does not exist: ${e}`
+    }
     if (key === 'upgrades.active') {
       // performance optimization
       // we now this key doesn't need any modifier
@@ -683,6 +688,13 @@ export function getValueGetter(state) {
     'evil.power': () => {
       return (1 + state.total.evil) * get('evil.basePower')
     },
+    'evil.power.detail': () => {
+      return [
+        {label: "Evil base power", value: get('evil.basePower') + 1, notation: '%'},
+        {prefix: "×", label: "Evil points", value: state.total.evil},
+        {prefix: "=", label: "Evil power", value: get('evil.power'), notation: '%'},
+      ]
+    },
     'evil.buyMaxGetter': () => {
       return () => {
         let buyable = getGeometricMaxBuyable({
@@ -699,13 +711,41 @@ export function getValueGetter(state) {
     },
     'hunt.basePower': () => {return 1 * get('evil.power')},
     'hunt.power': () => {
-      return get("hunt.basePower") + get('minions.power.total')
+      return get("hunt.basePower") + get('minions.power')
+    },
+    'hunt.power.detail': () => {
+      let total = get('hunt.power', true)
+      let ownPower = get('hunt.basePower')
+      if (ownPower === total) {
+        return []
+      }
+      let withoutUpgrades = get('hunt.power', false)
+      let minionPower = get('minions.power')
+      let parts = [
+        {label: 'Your power', value: ownPower},
+      ]
+      if (minionPower > 0) {
+        parts.push({prefix: '+', label: 'Minions power', value: minionPower})
+      }
+      if (total > withoutUpgrades) {
+        parts.push({prefix: '+', label: 'Upgrades', value: total - withoutUpgrades})
+      }
+      parts.push({prefix: '=', label: 'Hunt power', value: total})
+      return parts
     },
     'hunt.powerToPainRatio': () => {
       return 0.01
     },
     'hunt.pain': () => {
       return get("hunt.power") * get('hunt.powerToPainRatio')
+    },
+    'hunt.pain.detail': () => {
+      let power = get('hunt.power', true)
+      return [
+        {label: "Hunt power", value: power},
+        {prefix: "×", label: "Pain ratio", value: get('hunt.powerToPainRatio')},
+        {prefix: "=", label: "Pain/hunt", value: get('hunt.pain')},
+      ]
     },
     'minions.baseCost': () => {return 10},
     'minions.costIncreaseFactor': () => {return 1.1},
@@ -740,12 +780,16 @@ export function getValueGetter(state) {
       }
     },
     'minions.power': () => {
-      return get('minions.basePower')
+      return get('minions.basePower') * state.current.minions
     },
-    'minions.power.total': () => {
-      return get('minions.power') * state.current.minions
+    'minions.power.detail': () => {
+      let basePower = get('minions.basePower', true)
+      return [
+        {label: 'Minion power', value: basePower},
+        {prefix: '×', label: 'Minions', value: state.current.minions},
+        {prefix: '=', label: 'Legion power', value: get('minions.power')},
+      ]
     },
-
     'names.available': () => {
       if (state.harvest.awakenings > 0) {
         return NAMES
@@ -792,7 +836,16 @@ export function getValueGetter(state) {
       }
     },
     'occultists.soulsPerTick': () => {
-      return get('minions.power.total') * state.current.occultists * get('occultists.basePower')
+      return get('minions.power') * state.current.occultists * get('occultists.basePower')
+    },
+    'occultists.soulsPerTick.detail': () => {
+      let basePower = get('occultists.basePower', true)
+      return [
+        {label: 'Minions power', value: get('minions.power')},
+        {prefix: '×', label: 'Occultists', value: state.current.occultists},
+        {prefix: '×', label: 'Occultist power', value: basePower},
+        {prefix: '=', label: 'Souls/second', value: get('occultists.soulsPerTick')},
+      ]
     },
     'occultists.painRatio': () => {
       return 0.0005
@@ -800,11 +853,29 @@ export function getValueGetter(state) {
     'occultists.painPerTick': () => {
       return get('occultists.soulsPerTick') * get('occultists.painRatio')
     },
+    'occultists.painPerTick.detail': () => {
+      return [
+        {label: "Souls/second", value: get('occultists.soulsPerTick')},
+        {prefix: "×", label: "Pain ratio", value: get('occultists.painRatio')},
+        {prefix: "=", label: "Pain/second", value: get('occultists.painPerTick')},
+      ]
+    },
     'prey.enabled': () => {
       return state.total.awakenings > 0 || state.total.souls >= 1.5e7
     },
     'prey.breedingRate': () => {
       return 0
+    },
+    'prey.breedingRate.detail': () => {
+      let rate = get('prey.breedingRate', true)
+      if (rate === 0) {
+        return []
+      }
+      return [
+        {label: 'Current prey', value: state.current.prey},
+        {label: 'Breeding rate', value: rate, notation: 'raw%'},
+        {label: 'New prey/second', value: rate * state.current.prey},
+      ]
     },
     'pain.enabled': () => {
       return state.harvest.awakenings > 0
