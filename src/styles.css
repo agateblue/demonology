@@ -20,6 +20,7 @@
   --border-radius: 3px;
 
   --button-background: #4F0000;
+  --tooltip-background: #2f346e;
 
   --link-color: var(--accent-color);
   --link-discrete-color: var(--body-color);
@@ -544,4 +545,44 @@ hr {
 
 .number-badge .unit {
   margin-right: var(--spacing-1);
+}
+
+.tooltip:not(.visible) {
+  display: none;
+}
+.tooltip {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  padding-top: var(--spacing-4);
+}
+.tooltip--content {
+  text-align: left;
+  margin-top: var(--spacing-1);
+  background-color: var(--tooltip-background);
+  padding: var(--spacing-2) var(--spacing-2);
+  border-radius: var(--border-radius);
+}
+.tooltip--parent {
+  position: relative;
+  cursor: help;
+}
+
+.tooltip--parent:not(button) {
+  border-bottom: 1px dotted;
+}
+
+.tooltip.visible .tooltip--content {
+  animation: tooltipFadeIn 0.15s;
+  display: block;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
