@@ -151,7 +151,10 @@ describe('store', () => {
     state.total.souls = 4
 
     mutations.hardReset(state)
-    expect(state).toEqual(getDefaultState())
+    let expected = getDefaultState()
+    // workaround because testing time isn't always accurate
+    expected.time = {...state.time}
+    expect(state).toEqual(expected)
   })
   it('mutation setting', () => {
     let state = getDefaultState()
