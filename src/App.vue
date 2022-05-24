@@ -49,7 +49,7 @@
           
         <number-badge
           unit="souls"
-          :value="$store.state.current.souls"
+          :value="parseInt($store.state.current.souls)"
           v-tooltip="'tooltip-souls'"
         > Souls</number-badge>
       </span>
