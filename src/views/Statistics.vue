@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section :class="$store.state.settings.debug ? '' : 'narrow'">
     <h1>Statistics</h1>
     <table class="simple">
       <thead>

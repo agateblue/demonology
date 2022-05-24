@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <div class="align-items--center justify-content--center mt-4 mb-4 text--2 text--center">
+    <div class="align-items--center justify-content--center my-2 text--2 text--center">
       <span v-if="$store.state.awakening.souls > 0">
         <tooltip id="tooltip-souls">
           <p>
@@ -50,7 +50,6 @@
         </tooltip>
           
         <number-badge
-          class="ml-4"
           unit="souls"
           :value="$store.state.current.souls"
           v-tooltip="'tooltip-souls'"

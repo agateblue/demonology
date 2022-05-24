@@ -5,7 +5,7 @@
   --spacing-3: 1em;
   --spacing-4: 1.5em;
 
-  --body-width: 800px;
+  --body-width: 1200px;
   --narrow-width: 650px;
   --tiny-width: 450px;
   --body-background-color-1: #160000;
@@ -113,7 +113,7 @@ p:first-child
 }
 section > *:last-child, p:last-child
 {
-  margin-bottom: 0
+  margin-bottom: 0;
 }
 .narrow {
   max-width: var(--narrow-width);

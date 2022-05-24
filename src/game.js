@@ -839,12 +839,16 @@ export function getValueGetter(state) {
       return get('minions.power') * state.current.occultists * get('occultists.basePower')
     },
     'occultists.soulsPerTick.detail': () => {
+      let perTick = get('occultists.soulsPerTick')
+      if (perTick === 0) {
+        return []
+      }
       let basePower = get('occultists.basePower', true)
       return [
         {label: 'Minions power', value: get('minions.power')},
         {prefix: '×', label: 'Occultists', value: state.current.occultists},
         {prefix: '×', label: 'Occultist power', value: basePower},
-        {prefix: '=', label: 'Souls/second', value: get('occultists.soulsPerTick')},
+        {prefix: '=', label: 'Souls/second', value: perTick},
       ]
     },
     'occultists.painRatio': () => {
