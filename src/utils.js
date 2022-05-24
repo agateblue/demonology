@@ -30,10 +30,10 @@ const NOTATIONS = {
 }
 export function formatNumber (n, notation = 'default') {
   if (notation === 'default') {
-    if (n < 10 && !Number.isSafeInteger(n)) {
+    if (Math.abs(n) < 10 && !Number.isSafeInteger(n)) {
       notation = 'precise'
     }
-    else if (n < 10000) {
+    else if (Math.abs(n) < 10000) {
       notation = 'short' 
     }
   }

@@ -57,7 +57,7 @@
         <tooltip id="tooltip-prey">
           <p>
             A prey dies for every soul gathered.
-            <template v-if="$store.getters['values']('prey.breedingRate') > 0">
+            <template v-if="$store.getters['values']('prey.baseBreedingRate') > 0">
               Through breeding, the flock gives birth to new prey every second.
             </template>
           </p>

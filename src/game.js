@@ -592,7 +592,7 @@ export const UPGRADES = sortBy([
       is('controller'),
     ),
     affects: {
-      'prey.breedingRate': additive,
+      'prey.baseBreedingRate': additive,
     },
     cost: 5e7,
     value: 0.005,
@@ -892,18 +892,33 @@ export function getValueGetter(state) {
     'prey.enabled': () => {
       return state.total.awakenings > 0 || state.total.souls >= 1.5e7
     },
-    'prey.breedingRate': () => {
+    'prey.max': () => {
+      return DEFAULT_VALUES.prey * 10 * get('evil.power')
+    },
+    'prey.baseBreedingRate': () => {
       return 0
     },
-    'prey.breedingRate.detail': () => {
-      let rate = get('prey.breedingRate', true)
-      if (rate === 0) {
-        return []
+    'prey.breedingRate': () => {
+      let baseRate = get('prey.baseBreedingRate')
+      if (baseRate === 0) {
+        return 0
       }
+      let rate = baseRate - (state.current.prey * baseRate / get('prey.max'))
+      return rate
+    },
+    'prey.breedingRate.detail': () => {
+      let baseRate = get('prey.baseBreedingRate', true)
+      let rate = get('prey.breedingRate', true)
+      let born = rate * state.current.prey
+      let killed = get('occultists.soulsPerTick')
       return [
+        {label: 'Max prey', value: get('prey.max')},
         {label: 'Current prey', value: state.current.prey},
+        {label: 'Base breeding rate', value: baseRate, notation: 'raw%'},
         {label: 'Breeding rate', value: rate, notation: 'raw%'},
-        {label: 'New prey/second', value: rate * state.current.prey},
+        {label: 'Births/second', value: born},
+        {label: 'Deaths/second', value: killed},
+        {label: 'Prey/second', value: born - killed},
       ]
     },
     'pain.enabled': () => {
