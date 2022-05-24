@@ -62,6 +62,9 @@ describe('game', () => {
     expect(getGeometricMaxBuyable({start: 1, available: 70, base: 10, increaseFactor: 2})).toEqual(2)
     expect(getGeometricMaxBuyable({start: 2, available: 120, base: 10, increaseFactor: 2})).toEqual(2)
   })
+  it('getGeometricMaxBuyable issue #11', () => {
+    expect(getGeometricMaxBuyable({start: 4, available: 85, base: 30, increaseFactor: 1.3})).toEqual(1)
+  })
   it('formatNumber short', () => {
     expect(formatNumber(12)).toEqual("12")
     expect(formatNumber(12.1)).toEqual("12")

@@ -65,11 +65,10 @@ export function getGeometricMaxBuyable ({start, available, base, increaseFactor}
   let expo = increaseFactor
   let unitsOwned = start
   let topHalf = available * (expo - 1)
-  let bottomHalf = (expo ** unitsOwned) * basePrice
+  let bottomHalf = Math.floor((expo ** unitsOwned) * basePrice)
   let step = topHalf / bottomHalf + 1
   let logged = Math.log(step) / Math.log(expo)
   let maxBuys = Math.floor(logged)
-
   return maxBuys
 }
 
