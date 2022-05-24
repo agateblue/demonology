@@ -12,4 +12,4 @@ The game itself is free and [open-source](https://github.com/agateblue/demonolog
 - [IM Fell English SC](https://fonts.google.com/specimen/IM+Fell+English+SC) for the title font
 - [Roboto Slab](https://fonts.google.com/specimen/Roboto+Slab) for the body font
 - [Grimoire Incremental](https://play.google.com/store/apps/details?id=com.dragonmegaliths.grimoire)
-- And many other incremental games who gave me some inspiration
+- And many other incremental games which gave me some inspiration

@@ -173,7 +173,7 @@
               <span>
                 <tooltip id="tooltip-hunt-power">
                   <p>
-                    Your hunt power determine how much souls you gather with each hunt.
+                    Your hunt power determines how much souls you gather with each hunt.
                   </p>
                   <value-detail :source="$store.getters['values']('hunt.power.detail')"></value-detail>
                 </tooltip>

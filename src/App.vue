@@ -39,7 +39,7 @@
       <span v-if="$store.state.awakening.souls > 0">
         <tooltip id="tooltip-souls">
           <p>
-            Souls let you expand your legion and purchase upgrade.
+            Souls let you expand your legion and purchase upgrades.
             <template v-if="$store.getters['values']('occultists.soulsPerTick') > 0">
               Your occultists gather souls each second.
             </template>
@@ -73,7 +73,7 @@
       <span v-if="$store.getters['values']('pain.enabled')">
         <tooltip id="tooltip-pain">
           <p>
-            Hunting prey grant you pain, based on your hunt power.
+            Hunting prey grants you pain, based on your hunt power.
           </p>
           <value-detail :source="$store.getters['values']('hunt.pain.detail')"></value-detail>
           <template v-if="$store.getters['values']('occultists.painPerTick') > 0">
@@ -93,7 +93,7 @@
       <span v-if="$store.state.total.evil > 0">
         <tooltip id="tooltip-evil">
           <p>
-            Evil multiply your hunt power, the power of your legion and the initial size of your flock.
+            Evil multiplies your hunt power, the power of your legion and the initial size of your flock.
           </p>
           <value-detail :source="$store.getters['values']('evil.power.detail')"></value-detail>
         </tooltip>
