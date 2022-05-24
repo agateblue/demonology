@@ -2,7 +2,11 @@ import hotkeys from 'hotkeys-js'
 
 export function bind (config) {
   config.forEach((c) => {
-    hotkeys(c.key, (event, handler) => {c.handler(event, handler); return false})
+    hotkeys(c.key, (event, handler) => {
+      c.handler(event, handler)
+      event.preventDefault()
+      return false
+    })
   })
 }
 export function unbind (config) {
