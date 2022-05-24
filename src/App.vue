@@ -10,8 +10,6 @@
       class="text--center my-4"
     >
       <router-link class="discrete" to="/">Netherworld</router-link> ·
-      <!-- <router-link class="discrete" to="/">Lore</router-link> · -->
-      <!-- <router-link class="discrete" to="/">Lord</router-link> · -->
       <router-link class="discrete" to="/statistics">Statistics</router-link> ·
       <router-link class="discrete" to="/story">Story</router-link>
     </nav>

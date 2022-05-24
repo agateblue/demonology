@@ -600,3 +600,9 @@ hr {
     opacity: 1;
   }
 }
+
+@media (hover: none) {
+  .hotkey-hint {
+    display: none;
+  }
+}

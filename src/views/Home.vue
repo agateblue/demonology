@@ -30,7 +30,7 @@
             @touchend="stopHunting"
             :disabled="$store.state.current.prey === 0"
           >
-            <div class="text--1">Hunt</div>
+            <div class="text--1">Hunt <hotkey-hint>(h)</hotkey-hint></div>
             <number-badge
               unit="souls"
               :value="$store.getters['values']('hunt.power')"
@@ -269,7 +269,7 @@
             v-if="$store.state.total.upgrades.length >= 3"
             :disabled="!canBuyMaxUpgrades"
           >
-            Buy all
+            Buy all <hotkey-hint>(u)</hotkey-hint>
           </button>
           <a
             href=""
@@ -329,6 +329,7 @@ import {bind, unbind} from '@/hotkeys'
 import {formatNumber} from '@/utils'
 import {getComputedValue, getBuyableUpgrades} from '@/game'
 
+import HotkeyHint from '@/components/HotkeyHint'
 import Tooltip from '@/components/Tooltip'
 import ValueDetail from '@/components/ValueDetail'
 import NumberBadge from '@/components/NumberBadge'
@@ -344,6 +345,7 @@ function purchase({store, unit, costGetter, quantity}) {
 
 export default {
   components: {
+    HotkeyHint,
     NumberBadge,
     PurchaseButton,
     Tooltip,

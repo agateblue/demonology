@@ -10,6 +10,24 @@
         :checked="$store.state.settings.debug">
       <label for="debug">Enable debug mode</label>
     </div>
+    <div class="checkbox field" v-if="$store.getters.allowDebugMode">
+      <input
+        id="showHotkeys"
+        name="showHotkeys"
+        type="checkbox"
+        @change="$store.commit('setting', {name: 'showHotkeys', value: $event.target.checked})"
+        :checked="$store.state.settings.showHotkeys">
+      <label for="showHotkeys">Show hotkeys in the interface</label>
+    </div>
+    <h2>Reset</h2>
+    <p>
+      Reset all your progress and delete all your data.
+      Proceed with caution, this is irreversible.
+      You will be asked for confirmation.
+    </p>
+    <button @click.prevent="triggerReset">
+      Hard reset
+    </button>
     <h2>Keyboard shortcuts</h2>
     <table>
       <thead>
@@ -27,15 +45,6 @@
         </tr>
       </tbody>
     </table>
-    <h2>Reset</h2>
-    <p>
-      Reset all your progress and delete all your data.
-      Proceed with caution, this is irreversible.
-      You will be asked for confirmation.
-    </p>
-    <button @click.prevent="triggerReset">
-      Hard reset
-    </button>
   </section>
 </template>
 

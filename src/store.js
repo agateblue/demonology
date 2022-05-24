@@ -37,6 +37,7 @@ export function getDefaultState () {
     settings: {
       notation: "default",
       debug: process.env.NODE_ENV === 'development',
+      showHotkeys: true,
     }
   }
 }
@@ -122,7 +123,10 @@ export const mutations = {
     }
   },
   sleep (state) {
-    state.current = getDefaultValues({evilPower: GET('evil.power'), currentPrey: state.current.prey})
+    state.current = getDefaultValues({
+      evilPower: GET('evil.power'),
+      currentPrey: state.current.prey
+    })
     state.awakening = {...state.current}
     state.harvest.awakenings += 1
     state.total.awakenings += 1
