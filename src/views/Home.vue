@@ -220,10 +220,22 @@
           <hr>
           <div class="row">
             <div v-if="$store.getters['values']('minions.enabled')" class="mt-1">
-              <h3>
+              <div
+                class="checkbox field mb-2 float--right"
+                v-if="$store.getters['values']('upgrades.has')('minions.autoBuy')"
+                title="Recruit new minions automatically"
+              >
+                <input
+                  id="auto-minions"
+                  name="auto-minions"
+                  type="checkbox"
+                  @change="$store.commit('setting', {name: 'autoBuyMinions', value: $event.target.checked})"
+                  :checked="$store.state.settings.autoBuyMinions">
+                <label for="auto-minions">Auto</label>
+              </div>
+              <h3 class="mt-0">
                 Recruit Minions 
               </h3>
-              
               <purchase-button
                 class="mb-1 fluid"
                 v-for="quantity in [1, 10, 100]"
@@ -241,8 +253,21 @@
               ></purchase-button>
             </div>
             <div v-if="$store.getters['values']('occultists.enabled')" class="mt-1">
-              <h3>
-                Raise Occultists 
+              <div
+                class="checkbox field mb-2 float--right"
+                v-if="$store.getters['values']('upgrades.has')('occultists.autoBuy')"
+                title="Raise new occultists automatically"
+              >
+                <input
+                  id="auto-occultists"
+                  name="auto-occultists"
+                  type="checkbox"
+                  @change="$store.commit('setting', {name: 'autoBuyOccultists', value: $event.target.checked})"
+                  :checked="$store.state.settings.autoBuyOccultists">
+                <label for="auto-occultists">Auto</label>
+              </div>
+              <h3 class="mt-0">
+                Raise occultists
               </h3>
               <purchase-button
                 class="mb-1 fluid"

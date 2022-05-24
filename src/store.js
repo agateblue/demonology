@@ -38,6 +38,8 @@ export function getDefaultState () {
       notation: "default",
       debug: process.env.NODE_ENV === 'development',
       showHotkeys: true,
+      autoBuyMinions: false,
+      autoBuyOccultists: false,
     }
   }
 }
@@ -150,6 +152,22 @@ export const actions = {
   tick ({state, commit, getters}, to) {
     let elapsed = to - state.time.lastTick
     let ticks = elapsed / getters.values('tick.duration')
+    if (getters.values('minions.autoBuy')) {
+      let buyableMinions = getters.values('minions.buyMaxGetter')()
+      if (buyableMinions > 0) {
+        let minionsCost = getters.values('minions.costGetter')(buyableMinions) 
+        commit('purchase', {name: 'minions', quantity: buyableMinions, cost: minionsCost })
+      }
+    }
+    if (getters.values('occultists.autoBuy')) {
+      // we always want to keep at least one minion to continue generating
+      // income
+      let buyableOccultists = getters.values('occultists.buyMaxGetter')(1)
+      if (buyableOccultists > 0) {
+        let occultistsCost = getters.values('occultists.costGetter')(buyableOccultists) 
+        commit('purchase', {name: 'occultists', quantity: buyableOccultists, cost: occultistsCost })
+      }
+    }
     if (ticks > 0) {
       if (getters.values('prey.breedingRate') > 0 && state.current.prey > 0) {
         let rate = getters.values('prey.breedingRate') * ticks

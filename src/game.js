@@ -463,6 +463,16 @@ export const UPGRADES = sortBy([
     value: 1.5,
     valueFormat: '%'
   },
+  {
+    id: "minions.autoBuy",
+    group: "Legion",
+    name: "Tormentoring",
+    description: "Automatically recruit new minions",
+    available: all(
+      has(1, 'total', 'awakenings'),
+    ),
+    cost: 1,
+  },
   //  upgrades related to names
   {
     id: "predator.power.1",
@@ -514,6 +524,16 @@ export const UPGRADES = sortBy([
     cost: 1e7,
     value: 100,
     valueFormat: '%',
+  },
+  {
+    id: "occultists.autoBuy",
+    group: "Legion",
+    name: "Crash curse",
+    description: "Automatically raise new occultists",
+    available: all(
+      is('controller'),
+    ),
+    cost: 1e3,
   },
   {
     id: "controller.society.1",
@@ -747,6 +767,9 @@ export function getValueGetter(state) {
         {prefix: "=", label: "Pain/hunt", value: get('hunt.pain')},
       ]
     },
+    'minions.autoBuy': () => {
+      return state.settings.autoBuyMinions && get('upgrades.has')('minions.autoBuy') 
+    },
     'minions.baseCost': () => {return 10},
     'minions.costIncreaseFactor': () => {return 1.1},
     'minions.basePower': () => {return 1 * get('evil.power')},
@@ -801,7 +824,9 @@ export function getValueGetter(state) {
         return n.id === state.current.name
       })[0]
     },
-
+    'occultists.autoBuy': () => {
+      return state.settings.autoBuyOccultists && get('upgrades.has')('occultists.autoBuy') 
+    },
     'occultists.baseCost': () => {return 30},
     'occultists.costIncreaseFactor': () => {return 1.3},
     'occultists.basePower': () => {return 0.5},
@@ -824,13 +849,13 @@ export function getValueGetter(state) {
       }
     },
     'occultists.buyMaxGetter': () => {
-      return () => {
+      return (keepMinions = 0) => {
 
         let buyable = getGeometricMaxBuyable({
           start: state.current.occultists,
           base: get('occultists.baseCost'),
           increaseFactor: get('occultists.costIncreaseFactor'),
-          available: parseInt(state.current.minions)
+          available: parseInt(state.current.minions) - keepMinions
         })
         return buyable
       }
@@ -925,6 +950,11 @@ export function getValueGetter(state) {
         return u.available({state, get})
       })
     },
+    'upgrades.has': () => {
+      return (name) => {
+        return state.current.upgrades.indexOf(name) > -1
+      }
+    }
   }
 
   for (const [key, value] of Object.entries(config)) {

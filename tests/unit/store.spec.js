@@ -355,6 +355,51 @@ describe('store', () => {
     )
     expect(commit.mock.calls[2]).toEqual(['lastTick', to])
   })
+  it('actions tick autobuy minions', () => {
+    let commit = jest.fn()
+    let state = getDefaultState()
+    state.current.souls = 12
+    let values = {
+      'minions.autoBuy': true,
+      'minions.costGetter': () => {return {value: 11, unit: 'souls'}},
+      'minions.buyMaxGetter': () => {return 3},
+      'tick.duration': 1000,
+    }
+    let getters = {values: fakeValues(values)}
+    state.time.lastTick = 0
+    let to = state.time.lastTick + 1000
+    actions.tick({commit, getters, state}, to)
+    expect(commit.mock.calls[0]).toEqual(
+      ['purchase', {
+        name: 'minions',
+        quantity: 3,
+        cost: {value: 11, unit: 'souls'},
+      }]
+    )
+  })
+  it('actions tick autobuy occultists and keeps a single minion', () => {
+    let commit = jest.fn()
+    let state = getDefaultState()
+    state.settings.autoBuyoccultists = true
+    state.current.minions = 12
+    let values = {
+      'occultists.autoBuy': true,
+      'occultists.costGetter': () => {return {value: 11, unit: 'minions'}},
+      'occultists.buyMaxGetter': () => {return 3},
+      'tick.duration': 1000,
+    }
+    let getters = {values: fakeValues(values)}
+    state.time.lastTick = 0
+    let to = state.time.lastTick + 1000
+    actions.tick({commit, getters, state}, to)
+    expect(commit.mock.calls[0]).toEqual(
+      ['purchase', {
+        name: 'occultists',
+        quantity: 3,
+        cost: {value: 11, unit: 'minions'},
+      }]
+    )
+  })
   it('mutation sleep', () => {
     let state = getDefaultState()
     state.current.souls = 5
