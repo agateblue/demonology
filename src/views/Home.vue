@@ -331,7 +331,7 @@
                 {{ 
                   upgrade.description.replace(
                     '${value}',
-                    formatNumber(getComputedValue(upgrade.value, $store.getters['values']), upgrade.valueFormat))
+                    formatNumber(getComputedValue(upgrade.value || 1, $store.getters['values']), upgrade.valueFormat))
                 }}
               </p>
             </div>
