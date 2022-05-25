@@ -48,13 +48,26 @@ function hideTooltip () {
 }
 app.directive('tooltip', (el, binding) => {
   let tooltipId = binding.value
+  let openTimeout = null
   el.setAttribute('aria-describedby', tooltipId)
   el.setAttribute('tabindex', 0)
   el.classList.add('tooltip--parent')
   el.addEventListener('focus', showTooltip(tooltipId))
   el.addEventListener('blur', hideTooltip())
-  el.addEventListener('mouseover', showTooltip(tooltipId))
-  el.addEventListener('mouseleave', hideTooltip())
+  el.addEventListener('mouseover', (event) => {
+    if (openTimeout) {
+      return
+    }
+    openTimeout = window.setTimeout(() => {
+      openTimeout = null
+      showTooltip(tooltipId)(event)
+    }, 100);
+  })
+  el.addEventListener('mouseleave', () => {
+    window.clearTimeout(openTimeout)
+    openTimeout = null
+    hideTooltip()()
+  })
   el.addEventListener('click', showTooltip(tooltipId))
   document.addEventListener('click', function (event) {
     // hide tooltip when a click happens outside
