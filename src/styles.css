@@ -521,6 +521,15 @@ hr {
   animation-delay: 5s;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  #fire * {
+    animation: none !important;
+  }
+}
+#fire.animation--none * {
+  animation: none !important;
+}
+  
 @keyframes flameWobble {
   50% {
     transform: scale(1,1.2) translate(0, -30px) rotate(-2deg);

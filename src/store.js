@@ -40,6 +40,7 @@ export function getDefaultState () {
       showHotkeys: true,
       autoBuyMinions: false,
       autoBuyOccultists: false,
+      animateFire: true,
     }
   }
 }

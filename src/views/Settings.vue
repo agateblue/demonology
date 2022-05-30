@@ -9,6 +9,14 @@
         @change="$store.commit('setting', {name: 'debug', value: $event.target.checked})"
         :checked="$store.state.settings.debug">
       <label for="debug">Enable debug mode</label>
+    </div><div class="checkbox field" v-if="$store.getters.allowDebugMode">
+      <input
+        id="animateFire"
+        name="animateFire"
+        type="checkbox"
+        @change="$store.commit('setting', {name: 'animateFire', value: $event.target.checked})"
+        :checked="$store.state.settings.animateFire">
+      <label for="animateFire">Enable fire animation</label>
     </div>
     <div class="checkbox field" v-if="$store.getters.allowDebugMode">
       <input

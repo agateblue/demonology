@@ -21,7 +21,7 @@
         </template>
       </h1>
       <div class="align-items--center justify-content--center">
-        <fire class="mr-4"></fire>
+        <fire :class="['mr-4', {'animation--none': !$store.state.settings.animateFire}]"></fire>
         <div v-if="$store.getters['values']('prompts.current')">
           <p
             v-for="(row, idx) in $store.getters['values']('prompts.current').text"
